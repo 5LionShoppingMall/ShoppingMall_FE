@@ -1,3 +1,3 @@
 export default async function HomePage() {
-  return <section>Enter</section>;
+  return <section>메인페이지</section>;
 }

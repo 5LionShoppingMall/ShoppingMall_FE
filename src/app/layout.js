@@ -20,7 +20,7 @@ export default async function RootLayout({ children }) {
         <header>
           <NavBar />
         </header>
-        <main>{children}</main>
+        <main className='px-3 pt-4'>{children}</main>
       </body>
     </html>
   );
