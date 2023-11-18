@@ -9,9 +9,5 @@ export default function DropdownMenu({ menu, setIsMenuOpen }) {
     avatar: <Avatar setIsMenuOpen={setIsMenuOpen} />,
   };
 
-  const Component = () => {
-    return menuType[menu];
-  };
-
-  return <>{Component && <Component />}</>;
+  return <>{menuType[menu]}</>;
 }
