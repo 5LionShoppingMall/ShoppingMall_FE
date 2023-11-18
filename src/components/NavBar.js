@@ -1,57 +1,58 @@
 'use client';
 
-import Image from 'next/image';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { useRef, useState } from 'react';
-import Dropdown from './ui/dropdown/Dropdown';
+import Dropdown from './ui/navbar-menu/Dropdown';
+import NavbarSvgBtn from './ui/navbar-menu/NavbarSvgBtn';
+import CategoryMenu from './ui/navbar-menu/CategoryMenu';
+import NavbarIconBtn from './ui/navbar-menu/NavbarIconBtn';
 
-export default function NavBar() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-
-  const handleOutsideClick = (e) => {
-    if (!e.currentTarget.contains(e.relatedTarget)) {
-      setIsMenuOpen(false);
-    }
-  };
-
-  console.log(isMenuOpen);
+export default function Navbar() {
+  const [login, setLogin] = useState(false);
 
   return (
     <div className='navbar bg-base-100'>
-      <div className='flex-none'>
-        <Dropdown menu='category' />
-      </div>
       <div className='flex-1'>
         <Link href='/' className='btn btn-ghost text-xl'>
           daisyUI
         </Link>
+        <div className='hidden lg:flex'>
+          <ul className='menu menu-horizontal px-1'>
+            <CategoryMenu />
+          </ul>
+        </div>
       </div>
       <div className='flex-none'>
-        <Dropdown menu='search' />
-        <div>
-          <Link href='/products/cart'>
-            <button className='btn btn-ghost btn-circle'>
-              <div className='indicator'>
-                <svg
-                  xmlns='http://www.w3.org/2000/svg'
-                  className='h-5 w-5'
-                  fill='none'
-                  viewBox='0 0 24 24'
-                  stroke='currentColor'
-                >
-                  <path
-                    strokeLinecap='round'
-                    strokeLinejoin='round'
-                    strokeWidth='2'
-                    d='M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z'
-                  />
-                </svg>
-                <span className='badge badge-sm indicator-item'>8</span>
-              </div>
-            </button>
-          </Link>
+        <div className='lg:hidden'>
+          <NavbarIconBtn menu='search' />
         </div>
-        <Dropdown menu='avatar' />
+        <div className='hidden lg:flex flex-none gap-2'>
+          <div className='form-control'>
+            <input
+              type='text'
+              placeholder='Search'
+              className='input input-bordered lg:w-96'
+            />
+          </div>
+          {login && (
+            <>
+              <NavbarIconBtn menu='cart' />
+              <Dropdown menu='avatar' setLogin={setLogin} />
+            </>
+          )}
+        </div>
+        {!login ? (
+          <>
+            {/* <Link href='/auth/signin' className='ml-2'>
+            <button className='btn'>로그인</button>
+          </Link> */}
+            <button className='btn ml-2' onClick={() => setLogin(true)}>
+              로그인
+            </button>
+          </>
+        ) : (
+          <Dropdown menu='dropdown' setLogin={setLogin} />
+        )}
       </div>
     </div>
   );

@@ -1,6 +1,6 @@
 import Image from 'next/image';
 
-export default function DropdownImageBtn() {
+export default function NavbarImageBtn() {
   return (
     <div className='w-10 rounded-full'>
       <Image

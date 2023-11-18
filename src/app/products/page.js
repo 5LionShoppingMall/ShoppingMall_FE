@@ -3,5 +3,5 @@ export const metadata = {
 };
 
 export default function ProductsPage() {
-  return <div>상품페이지</div>;
+  return <div>상품 페이지</div>;
 }

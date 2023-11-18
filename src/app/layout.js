@@ -1,5 +1,5 @@
 import '../styles/globals.css';
-import NavBar from '@/components/NavBar';
+import Navbar from '@/components/Navbar';
 import axios from '../config/axios-config';
 
 export const metadata = {
@@ -16,11 +16,15 @@ export default async function RootLayout({ children }) {
 
   return (
     <html lang='ko'>
-      <body>
-        <header>
-          <NavBar />
+      <body className='w-full bg-neutral-50 overflow-auto'>
+        <header className='sticky top-0'>
+          <div className='max-w-screen-xl mx-auto'>
+            <Navbar />
+          </div>
         </header>
-        <main className='px-3 pt-4'>{children}</main>
+        <main className='w-full flex justify-center max-w-screen-xl mx-auto bg-white h-screen'>
+          {children}
+        </main>
       </body>
     </html>
   );
