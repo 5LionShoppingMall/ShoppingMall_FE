@@ -1,3 +1,5 @@
+import Auth from '@/components/Auth';
+
 export default function SigninPage() {
-  return <>로그인페이지</>;
+  return <Auth authType='signin' />;
 }

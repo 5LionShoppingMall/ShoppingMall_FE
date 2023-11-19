@@ -16,15 +16,13 @@ export default async function RootLayout({ children }) {
 
   return (
     <html lang='ko'>
-      <body className='w-full bg-neutral-50 overflow-auto'>
-        <header className='sticky top-0'>
+      <body className='w-full sm:bg-neutral-50 overflow-auto'>
+        <header className='sticky top-0 bg-white border-b'>
           <div className='max-w-screen-xl mx-auto'>
             <Navbar />
           </div>
         </header>
-        <main className='w-full flex justify-center max-w-screen-xl mx-auto bg-white h-screen'>
-          {children}
-        </main>
+        <main className='w-full max-w-screen-xl mx-auto'>{children}</main>
       </body>
     </html>
   );

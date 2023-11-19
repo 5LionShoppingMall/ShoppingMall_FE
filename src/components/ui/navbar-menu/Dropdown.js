@@ -7,7 +7,7 @@ import NavbarImageBtn from './NavbarImageBtn';
 import { navMenuType } from '@/constants/navbar';
 import NavbarIconBtn from './NavbarIconBtn';
 
-export default function Dropdown({ menu, setLogin }) {
+export default function Dropdown({ menu, login, setLogin }) {
   const type = navMenuType[menu];
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -29,6 +29,7 @@ export default function Dropdown({ menu, setLogin }) {
         <DropdownMenu
           menu={menu}
           setIsMenuOpen={setIsMenuOpen}
+          login={login}
           setLogin={setLogin}
         />
       )}

@@ -34,25 +34,29 @@ export default function Navbar() {
               className='input input-bordered lg:w-96'
             />
           </div>
-          {login && (
+
+          {login ? (
             <>
               <NavbarIconBtn menu='cart' />
               <Dropdown menu='avatar' setLogin={setLogin} />
             </>
+          ) : (
+            <button className='btn ml-2' onClick={() => setLogin(true)}>
+              로그인
+            </button>
           )}
         </div>
-        {!login ? (
+        {/* {!login && (
           <>
-            {/* <Link href='/auth/signin' className='ml-2'>
+            <Link href='/auth/signin' className='ml-2'>
             <button className='btn'>로그인</button>
-          </Link> */}
+          </Link>
             <button className='btn ml-2' onClick={() => setLogin(true)}>
               로그인
             </button>
           </>
-        ) : (
-          <Dropdown menu='dropdown' setLogin={setLogin} />
-        )}
+        )} */}
+        <Dropdown menu='dropdown' login={login} setLogin={setLogin} />
       </div>
     </div>
   );

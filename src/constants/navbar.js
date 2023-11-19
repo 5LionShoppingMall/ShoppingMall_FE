@@ -27,15 +27,15 @@ export const navSvgType = {
 
 export const navIconType = {
   dropdown: {
-    icon: <FiMenu size={28} />,
+    icon: <FiMenu size={25} />,
     link: '',
   },
   search: {
-    icon: <FiSearch size={25} />,
+    icon: <FiSearch size={20} />,
     link: '/search',
   },
   cart: {
-    icon: <FiShoppingCart size={28} />,
+    icon: <FiShoppingCart size={23} />,
     link: '/products/cart',
   },
 };
