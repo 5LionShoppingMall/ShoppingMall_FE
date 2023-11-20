@@ -22,3 +22,19 @@ body {
   height: 100vh;
   overflow-x: hidden;
 }
+
+.google-btn-color {
+  background-color: #d9483b;
+}
+
+.google-btn-color:hover {
+  background-color: #ba3e32;
+}
+
+.github-btn-color {
+  background-color: black;
+}
+
+.github-btn-color:hover {
+  background-color: rgb(17 24 39);
+}

@@ -19,12 +19,10 @@ export const authInputType = {
 export const authSocialBtnType = {
   google: {
     title: 'Google',
-    color: 'bg-[#D9483B]',
-    hoverColor: 'hover:bg-[#BA3E32]',
+    color: 'google-btn-color',
   },
   github: {
     title: 'GitHub',
-    color: 'bg-black',
-    hoverColor: 'hover:bg-gray-900',
+    color: 'github-btn-color',
   },
 };
