@@ -4,7 +4,7 @@ export default function AuthInput({ inputType }) {
   const type = authInputType[inputType];
 
   return (
-    <div className='mt-8'>
+    <div className='relative mt-8'>
       <p
         className='bg-white pt-0 pr-2 pb-0 pl-2 -mt-3 mr-0 mb-0 ml-2 font-medium text-gray-600
                   absolute'

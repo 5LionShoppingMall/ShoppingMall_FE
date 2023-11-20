@@ -5,7 +5,7 @@ export default function DropdownMenu({ menu, setIsMenuOpen, login, setLogin }) {
   return (
     <ul
       tabIndex={0}
-      className='menu menu-md dropdown-content mt-3 z-[99] p-2 shadow bg-base-100 rounded-box w-52'
+      className='menu menu-md dropdown-content mt-3 z-[999] p-2 shadow bg-base-100 rounded-box w-52'
     >
       {menu === 'dropdown' ? (
         <>
