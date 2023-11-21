@@ -3,38 +3,91 @@
 import Link from 'next/link'
 import AuthInput from './AuthInput'
 import { useState } from 'react'
+import axios from '../../../config/axios-config'
 
 export default function AuthForm({ authType }) {
   const title =
     (authType === 'signin' && '로그인') || (authType === 'signup' && '회원가입')
 
-  const loginHandler = (e) => {
-    e.preventDefault()
+  const [form, setForm] = useState({
+    email: '',
+    password: '',
+    phoneNumber: '',
+    address: '',
+  })
+
+  const handleChange = (name) => (value) => {
+    setForm((prev) => ({
+      ...prev,
+      [name]: value,
+    }))
   }
 
-  if (authType == 'signin') {
-    const [form, setForm] = useState({
-      email: '',
-      password: '',
-      phoneNumber: '',
-    })
-  } else if (authType == 'signup') {
+  const loginHandler = async (e) => {
+    e.preventDefault()
+
+    const sendFormData = async (url, formData, successMsg, errorMsg) => {
+      try {
+        const response = await axios.post(url, formData)
+        console.log(response.data)
+        console.log(successMsg)
+      } catch (err) {
+        console.error(`${errorMsg}: ${err}`)
+      }
+    }
+
+    let formData = form
+    if (authType === 'signin') {
+      formData = {
+        email: form.email,
+        password: form.password,
+      }
+      sendFormData(
+        '/api/auth/login',
+        formData,
+        '로그인에 성공했습니다.',
+        '로그인 중 오류가 발생했습니다'
+      )
+    } else if (authType === 'signup') {
+      sendFormData(
+        '/api/users/register',
+        formData,
+        '회원가입에 성공했습니다.',
+        '회원가입 중 오류가 발생했습니다'
+      )
+    }
   }
 
   return (
     <>
       <h1 className='font-medium text-2xl mt-3 text-center'>{title}</h1>
       <form className='mt-12' onSubmit={loginHandler}>
-        <AuthInput inputType='email' />
-        <AuthInput inputType='password' />
+        <AuthInput
+          inputType='email'
+          value={form.email}
+          setValue={handleChange('email')}
+        />
+        <AuthInput
+          inputType='password'
+          value={form.password}
+          setValue={handleChange('password')}
+        />
         {authType === 'signin' ? (
           <div className='flex justify-end mt-2 mb-8 text-sm sm:text-xs text-gray-600'>
             <Link href='#'>비밀번호를 잊으셨나요?</Link>
           </div>
         ) : (
           <>
-            <AuthInput inputType='phone' />
-            <AuthInput inputType='address' />
+            <AuthInput
+              inputType='phone'
+              value={form.phoneNumber}
+              setValue={handleChange('phoneNumber')}
+            />
+            <AuthInput
+              inputType='address'
+              value={form.address}
+              setValue={handleChange('address')}
+            />
           </>
         )}
         <button
