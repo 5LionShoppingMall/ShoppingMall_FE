@@ -1,14 +1,25 @@
-import Link from 'next/link';
-import AuthInput from './AuthInput';
+/** @format */
+
+import Link from 'next/link'
+import AuthInput from './AuthInput'
+import { useState } from 'react'
 
 export default function AuthForm({ authType }) {
   const title =
-    (authType === 'signin' && '로그인') ||
-    (authType === 'signup' && '회원가입');
+    (authType === 'signin' && '로그인') || (authType === 'signup' && '회원가입')
 
   const loginHandler = (e) => {
-    e.preventDefault();
-  };
+    e.preventDefault()
+  }
+
+  if (authType == 'signin') {
+    const [form, setForm] = useState({
+      email: '',
+      password: '',
+      phoneNumber: '',
+    })
+  } else if (authType == 'signup') {
+  }
 
   return (
     <>
@@ -21,13 +32,15 @@ export default function AuthForm({ authType }) {
             <Link href='#'>비밀번호를 잊으셨나요?</Link>
           </div>
         ) : (
-          <AuthInput inputType='phone' />
+          <>
+            <AuthInput inputType='phone' />
+            <AuthInput inputType='address' />
+          </>
         )}
         <button
           className={`${
             authType === 'signup' && 'mt-12'
-          } pt-4 pr-5 pb-4 pl-5 block text-center text-white bg-gray-700 p-3 duration-300 rounded-lg hover:bg-gray-800 w-full`}
-        >
+          } pt-4 pr-5 pb-4 pl-5 block text-center text-white bg-gray-700 p-3 duration-300 rounded-lg hover:bg-gray-800 w-full`}>
           {authType === 'signin' ? '로그인' : '가입하기'}
         </button>
         {authType === 'signup' && (
@@ -35,13 +48,12 @@ export default function AuthForm({ authType }) {
             이미 계정이 있으신가요? &nbsp;
             <Link
               href='/auth/signin'
-              className='text-gray-700 hover:text-gray-900 font-medium'
-            >
+              className='text-gray-700 hover:text-gray-900 font-medium'>
               <em>로그인 하러 가기</em>
             </Link>
           </p>
         )}
       </form>
     </>
-  );
+  )
 }

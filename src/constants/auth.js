@@ -1,3 +1,5 @@
+/** @format */
+
 export const authInputType = {
   email: {
     title: '이메일',
@@ -14,7 +16,12 @@ export const authInputType = {
     type: 'tel',
     placeholder: '핸드폰 번호를 입력해 주세요.',
   },
-};
+  address: {
+    title: '주소',
+    type: 'address',
+    placeholder: '주소를 입력해 주세요.',
+  },
+}
 
 export const authSocialBtnType = {
   google: {
@@ -25,4 +32,4 @@ export const authSocialBtnType = {
     title: 'GitHub',
     color: 'github-btn-color',
   },
-};
+}
