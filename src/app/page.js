@@ -1,31 +1,46 @@
 /** @format */
+
 'use client'
 
 import axios from '../config/axios-config'
 import Link from 'next/link'
 import { useEffect } from 'react'
+import { useUser } from '@/hooks/useUser'
 
-export default async function HomePage() {
-  useEffect(() => {
-    const checkAuth = async () => {
-      try {
-        const response = await axios.post('/api/auth/check')
-        console.log(response.data)
-      } catch (error) {
+export default function HomePage() {
+  // useEffect(() => {
+  //   axios
+  //     .post('api/users/info')
+  //     .then((response) => {
+  //       console.log(response.data)
+  //     })
+  //     .catch((error) => {
+  //       console.error(error)
+  //     })
+  // }, [])
+
+  // useEffect(() => {
+  //   axios
+  //     .post('api/auth/check')
+  //     .then((response) => {
+  //       console.log(response.data)
+  //     })
+  //     .catch((error) => {
+  //       console.error(error)
+  //     })
+  // }, []) // 확인용 backend api 호출
+
+  const { user } = useUser() // useUser 훅을 호출하여 user 정보를 가져옵니다.
+
+  const logout = () => {
+    axios
+      .post('/api/auth/logout')
+      .then((response) => {
+        // 로그아웃 후 메인 페이지로 리다이렉트
+      })
+      .catch((error) => {
         console.error(error)
-      }
-    }
-
-    checkAuth()
-  }, [])
-
-  const logout = async () => {
-    try {
-      response = await axios.post('/api/auth/logout')
-      // 로그아웃 후 메인 페이지로 리다이렉트
-    } catch (error) {
-      console.error(error)
-    }
+      })
   }
 
   return (
@@ -38,15 +53,23 @@ export default async function HomePage() {
         <Link href='/community' className='btn lg:w-32'>
           커뮤니티
         </Link>
-        <Link href='/auth/signin' className='btn lg:w-32'>
-          로그인
-        </Link>
-        <Link href='/auth/signup' className='btn lg:w-32'>
-          회원가입
-        </Link>
-        <Link href='/' onClick={logout} className='btn lg:w-32'>
-          로그아웃
-        </Link>
+
+        {user ? (
+          // user가 존재하면 로그아웃 버튼을 보여줍니다.
+          <Link href='/' onClick={logout} className='btn lg:w-32'>
+            로그아웃
+          </Link>
+        ) : (
+          // user가 존재하지 않으면 로그인과 회원가입 버튼을 보여줍니다.
+          <>
+            <Link href='/auth/signin' className='btn lg:w-32'>
+              로그인
+            </Link>
+            <Link href='/auth/signup' className='btn lg:w-32'>
+              회원가입
+            </Link>
+          </>
+        )}
       </div>
     </section>
   )

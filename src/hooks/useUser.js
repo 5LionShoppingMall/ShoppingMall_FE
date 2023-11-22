@@ -4,7 +4,7 @@ import { useQuery } from 'react-query'
 import axios from '../config/axios-config'
 
 const fetchUser = async () => {
-  const { data } = await axios.get('api/user/info')
+  const { data } = await axios.get('api/users/info')
   return data
 }
 
