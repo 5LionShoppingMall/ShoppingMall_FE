@@ -4,7 +4,6 @@
 import axios from '../config/axios-config'
 import Link from 'next/link'
 import { useEffect } from 'react'
-import { useRouter } from 'next/router'
 
 export default async function HomePage() {
   useEffect(() => {
