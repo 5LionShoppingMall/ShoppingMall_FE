@@ -28,9 +28,12 @@ export default function AuthForm({ authType }) {
 
     const sendFormData = async (url, formData, successMsg, errorMsg) => {
       try {
-        const response = await axios.post(url, formData)
+        const response = await axios.post(url, formData, {
+          withCredentials: true,
+        })
         console.log(response.data)
         console.log(successMsg)
+        console.log(document.cookie)
       } catch (err) {
         console.error(`${errorMsg}: ${err}`)
       }

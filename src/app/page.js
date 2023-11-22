@@ -1,6 +1,34 @@
-import Link from 'next/link';
+/** @format */
+'use client'
+
+import axios from '../config/axios-config'
+import Link from 'next/link'
+import { useEffect } from 'react'
+import { useRouter } from 'next/router'
 
 export default async function HomePage() {
+  useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        const response = await axios.post('/api/auth/check')
+        console.log(response.data)
+      } catch (error) {
+        console.error(error)
+      }
+    }
+
+    checkAuth()
+  }, [])
+
+  const logout = async () => {
+    try {
+      response = await axios.post('/api/auth/logout')
+      // 로그아웃 후 메인 페이지로 리다이렉트
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
   return (
     <section className='flex flex-col justify-center items-center max-w-[850px] mx-auto mt-10'>
       <h1 className='flex items-center basis-1/12'>메인페이지</h1>
@@ -17,7 +45,10 @@ export default async function HomePage() {
         <Link href='/auth/signup' className='btn lg:w-32'>
           회원가입
         </Link>
+        <Link href='/' onClick={logout} className='btn lg:w-32'>
+          로그아웃
+        </Link>
       </div>
     </section>
-  );
+  )
 }
