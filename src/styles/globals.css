@@ -24,17 +24,17 @@ body {
 }
 
 .google-btn-color {
-  background-color: #d9483b;
+  background-color: #ffffff;
 }
 
 .google-btn-color:hover {
-  background-color: #ba3e32;
+  background-color: #eff1f7;
 }
 
 .github-btn-color {
-  background-color: black;
+  background-color: #ffffff;
 }
 
 .github-btn-color:hover {
-  background-color: rgb(17 24 39);
+  background-color: #eff1f7;
 }

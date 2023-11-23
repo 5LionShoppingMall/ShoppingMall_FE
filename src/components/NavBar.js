@@ -1,14 +1,16 @@
-'use client';
+/** @format */
 
-import { useEffect, useState } from 'react';
-import Link from 'next/link';
-import Dropdown from './ui/navbar-menu/Dropdown';
-import NavbarSvgBtn from './ui/navbar-menu/NavbarSvgBtn';
-import CategoryMenu from './ui/navbar-menu/CategoryMenu';
-import NavbarIconBtn from './ui/navbar-menu/NavbarIconBtn';
+'use client'
+
+import { useState } from 'react'
+import Link from 'next/link'
+import Dropdown from './ui/navbar-menu/Dropdown'
+import NavbarSvgBtn from './ui/navbar-menu/NavbarSvgBtn'
+import CategoryMenu from './ui/navbar-menu/CategoryMenu'
+import NavbarIconBtn from './ui/navbar-menu/NavbarIconBtn'
 
 export default function Navbar() {
-  const [login, setLogin] = useState(false);
+  const [login, setLogin] = useState(false)
 
   return (
     <div className='navbar bg-base-100'>
@@ -59,5 +61,5 @@ export default function Navbar() {
         <Dropdown menu='dropdown' login={login} setLogin={setLogin} />
       </div>
     </div>
-  );
+  )
 }
