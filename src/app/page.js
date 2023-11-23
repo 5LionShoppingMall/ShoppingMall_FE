@@ -4,38 +4,20 @@
 
 import axios from '../config/axios-config'
 import Link from 'next/link'
-import { useEffect } from 'react'
 import { useUser } from '@/hooks/useUser'
 
 export default function HomePage() {
-  // useEffect(() => {
-  //   axios
-  //     .post('api/users/info')
-  //     .then((response) => {
-  //       console.log(response.data)
-  //     })
-  //     .catch((error) => {
-  //       console.error(error)
-  //     })
-  // }, [])
+  const { user, isLoading, isError, error } = useUser() // useUser 훅을 호출하여 user 정보를 가져옵니다.
 
-  // useEffect(() => {
-  //   axios
-  //     .post('api/auth/check')
-  //     .then((response) => {
-  //       console.log(response.data)
-  //     })
-  //     .catch((error) => {
-  //       console.error(error)
-  //     })
-  // }, []) // 확인용 backend api 호출
-
-  const { user } = useUser() // useUser 훅을 호출하여 user 정보를 가져옵니다.
+  if (isLoading) {
+    return <div></div>
+  }
 
   const logout = () => {
     axios
       .post('/api/auth/logout')
       .then((response) => {
+        window.location.reload()
         // 로그아웃 후 메인 페이지로 리다이렉트
       })
       .catch((error) => {

@@ -9,6 +9,11 @@ const fetchUser = async () => {
 }
 
 export function useUser() {
-  const { data: user, isLoading, isError } = useQuery('user', fetchUser)
-  return { user, isLoading, isError }
+  const {
+    data: user,
+    isLoading,
+    isError,
+    error,
+  } = useQuery('user', fetchUser, { retry: 0 })
+  return { user, isLoading, isError, error }
 }
