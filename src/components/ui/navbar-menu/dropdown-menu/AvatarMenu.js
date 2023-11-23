@@ -1,5 +1,7 @@
-import Link from 'next/link';
-import { navAvatarMenus } from '@/constants/navbar';
+/** @format */
+
+import Link from 'next/link'
+import { navAvatarMenus } from '@/constants/navbar'
 
 export default function AvatarMenu({ setIsMenuOpen, setLogin }) {
   return (

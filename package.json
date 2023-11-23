@@ -9,11 +9,17 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@headlessui/react": "^1.7.17",
     "axios": "^1.6.2",
     "next": "14.0.2",
     "react": "^18",
     "react-dom": "^18",
+<<<<<<< HEAD
     "react-icons": "^4.12.0"
+=======
+    "react-icons": "^4.12.0",
+    "react-query": "^3.39.3"
+>>>>>>> c3f9e88c791dc7f7ac46d771d35d2a6626456c8c
   },
   "devDependencies": {
     "autoprefixer": "^10.0.1",

@@ -24,6 +24,7 @@ body {
 }
 
 .google-btn-color {
+<<<<<<< HEAD
   background-color: #d9483b;
 }
 
@@ -37,4 +38,19 @@ body {
 
 .github-btn-color:hover {
   background-color: rgb(17 24 39);
+=======
+  background-color: #ffffff;
+}
+
+.google-btn-color:hover {
+  background-color: #eff1f7;
+}
+
+.github-btn-color {
+  background-color: #ffffff;
+}
+
+.github-btn-color:hover {
+  background-color: #eff1f7;
+>>>>>>> c3f9e88c791dc7f7ac46d771d35d2a6626456c8c
 }
