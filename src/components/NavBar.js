@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Link from 'next/link';
 import Dropdown from './ui/navbar-menu/Dropdown';
 import NavbarSvgBtn from './ui/navbar-menu/NavbarSvgBtn';

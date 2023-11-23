@@ -1,5 +1,6 @@
 import AvatarMenu from './AvatarMenu';
 import CategoryMenu from '../CategoryMenu';
+import Link from 'next/link';
 
 export default function DropdownMenu({ menu, setIsMenuOpen, login, setLogin }) {
   return (
@@ -18,6 +19,9 @@ export default function DropdownMenu({ menu, setIsMenuOpen, login, setLogin }) {
             <li>
               <a>My</a>
               <ul className='p-2'>
+                <li onClick={() => setIsMenuOpen(false)}>
+                  <Link href='/cart'>장바구니</Link>
+                </li>
                 <AvatarMenu setIsMenuOpen={setIsMenuOpen} setLogin={setLogin} />
               </ul>
             </li>
