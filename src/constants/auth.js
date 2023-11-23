@@ -27,9 +27,25 @@ export const authSocialBtnType = {
   google: {
     title: 'Google',
     color: 'google-btn-color',
+    Icon: () => (
+      <img
+        width='48'
+        height='48'
+        src='https://img.icons8.com/color/48/google-logo.png'
+        alt='google-logo'
+      />
+    ),
   },
   github: {
     title: 'GitHub',
     color: 'github-btn-color',
+    Icon: () => (
+      <img
+        width='48'
+        height='48'
+        src='https://img.icons8.com/glyph-neue/128/github.png'
+        alt='github-logo'
+      />
+    ),
   },
 }

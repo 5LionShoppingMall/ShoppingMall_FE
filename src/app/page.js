@@ -7,11 +7,11 @@ import Link from 'next/link'
 import { useUser } from '@/hooks/useUser'
 
 export default function HomePage() {
-  const { user, isLoading, isError, error } = useUser() // useUser 훅을 호출하여 user 정보를 가져옵니다.
+  const { user, isLoading } = useUser() // useUser 훅을 호출하여 user 정보를 가져옵니다.
 
   if (isLoading) {
     return <div></div>
-  }
+  } // 아직 유저 정보를 불러오는 중이면 빈 페이지를 보여줍니다.
 
   const logout = () => {
     axios
