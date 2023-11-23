@@ -1,71 +1,72 @@
 /** @format */
 
-import Link from 'next/link'
-import AuthInput from './AuthInput'
-import axios from '../../../config/axios-config'
-import { Dialog, Transition } from '@headlessui/react'
-import { Fragment, useState } from 'react'
-import { redirect } from 'next/navigation'
+import Link from 'next/link';
+import AuthInput from './AuthInput';
+import axios from '../../../config/axios-config';
+import { Dialog, Transition } from '@headlessui/react';
+import { Fragment, useState } from 'react';
+import { redirect } from 'next/navigation';
 
 export default function AuthForm({ authType }) {
   const title =
-    (authType === 'signin' && '로그인') || (authType === 'signup' && '회원가입')
+    (authType === 'signin' && '로그인') ||
+    (authType === 'signup' && '회원가입');
 
   const [form, setForm] = useState({
     email: '',
     password: '',
     phoneNumber: '',
     address: '',
-  })
+  });
 
-  const [isOpen, setIsOpen] = useState(false)
+  const [isOpen, setIsOpen] = useState(false);
 
   const closeModal = () => {
-    setIsOpen(false)
-  }
+    setIsOpen(false);
+  };
 
   const openModal = () => {
-    setIsOpen(true)
-  }
+    setIsOpen(true);
+  };
 
   const handleChange = (name) => (value) => {
     setForm((prev) => ({
       ...prev,
       [name]: value,
-    }))
-  }
+    }));
+  };
 
   const loginHandler = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
 
     const sendFormData = async (url, formData, successMsg, errorMsg) => {
       try {
         const response = await axios.post(url, formData, {
           withCredentials: true,
-        })
-        console.log(response.data)
-        console.log(successMsg)
-        return true
+        });
+        console.log(response.data);
+        console.log(successMsg);
+        return true;
       } catch (err) {
-        console.error(`${errorMsg}: ${err}`)
-        return false
+        console.error(`${errorMsg}: ${err}`);
+        return false;
       }
-    }
+    };
 
-    let formData = form
+    let formData = form;
     if (authType === 'signin') {
       formData = {
         email: form.email,
         password: form.password,
-      }
+      };
       sendFormData(
         '/api/auth/login',
         formData,
         '로그인에 성공했습니다.',
         '로그인 중 오류가 발생했습니다'
       ).then(() => {
-        window.location.href = '/'
-      })
+        window.location.href = '/';
+      });
     } else if (authType === 'signup') {
       sendFormData(
         '/api/users/register',
@@ -74,11 +75,11 @@ export default function AuthForm({ authType }) {
         '회원가입 중 오류가 발생했습니다'
       ).then((result) => {
         if (result) {
-          openModal()
+          openModal();
         }
-      })
+      });
     }
-  }
+  };
 
   return (
     <>
@@ -113,8 +114,10 @@ export default function AuthForm({ authType }) {
           </>
         )}
         <button
-          className={`${authType === 'signup' && 'mt-12'
-            } pt-4 pr-5 pb-4 pl-5 block text-center text-white bg-gray-700 p-3 duration-300 rounded-lg hover:bg-gray-800 w-full`}>
+          className={`${
+            authType === 'signup' && 'mt-12'
+          } pt-4 pr-5 pb-4 pl-5 block text-center text-white bg-gray-700 p-3 duration-300 rounded-lg hover:bg-gray-800 w-full`}
+        >
           {authType === 'signin' ? '로그인' : '가입하기'}
         </button>
         {authType === 'signup' && (
@@ -122,7 +125,8 @@ export default function AuthForm({ authType }) {
             이미 계정이 있으신가요? &nbsp;
             <Link
               href='/auth/signin'
-              className='text-gray-700 hover:text-gray-900 font-medium'>
+              className='text-gray-700 hover:text-gray-900 font-medium'
+            >
               <em>로그인 하러 가기</em>
             </Link>
           </p>
@@ -132,7 +136,8 @@ export default function AuthForm({ authType }) {
         <Dialog
           as='div'
           className='fixed inset-0 z-10 overflow-y-auto flex items-start justify-center pt-10'
-          onClose={closeModal}>
+          onClose={closeModal}
+        >
           <div className='px-4 text-center'>
             <Dialog.Overlay className='fixed inset-0' />
             <span className='inline-block align-top' aria-hidden='true'>
@@ -145,11 +150,13 @@ export default function AuthForm({ authType }) {
               enterTo='opacity-100 scale-100'
               leave='ease-in duration-200'
               leaveFrom='opacity-100 scale-100'
-              leaveTo='opacity-0 scale-95'>
+              leaveTo='opacity-0 scale-95'
+            >
               <div className='inline-block w-full max-w-md p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-2xl'>
                 <Dialog.Title
                   as='h3'
-                  className='text-lg font-medium leading-6 text-gray-900'>
+                  className='text-lg font-medium leading-6 text-gray-900'
+                >
                   로그인 페이지로 이동
                 </Dialog.Title>
                 <div className='mt-2'>
@@ -162,18 +169,20 @@ export default function AuthForm({ authType }) {
                     type='button'
                     className='inline-flex justify-center px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md hover:bg-blue-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500'
                     onClick={() => {
-                      closeModal()
-                      window.location.href = '/auth/signin'
-                    }}>
+                      closeModal();
+                      window.location.href = '/auth/signin';
+                    }}
+                  >
                     예
                   </button>
                   <button
                     type='button'
                     className='ml-4 inline-flex justify-center px-4 py-2 text-sm font-medium text-blue-700 bg-blue-100 border border-transparent rounded-md hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500'
                     onClick={() => {
-                      closeModal()
-                      redirect('/')
-                    }}>
+                      closeModal();
+                      window.location.href = '/';
+                    }}
+                  >
                     아니오
                   </button>
                 </div>
