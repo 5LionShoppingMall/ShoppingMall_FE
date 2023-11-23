@@ -1,16 +1,3 @@
-<<<<<<< HEAD
-import Link from 'next/link';
-import AuthInput from './AuthInput';
-
-export default function AuthForm({ authType }) {
-  const title =
-    (authType === 'signin' && '로그인') ||
-    (authType === 'signup' && '회원가입');
-
-  const loginHandler = (e) => {
-    e.preventDefault();
-  };
-=======
 /** @format */
 
 import Link from 'next/link'
@@ -18,6 +5,7 @@ import AuthInput from './AuthInput'
 import axios from '../../../config/axios-config'
 import { Dialog, Transition } from '@headlessui/react'
 import { Fragment, useState } from 'react'
+import { redirect } from 'next/navigation'
 
 export default function AuthForm({ authType }) {
   const title =
@@ -91,16 +79,11 @@ export default function AuthForm({ authType }) {
       })
     }
   }
->>>>>>> c3f9e88c791dc7f7ac46d771d35d2a6626456c8c
 
   return (
     <>
       <h1 className='font-medium text-2xl mt-3 text-center'>{title}</h1>
       <form className='mt-12' onSubmit={loginHandler}>
-<<<<<<< HEAD
-        <AuthInput inputType='email' />
-        <AuthInput inputType='password' />
-=======
         <AuthInput
           inputType='email'
           value={form.email}
@@ -111,15 +94,11 @@ export default function AuthForm({ authType }) {
           value={form.password}
           setValue={handleChange('password')}
         />
->>>>>>> c3f9e88c791dc7f7ac46d771d35d2a6626456c8c
         {authType === 'signin' ? (
           <div className='flex justify-end mt-2 mb-8 text-sm sm:text-xs text-gray-600'>
             <Link href='#'>비밀번호를 잊으셨나요?</Link>
           </div>
         ) : (
-<<<<<<< HEAD
-          <AuthInput inputType='phone' />
-=======
           <>
             <AuthInput
               inputType='phone'
@@ -132,17 +111,10 @@ export default function AuthForm({ authType }) {
               setValue={handleChange('address')}
             />
           </>
->>>>>>> c3f9e88c791dc7f7ac46d771d35d2a6626456c8c
         )}
         <button
-          className={`${
-            authType === 'signup' && 'mt-12'
-<<<<<<< HEAD
-          } pt-4 pr-5 pb-4 pl-5 block text-center text-white bg-gray-700 p-3 duration-300 rounded-lg hover:bg-gray-800 w-full`}
-        >
-=======
-          } pt-4 pr-5 pb-4 pl-5 block text-center text-white bg-gray-700 p-3 duration-300 rounded-lg hover:bg-gray-800 w-full`}>
->>>>>>> c3f9e88c791dc7f7ac46d771d35d2a6626456c8c
+          className={`${authType === 'signup' && 'mt-12'
+            } pt-4 pr-5 pb-4 pl-5 block text-center text-white bg-gray-700 p-3 duration-300 rounded-lg hover:bg-gray-800 w-full`}>
           {authType === 'signin' ? '로그인' : '가입하기'}
         </button>
         {authType === 'signup' && (
@@ -150,21 +122,12 @@ export default function AuthForm({ authType }) {
             이미 계정이 있으신가요? &nbsp;
             <Link
               href='/auth/signin'
-<<<<<<< HEAD
-              className='text-gray-700 hover:text-gray-900 font-medium'
-            >
-=======
               className='text-gray-700 hover:text-gray-900 font-medium'>
->>>>>>> c3f9e88c791dc7f7ac46d771d35d2a6626456c8c
               <em>로그인 하러 가기</em>
             </Link>
           </p>
         )}
       </form>
-<<<<<<< HEAD
-    </>
-  );
-=======
       <Transition appear show={isOpen} as={Fragment}>
         <Dialog
           as='div'
@@ -209,7 +172,7 @@ export default function AuthForm({ authType }) {
                     className='ml-4 inline-flex justify-center px-4 py-2 text-sm font-medium text-blue-700 bg-blue-100 border border-transparent rounded-md hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500'
                     onClick={() => {
                       closeModal()
-                      window.location.href = '/'
+                      redirect('/')
                     }}>
                     아니오
                   </button>
@@ -220,6 +183,5 @@ export default function AuthForm({ authType }) {
         </Dialog>
       </Transition>
     </>
-  )
->>>>>>> c3f9e88c791dc7f7ac46d771d35d2a6626456c8c
+  );
 }
