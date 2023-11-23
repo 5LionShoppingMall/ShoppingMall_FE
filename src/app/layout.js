@@ -3,7 +3,7 @@
 'use client'
 
 import '../styles/globals.css'
-import Navbar from '@/components/Navbar'
+import Navbar from '@/components/NavBar'
 import axios from '../config/axios-config'
 import { QueryClient, QueryClientProvider } from 'react-query'
 

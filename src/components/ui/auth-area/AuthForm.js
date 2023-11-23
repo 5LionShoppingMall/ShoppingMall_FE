@@ -2,9 +2,11 @@
 
 import Link from 'next/link'
 import AuthInput from './AuthInput'
-import axios from '../../../config/axios-config'
-import { Dialog, Transition } from '@headlessui/react'
-import { Fragment, useState } from 'react'
+import serverAxios from '../../../config/axios-config'
+import axios from 'axios'
+
+import { Fragment, useEffect, useState } from 'react'
+import { Dialog, Transition, AlertDialog } from '@headlessui/react'
 
 export default function AuthForm({ authType }) {
   const title =
@@ -15,9 +17,12 @@ export default function AuthForm({ authType }) {
     password: '',
     phoneNumber: '',
     address: '',
+    profilePictureUrl: null, // 프로필 사진 상태 추가
+    profilePictureName: '', // 추가: 프로필 사진 파일 이름 상태
   })
 
   const [isOpen, setIsOpen] = useState(false)
+  const [errorMsg, setErrorMsg] = useState(null)
 
   const closeModal = () => {
     setIsOpen(false)
@@ -26,6 +31,14 @@ export default function AuthForm({ authType }) {
   const openModal = () => {
     setIsOpen(true)
   }
+
+  const handleFileChange = (e) => {
+    setForm((prev) => ({
+      ...prev,
+      profilePictureUrl: e.target.files[0],
+      profilePictureName: e.target.files[0] ? e.target.files[0].name : '', // 추가: 파일 이름 저장
+    }))
+  } // 프로필 사진 변경을 위한 메서드
 
   const handleChange = (name) => (value) => {
     setForm((prev) => ({
@@ -39,7 +52,7 @@ export default function AuthForm({ authType }) {
 
     const sendFormData = async (url, formData, successMsg, errorMsg) => {
       try {
-        const response = await axios.post(url, formData, {
+        const response = await serverAxios.post(url, formData, {
           withCredentials: true,
         })
         console.log(response.data)
@@ -47,11 +60,14 @@ export default function AuthForm({ authType }) {
         return true
       } catch (err) {
         console.error(`${errorMsg}: ${err}`)
+        setErrorMsg(errorMsg)
         return false
       }
     }
 
     let formData = form
+    delete formData.profilePictureName
+
     if (authType === 'signin') {
       formData = {
         email: form.email,
@@ -61,16 +77,29 @@ export default function AuthForm({ authType }) {
         '/api/auth/login',
         formData,
         '로그인에 성공했습니다.',
-        '로그인 중 오류가 발생했습니다'
-      ).then(() => {
-        window.location.href = '/'
+        '이메일과 비밀번호를 확인해주세요'
+      ).then((res) => {
+        if (res) {
+          window.location.href = '/'
+        }
       })
     } else if (authType === 'signup') {
+      if (formData.profilePictureUrl) {
+        const imageUrl = await uploadImageToCloudinary(
+          formData.profilePictureUrl
+        )
+        if (imageUrl) {
+          formData = {
+            ...formData,
+            profilePictureUrl: imageUrl,
+          }
+        }
+      }
       sendFormData(
         '/api/users/register',
         formData,
         '회원가입에 성공했습니다.',
-        '회원가입 중 오류가 발생했습니다'
+        '이메일과 비밀번호를 입력해주세요.'
       ).then((result) => {
         if (result) {
           openModal()
@@ -79,8 +108,47 @@ export default function AuthForm({ authType }) {
     }
   }
 
+  const uploadImageToCloudinary = async (file) => {
+    const formData = new FormData()
+    formData.append('file', file)
+    formData.append(
+      'upload_preset',
+      process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET
+    )
+
+    try {
+      const res = await axios.post(
+        process.env.NEXT_PUBLIC_CLOUDINARY_API_URL, // 환경변수에서 URL을 가져옵니다.
+        formData
+      )
+      return res.data.url
+    } catch (err) {
+      console.error('Failed to upload image to Cloudinary:', err)
+      return null
+    }
+  }
+
   return (
     <>
+      {/* 로그인 실패시 에러 메시지 표시 */}
+      {errorMsg && (
+        <Dialog
+          open={!!errorMsg}
+          onClose={() => setErrorMsg(null)}
+          className='fixed z-10 inset-0 flex items-center justify-center'>
+          <div className='bg-white p-4 rounded shadow-xl'>
+            {/* 에러 메시지를 p 태그로 변경 */}
+            <p className='text-gray-700'>{errorMsg}</p>
+            <div className='mt-4 flex justify-end'>
+              <button
+                onClick={() => setErrorMsg(null)}
+                className='px-4 py-2 text-white bg-red-600 rounded hover:bg-red-700'>
+                확인
+              </button>
+            </div>
+          </div>
+        </Dialog>
+      )}
       <h1 className='font-medium text-2xl mt-3 text-center'>{title}</h1>
       <form className='mt-12' onSubmit={loginHandler}>
         <AuthInput
@@ -109,6 +177,45 @@ export default function AuthForm({ authType }) {
               value={form.address}
               setValue={handleChange('address')}
             />
+            <label className='block mt-4'>
+              <span className='text-gray-700 ml-2'>프로필 사진</span>
+              <div className='mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md'>
+                <div className='space-y-1 text-center'>
+                  <svg
+                    className='mx-auto h-12 w-12 text-gray-400'
+                    stroke='currentColor'
+                    fill='none'
+                    viewBox='0 0 48 48'
+                    aria-hidden='true'>
+                    <path
+                      strokeLinecap='round'
+                      strokeLinejoin='round'
+                      strokeWidth='2'
+                      d='M15 10l-5.5 5.5m0 0l5.5 5.5m-5.5-5.5h22m-11 0v22m-9-18v14a2 2 0 002 2h14a2 2 0 002-2V20M4 14a2 2 0 012-2h4a2 2 0 012 2v4a2 2 0 01-2 2H6a2 2 0 01-2-2v-4z'
+                    />
+                  </svg>
+                  <div className='flex text-sm text-gray-600'>
+                    <label
+                      htmlFor='file-upload'
+                      className='relative cursor-pointer bg-white rounded-md font-medium text-blue-600 hover:text-blue-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-blue-500'>
+                      <span>파일 업로드</span>
+                      <input
+                        id='file-upload'
+                        name='file-upload'
+                        type='file'
+                        accept='image/*'
+                        className='sr-only'
+                        onChange={handleFileChange}
+                      />
+                    </label>
+                    <p className='text-blue-500 ml-2'>(선택)</p>
+                  </div>
+                  <p className='text-xs text-gray-500'>
+                    {form.profilePictureName || 'PNG, JPG, GIF up to 10MB'}
+                  </p>
+                </div>
+              </div>
+            </label>
           </>
         )}
         <button
