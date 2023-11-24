@@ -11,5 +11,5 @@ export default function SocialLoginBtn({ socialType }) {
       {type.Icon()}
       <span className='ml-2'>{type.title}</span>
     </button>
-  );
+  )
 }

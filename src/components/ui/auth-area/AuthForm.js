@@ -2,9 +2,15 @@
 
 import Link from 'next/link';
 import AuthInput from './AuthInput';
-import axios from '../../../config/axios-config';
 import { useState } from 'react';
-import AlertModal from './AlertModal';
+import ErrorMessage from '../auth-alert/ErrorMessage';
+import SignUpDialog from '../auth-alert/SignupDialog';
+import ProfilePicture from './ProfilePicture';
+import {
+  sendFormData,
+  sendEmailVerification,
+  uploadImageToCloudinary,
+} from '../../../api/auth';
 
 export default function AuthForm({ authType }) {
   const title =
@@ -16,7 +22,33 @@ export default function AuthForm({ authType }) {
     password: '',
     phoneNumber: '',
     address: '',
+    profilePictureUrl: null, // 프로필 사진 상태 추가
+    profilePictureName: '', // 추가: 프로필 사진 파일 이름 상태
   });
+
+  const [isOpen, setIsOpen] = useState(false);
+  const [errorMsg, setErrorMsg] = useState(null);
+
+  const closeModal = () => {
+    setIsOpen(false);
+  };
+
+  const openModal = () => {
+    setIsOpen(true);
+  };
+
+  const handleSendEmailVerification = async () => {
+    const message = await sendEmailVerification(form.email);
+    alert(message);
+  };
+
+  const handleFileChange = (e) => {
+    setForm((prev) => ({
+      ...prev,
+      profilePictureUrl: e.target.files[0],
+      profilePictureName: e.target.files[0] ? e.target.files[0].name : '', // 추가: 파일 이름 저장
+    }));
+  }; // 프로필 사진 변경을 위한 메서드
 
   const handleChange = (name) => (value) => {
     setForm((prev) => ({
@@ -28,21 +60,9 @@ export default function AuthForm({ authType }) {
   const loginHandler = async (e) => {
     e.preventDefault();
 
-    const sendFormData = async (url, formData, successMsg, errorMsg) => {
-      try {
-        const response = await axios.post(url, formData, {
-          withCredentials: true,
-        });
-        console.log(response.data);
-        console.log(successMsg);
-        return true;
-      } catch (err) {
-        console.error(`${errorMsg}: ${err}`);
-        return false;
-      }
-    };
-
     let formData = form;
+    delete formData.profilePictureName;
+
     if (authType === 'signin') {
       formData = {
         email: form.email,
@@ -52,16 +72,32 @@ export default function AuthForm({ authType }) {
         '/api/auth/login',
         formData,
         '로그인에 성공했습니다.',
-        '로그인 중 오류가 발생했습니다'
-      ).then(() => {
-        window.location.href = '/';
+        '이메일과 비밀번호를 확인해주세요',
+        setErrorMsg
+      ).then((res) => {
+        if (res) {
+          window.location.href = '/';
+        }
       });
     } else if (authType === 'signup') {
+      console.log(formData);
+      if (formData.profilePictureUrl) {
+        const imageUrl = await uploadImageToCloudinary(
+          formData.profilePictureUrl
+        );
+        if (imageUrl) {
+          formData = {
+            ...formData,
+            profilePictureUrl: imageUrl,
+          };
+        }
+      }
       sendFormData(
         '/api/users/register',
         formData,
         '회원가입에 성공했습니다.',
-        '회원가입 중 오류가 발생했습니다'
+        '이메일과 비밀번호를 입력해주세요.',
+        setErrorMsg
       ).then((result) => {
         if (result) {
           openModal();
@@ -72,13 +108,25 @@ export default function AuthForm({ authType }) {
 
   return (
     <>
+      {/* 로그인 실패시 에러 메시지 표시 */}
+      <ErrorMessage errorMsg={errorMsg} setErrorMsg={setErrorMsg} />
       <h1 className='font-medium text-2xl mt-3 text-center'>{title}</h1>
       <form className='mt-12' onSubmit={loginHandler}>
-        <AuthInput
-          inputType='email'
-          value={form.email}
-          setValue={handleChange('email')}
-        />
+        <div className='relative'>
+          <AuthInput
+            inputType='email'
+            value={form.email}
+            setValue={handleChange('email')}
+          />
+          {authType === 'signup' && (
+            <button
+              onClick={handleSendEmailVerification}
+              className='absolute right-3 top-1/2 transform -translate-y-1/2 px-4 py-1.5 bg-indigo-500 text-white rounded-md hover:bg-indigo-600 focus:outline-none'
+            >
+              확인
+            </button>
+          )}
+        </div>
         <AuthInput
           inputType='password'
           value={form.password}
@@ -100,6 +148,7 @@ export default function AuthForm({ authType }) {
               value={form.address}
               setValue={handleChange('address')}
             />
+            <ProfilePicture handleFileChange={handleFileChange} form={form} />
           </>
         )}
         <button
@@ -121,7 +170,7 @@ export default function AuthForm({ authType }) {
           </p>
         )}
       </form>
-      <AlertModal />
+      <SignUpDialog isOpen={isOpen} closeModal={closeModal} />
     </>
   );
 }

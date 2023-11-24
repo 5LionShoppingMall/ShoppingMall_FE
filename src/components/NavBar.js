@@ -2,15 +2,15 @@
 
 'use client'
 
-import { useState } from 'react'
 import Link from 'next/link'
 import Dropdown from './ui/navbar-menu/Dropdown'
 import NavbarSvgBtn from './ui/navbar-menu/NavbarSvgBtn'
 import CategoryMenu from './ui/navbar-menu/CategoryMenu'
 import NavbarIconBtn from './ui/navbar-menu/NavbarIconBtn'
+import { useUser } from '@/hooks/useUser'
 
 export default function Navbar() {
-  const [login, setLogin] = useState(false)
+  const { user, isLoading, isError } = useUser()
 
   return (
     <div className='navbar bg-base-100'>
@@ -37,15 +37,15 @@ export default function Navbar() {
             />
           </div>
 
-          {login ? (
+          {user ? (
             <>
               <NavbarIconBtn menu='cart' />
-              <Dropdown menu='avatar' setLogin={setLogin} />
+              <Dropdown menu='avatar' />
             </>
           ) : (
-            <button className='btn ml-2' onClick={() => setLogin(true)}>
-              로그인
-            </button>
+            <Link href='/auth/signin'>
+              <button className='btn ml-2'>로그인</button>
+            </Link>
           )}
         </div>
         {/* {!login && (
@@ -58,8 +58,8 @@ export default function Navbar() {
             </button>
           </>
         )} */}
-        <Dropdown menu='dropdown' login={login} setLogin={setLogin} />
+        <Dropdown menu='dropdown' />
       </div>
     </div>
-  );
+  )
 }
