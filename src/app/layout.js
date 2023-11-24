@@ -13,7 +13,7 @@ export const metadata = {
   description: 'home',
 };
 
-export default function RootLayout({ children }) {
+export default async function RootLayout({ children }) {
   /* const res = await axios.get('/check');
   console.dir(res); */
 
