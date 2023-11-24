@@ -17,4 +17,3 @@ export function useUser() {
   } = useQuery({ queryKey: ['user'], queryFn: fetchUser, retry: 0 });
   return { user, isLoading, isError, error };
 }
-//'user', fetchUser, { retry: 0 };
