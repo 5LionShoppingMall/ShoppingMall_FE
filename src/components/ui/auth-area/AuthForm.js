@@ -4,9 +4,11 @@ import Link from 'next/link'
 import AuthInput from './AuthInput'
 import serverAxios from '../../../config/axios-config'
 import axios from 'axios'
-
-import { Fragment, useEffect, useState } from 'react'
-import { Dialog, Transition, AlertDialog } from '@headlessui/react'
+import { Fragment, useState } from 'react'
+import { Dialog, Transition } from '@headlessui/react'
+import ErrorMessage from '../auth-alert/ErrorMessage'
+import SignUpDialog from '../auth-alert/SignupDialog'
+import ProfilePicture from './ProfilePicture'
 
 export default function AuthForm({ authType }) {
   const title =
@@ -131,24 +133,7 @@ export default function AuthForm({ authType }) {
   return (
     <>
       {/* 로그인 실패시 에러 메시지 표시 */}
-      {errorMsg && (
-        <Dialog
-          open={!!errorMsg}
-          onClose={() => setErrorMsg(null)}
-          className='fixed z-10 inset-0 flex items-center justify-center'>
-          <div className='bg-white p-4 rounded shadow-xl'>
-            {/* 에러 메시지를 p 태그로 변경 */}
-            <p className='text-gray-700'>{errorMsg}</p>
-            <div className='mt-4 flex justify-end'>
-              <button
-                onClick={() => setErrorMsg(null)}
-                className='px-4 py-2 text-white bg-red-600 rounded hover:bg-red-700'>
-                확인
-              </button>
-            </div>
-          </div>
-        </Dialog>
-      )}
+      <ErrorMessage errorMsg={errorMsg} setErrorMsg={setErrorMsg} />
       <h1 className='font-medium text-2xl mt-3 text-center'>{title}</h1>
       <form className='mt-12' onSubmit={loginHandler}>
         <AuthInput
@@ -177,45 +162,7 @@ export default function AuthForm({ authType }) {
               value={form.address}
               setValue={handleChange('address')}
             />
-            <label className='block mt-4'>
-              <span className='text-gray-700 ml-2'>프로필 사진</span>
-              <div className='mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md'>
-                <div className='space-y-1 text-center'>
-                  <svg
-                    className='mx-auto h-12 w-12 text-gray-400'
-                    stroke='currentColor'
-                    fill='none'
-                    viewBox='0 0 48 48'
-                    aria-hidden='true'>
-                    <path
-                      strokeLinecap='round'
-                      strokeLinejoin='round'
-                      strokeWidth='2'
-                      d='M15 10l-5.5 5.5m0 0l5.5 5.5m-5.5-5.5h22m-11 0v22m-9-18v14a2 2 0 002 2h14a2 2 0 002-2V20M4 14a2 2 0 012-2h4a2 2 0 012 2v4a2 2 0 01-2 2H6a2 2 0 01-2-2v-4z'
-                    />
-                  </svg>
-                  <div className='flex text-sm text-gray-600'>
-                    <label
-                      htmlFor='file-upload'
-                      className='relative cursor-pointer bg-white rounded-md font-medium text-blue-600 hover:text-blue-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-blue-500'>
-                      <span>파일 업로드</span>
-                      <input
-                        id='file-upload'
-                        name='file-upload'
-                        type='file'
-                        accept='image/*'
-                        className='sr-only'
-                        onChange={handleFileChange}
-                      />
-                    </label>
-                    <p className='text-blue-500 ml-2'>(선택)</p>
-                  </div>
-                  <p className='text-xs text-gray-500'>
-                    {form.profilePictureName || 'PNG, JPG, GIF up to 10MB'}
-                  </p>
-                </div>
-              </div>
-            </label>
+            <ProfilePicture handleFileChange={handleFileChange} form={form} />
           </>
         )}
         <button
@@ -235,60 +182,7 @@ export default function AuthForm({ authType }) {
           </p>
         )}
       </form>
-      <Transition appear show={isOpen} as={Fragment}>
-        <Dialog
-          as='div'
-          className='fixed inset-0 z-10 overflow-y-auto flex items-start justify-center pt-10'
-          onClose={closeModal}>
-          <div className='px-4 text-center'>
-            <Dialog.Overlay className='fixed inset-0' />
-            <span className='inline-block align-top' aria-hidden='true'>
-              &#8203;
-            </span>
-            <Transition.Child
-              as={Fragment}
-              enter='ease-out duration-300'
-              enterFrom='opacity-0 scale-95'
-              enterTo='opacity-100 scale-100'
-              leave='ease-in duration-200'
-              leaveFrom='opacity-100 scale-100'
-              leaveTo='opacity-0 scale-95'>
-              <div className='inline-block w-full max-w-md p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-2xl'>
-                <Dialog.Title
-                  as='h3'
-                  className='text-lg font-medium leading-6 text-gray-900'>
-                  로그인 페이지로 이동
-                </Dialog.Title>
-                <div className='mt-2'>
-                  <p className='text-sm text-gray-500'>
-                    회원가입이 완료되었습니다. 로그인 페이지로 이동하시겠습니까?
-                  </p>
-                </div>
-                <div className='mt-4'>
-                  <button
-                    type='button'
-                    className='inline-flex justify-center px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md hover:bg-blue-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500'
-                    onClick={() => {
-                      closeModal()
-                      window.location.href = '/auth/signin'
-                    }}>
-                    예
-                  </button>
-                  <button
-                    type='button'
-                    className='ml-4 inline-flex justify-center px-4 py-2 text-sm font-medium text-blue-700 bg-blue-100 border border-transparent rounded-md hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500'
-                    onClick={() => {
-                      closeModal()
-                      window.location.href = '/'
-                    }}>
-                    아니오
-                  </button>
-                </div>
-              </div>
-            </Transition.Child>
-          </div>
-        </Dialog>
-      </Transition>
+      <SignUpDialog isOpen={isOpen} closeModal={closeModal} />
     </>
   )
 }
