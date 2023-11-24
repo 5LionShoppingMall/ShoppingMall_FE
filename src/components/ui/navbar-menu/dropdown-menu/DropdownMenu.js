@@ -37,5 +37,5 @@ export default function DropdownMenu({ menu, setIsMenuOpen, login, setLogin }) {
         <AvatarMenu setIsMenuOpen={setIsMenuOpen} setLogin={setLogin} />
       )}
     </ul>
-  )
+  );
 }

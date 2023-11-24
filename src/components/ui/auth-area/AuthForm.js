@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import AuthInput from './AuthInput'
-import { Fragment, useState } from 'react'
+import { useState } from 'react'
 import ErrorMessage from '../auth-alert/ErrorMessage'
 import SignUpDialog from '../auth-alert/SignupDialog'
 import ProfilePicture from './ProfilePicture'

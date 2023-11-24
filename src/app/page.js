@@ -5,9 +5,11 @@
 import axios from '../config/axios-config'
 import Link from 'next/link'
 import { useUser } from '@/hooks/useUser'
+import { useQueryClient } from '@tanstack/react-query'
 
 export default function HomePage() {
   const { user, isLoading } = useUser() // useUser 훅을 호출하여 user 정보를 가져옵니다.
+  const queryClient = useQueryClient()
 
   if (isLoading) {
     return <div></div>
@@ -17,6 +19,7 @@ export default function HomePage() {
     axios
       .post('/api/auth/logout')
       .then((response) => {
+        queryClient.removeQueries('user')
         window.location.reload()
         // 로그아웃 후 메인 페이지로 리다이렉트
       })
