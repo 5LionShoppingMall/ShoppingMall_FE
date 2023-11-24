@@ -6,7 +6,11 @@ import { Fragment, useState } from 'react'
 import ErrorMessage from '../auth-alert/ErrorMessage'
 import SignUpDialog from '../auth-alert/SignupDialog'
 import ProfilePicture from './ProfilePicture'
-import { sendEmailVerification } from '../../../api/auth'
+import {
+  sendFormData,
+  sendEmailVerification,
+  uploadImageToCloudinary,
+} from '../../../api/auth'
 
 export default function AuthForm({ authType }) {
   const title =
@@ -116,7 +120,7 @@ export default function AuthForm({ authType }) {
             <button
               onClick={handleSendEmailVerification}
               className='absolute right-3 top-1/2 transform -translate-y-1/2 px-4 py-1.5 bg-indigo-500 text-white rounded-md hover:bg-indigo-600 focus:outline-none'>
-              인증
+              확인
             </button>
           )}
         </div>
