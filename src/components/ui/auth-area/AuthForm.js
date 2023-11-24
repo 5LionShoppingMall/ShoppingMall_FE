@@ -2,13 +2,12 @@
 
 import Link from 'next/link'
 import AuthInput from './AuthInput'
-import serverAxios from '../../../config/axios-config'
-import axios from 'axios'
 import { Fragment, useState } from 'react'
 import ErrorMessage from '../auth-alert/ErrorMessage'
 import SignUpDialog from '../auth-alert/SignupDialog'
 import ProfilePicture from './ProfilePicture'
 import { sendEmailVerification } from '../../../api/auth'
+
 export default function AuthForm({ authType }) {
   const title =
     (authType === 'signin' && '로그인') || (authType === 'signup' && '회원가입')
@@ -56,21 +55,6 @@ export default function AuthForm({ authType }) {
   const loginHandler = async (e) => {
     e.preventDefault()
 
-    const sendFormData = async (url, formData, successMsg, errorMsg) => {
-      try {
-        const response = await serverAxios.post(url, formData, {
-          withCredentials: true,
-        })
-        console.log(response.data)
-        console.log(successMsg)
-        return true
-      } catch (err) {
-        console.error(`${errorMsg}: ${err}`)
-        setErrorMsg(errorMsg)
-        return false
-      }
-    }
-
     let formData = form
     delete formData.profilePictureName
 
@@ -83,7 +67,8 @@ export default function AuthForm({ authType }) {
         '/api/auth/login',
         formData,
         '로그인에 성공했습니다.',
-        '이메일과 비밀번호를 확인해주세요'
+        '이메일과 비밀번호를 확인해주세요',
+        setErrorMsg
       ).then((res) => {
         if (res) {
           window.location.href = '/'
@@ -105,32 +90,13 @@ export default function AuthForm({ authType }) {
         '/api/users/register',
         formData,
         '회원가입에 성공했습니다.',
-        '이메일과 비밀번호를 입력해주세요.'
+        '이메일과 비밀번호를 입력해주세요.',
+        setErrorMsg
       ).then((result) => {
         if (result) {
           openModal()
         }
       })
-    }
-  }
-
-  const uploadImageToCloudinary = async (file) => {
-    const formData = new FormData()
-    formData.append('file', file)
-    formData.append(
-      'upload_preset',
-      process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET
-    )
-
-    try {
-      const res = await axios.post(
-        process.env.NEXT_PUBLIC_CLOUDINARY_API_URL, // 환경변수에서 URL을 가져옵니다.
-        formData
-      )
-      return res.data.url
-    } catch (err) {
-      console.error('Failed to upload image to Cloudinary:', err)
-      return null
     }
   }
 
