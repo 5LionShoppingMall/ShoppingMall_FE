@@ -3,8 +3,10 @@
 import AvatarMenu from './AvatarMenu'
 import CategoryMenu from '../CategoryMenu'
 import Link from 'next/link'
+import { useUser } from '@/hooks/useUser'
 
 export default function DropdownMenu({ menu, setIsMenuOpen, login, setLogin }) {
+  const { user } = useUser()
   return (
     <ul
       tabIndex={0}
@@ -15,25 +17,25 @@ export default function DropdownMenu({ menu, setIsMenuOpen, login, setLogin }) {
           <div
             style={{ height: '1px' }}
             className='bg-gray-300 block my-3'></div>
-          {login ? (
+          {user ? (
             <li>
               <a>My</a>
               <ul className='p-2'>
                 <li onClick={() => setIsMenuOpen(false)}>
                   <Link href='/cart'>장바구니</Link>
                 </li>
-                <AvatarMenu setIsMenuOpen={setIsMenuOpen} setLogin={setLogin} />
+                <AvatarMenu setIsMenuOpen={setIsMenuOpen} />
               </ul>
             </li>
           ) : (
-            <button className='btn ml-2' onClick={() => setLogin(true)}>
-              로그인
-            </button>
+            <Link href='/auth/signin'>
+              <button className='btn ml-2'>로그인</button>
+            </Link>
           )}
         </>
       ) : (
         <AvatarMenu setIsMenuOpen={setIsMenuOpen} setLogin={setLogin} />
       )}
     </ul>
-  )
+  );
 }
