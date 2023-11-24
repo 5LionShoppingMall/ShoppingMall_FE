@@ -5,11 +5,10 @@ import AuthInput from './AuthInput'
 import serverAxios from '../../../config/axios-config'
 import axios from 'axios'
 import { Fragment, useState } from 'react'
-import { Dialog, Transition } from '@headlessui/react'
 import ErrorMessage from '../auth-alert/ErrorMessage'
 import SignUpDialog from '../auth-alert/SignupDialog'
 import ProfilePicture from './ProfilePicture'
-
+import { sendEmailVerification } from '../../../api/auth'
 export default function AuthForm({ authType }) {
   const title =
     (authType === 'signin' && '로그인') || (authType === 'signup' && '회원가입')
@@ -32,6 +31,11 @@ export default function AuthForm({ authType }) {
 
   const openModal = () => {
     setIsOpen(true)
+  }
+
+  const handleSendEmailVerification = async () => {
+    const message = await sendEmailVerification(form.email)
+    alert(message)
   }
 
   const handleFileChange = (e) => {
@@ -136,11 +140,18 @@ export default function AuthForm({ authType }) {
       <ErrorMessage errorMsg={errorMsg} setErrorMsg={setErrorMsg} />
       <h1 className='font-medium text-2xl mt-3 text-center'>{title}</h1>
       <form className='mt-12' onSubmit={loginHandler}>
-        <AuthInput
-          inputType='email'
-          value={form.email}
-          setValue={handleChange('email')}
-        />
+        <div className='relative'>
+          <AuthInput
+            inputType='email'
+            value={form.email}
+            setValue={handleChange('email')}
+          />
+          <button
+            onClick={handleSendEmailVerification}
+            className='absolute right-3 top-1/2 transform -translate-y-1/2 px-4 py-1.5 bg-indigo-500 text-white rounded-md hover:bg-indigo-600 focus:outline-none'>
+            인증
+          </button>
+        </div>
         <AuthInput
           inputType='password'
           value={form.password}
