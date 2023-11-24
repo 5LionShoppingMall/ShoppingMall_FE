@@ -146,11 +146,13 @@ export default function AuthForm({ authType }) {
             value={form.email}
             setValue={handleChange('email')}
           />
-          <button
-            onClick={handleSendEmailVerification}
-            className='absolute right-3 top-1/2 transform -translate-y-1/2 px-4 py-1.5 bg-indigo-500 text-white rounded-md hover:bg-indigo-600 focus:outline-none'>
-            인증
-          </button>
+          {authType === 'signup' && (
+            <button
+              onClick={handleSendEmailVerification}
+              className='absolute right-3 top-1/2 transform -translate-y-1/2 px-4 py-1.5 bg-indigo-500 text-white rounded-md hover:bg-indigo-600 focus:outline-none'>
+              인증
+            </button>
+          )}
         </div>
         <AuthInput
           inputType='password'
