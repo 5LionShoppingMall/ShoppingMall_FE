@@ -1,6 +1,5 @@
-/** @format */
-
 import { authInputType } from '@/constants/auth'
+import { useEffect } from 'react'
 
 export default function AuthInput({
   inputType,
@@ -14,6 +13,27 @@ export default function AuthInput({
 
   const handleChange = (event) => {
     setValue(event.target.value)
+  }
+
+  useEffect(() => {
+    const script = document.createElement('script')
+    script.src =
+      'https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js'
+    script.async = true
+    document.body.appendChild(script)
+  }, [])
+
+  const handleSearchAddress = (event) => {
+    event.preventDefault()
+    if (window.daum && window.daum.Postcode) {
+      new window.daum.Postcode({
+        oncomplete: function (data) {
+          setValue(data.address)
+        },
+      }).open()
+    } else {
+      alert('주소 검색 서비스를 불러오는 중입니다. 잠시 후 다시 시도해 주세요.')
+    }
   }
 
   return (
@@ -38,6 +58,13 @@ export default function AuthInput({
             onClick={handleSendEmailVerification}
             className='px-4 py-1.5 bg-indigo-500 text-white rounded-md hover:bg-indigo-600 focus:outline-none'>
             확인
+          </button>
+        )}
+        {inputType === 'address' && (
+          <button
+            onClick={handleSearchAddress}
+            className='px-4 py-1.5 bg-indigo-500 text-white rounded-md hover:bg-indigo-600 focus:outline-none'>
+            검색
           </button>
         )}
       </div>

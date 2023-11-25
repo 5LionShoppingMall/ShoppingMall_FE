@@ -71,12 +71,14 @@ export default function AuthForm({ authType }) {
     setIsOpen(true)
   }
 
-  const handleSendEmailVerification = async () => {
+  const handleSendEmailVerification = async (event) => {
+    event.preventDefault()
     const message = await sendEmailVerification(form.email)
     alert(message)
   }
 
   const handleFileChange = (e) => {
+    e.preventDefault()
     setForm((prev) => ({
       ...prev,
       profilePictureUrl: e.target.files[0],
@@ -158,6 +160,7 @@ export default function AuthForm({ authType }) {
   return (
     <>
       {/* 로그인 실패시 에러 메시지 표시 */}
+
       <ErrorMessage errorMsg={errorMsg} setErrorMsg={setErrorMsg} />
       <h1 className='font-medium text-2xl mt-3 text-center'>{title}</h1>
       <form className='mt-12' onSubmit={loginHandler}>
@@ -172,7 +175,9 @@ export default function AuthForm({ authType }) {
           />
           <div className='mt-2 ml-2'>
             {touched.email && emailError && (
-              <div className='text-red-400'>{emailError}</div>
+              <div className='text-red-400 mt-2 ml-2 font-semibold font-sans'>
+                {emailError}
+              </div>
             )}
           </div>
         </div>
@@ -183,7 +188,9 @@ export default function AuthForm({ authType }) {
           onBlur={handleBlur('password')} // onBlur 추가
         />
         {touched.password && passwordError && (
-          <div className='text-red-400 mt-2 ml-2'>{passwordError}</div>
+          <div className='text-red-400 mt-2 ml-2 font-semibold font-sans'>
+            {passwordError}
+          </div>
         )}
         {authType === 'signin' ? (
           <div className='flex justify-end mt-2 mb-8 text-sm sm:text-xs text-gray-600'>
@@ -198,7 +205,9 @@ export default function AuthForm({ authType }) {
               onBlur={handleBlur('phoneNumber')} // onBlur 추가
             />
             {touched.phoneNumber && phoneNumberError && (
-              <div className='text-red-400 mt-2 ml-2'>{phoneNumberError}</div>
+              <div className='text-red-400 mt-2 ml-2 font-semibold font-sans'>
+                {phoneNumberError}
+              </div>
             )}
             <AuthInput
               inputType='address'
@@ -207,7 +216,9 @@ export default function AuthForm({ authType }) {
               onBlur={handleBlur('address')} // onBlur 추가
             />
             {touched.address && addressError && (
-              <div className='text-red-400 mt-2 ml-2'>{addressError}</div>
+              <div className='text-red-400 mt-2 ml-2 font-semibold font-sans'>
+                {addressError}
+              </div>
             )}
             <ProfilePicture handleFileChange={handleFileChange} form={form} />
           </>
