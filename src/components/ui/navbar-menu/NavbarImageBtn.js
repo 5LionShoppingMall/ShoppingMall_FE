@@ -1,5 +1,3 @@
-/** @format */
-
 import { useUser } from '@/hooks/useUser'
 import Image from 'next/image'
 

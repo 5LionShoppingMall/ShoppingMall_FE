@@ -1,5 +1,3 @@
-/** @format */
-
 import serverAxios from '../config/axios-config'
 import axios from 'axios'
 

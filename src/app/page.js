@@ -4,16 +4,10 @@
 
 import axios from '../config/axios-config'
 import Link from 'next/link'
-import { useUser } from '@/hooks/useUser'
 import { useQueryClient } from '@tanstack/react-query'
 
 export default function HomePage() {
-  const { user, isLoading } = useUser() // useUser 훅을 호출하여 user 정보를 가져옵니다.
   const queryClient = useQueryClient()
-
-  if (isLoading) {
-    return <div></div>
-  } // 아직 유저 정보를 불러오는 중이면 빈 페이지를 보여줍니다.
 
   const logout = () => {
     axios
@@ -38,23 +32,6 @@ export default function HomePage() {
         <Link href='/community' className='btn lg:w-32'>
           커뮤니티
         </Link>
-
-        {user ? (
-          // user가 존재하면 로그아웃 버튼을 보여줍니다.
-          <Link href='/' onClick={logout} className='btn lg:w-32'>
-            로그아웃
-          </Link>
-        ) : (
-          // user가 존재하지 않으면 로그인과 회원가입 버튼을 보여줍니다.
-          <>
-            <Link href='/auth/signin' className='btn lg:w-32'>
-              로그인
-            </Link>
-            <Link href='/auth/signup' className='btn lg:w-32'>
-              회원가입
-            </Link>
-          </>
-        )}
       </div>
     </section>
   )

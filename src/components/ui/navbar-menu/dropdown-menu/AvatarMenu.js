@@ -1,5 +1,3 @@
-/** @format */
-
 import Link from 'next/link'
 import { navAvatarMenus } from '@/constants/navbar'
 import axios from '../../../../config/axios-config'
@@ -33,5 +31,5 @@ export default function AvatarMenu({ setIsMenuOpen, setLogin }) {
         </Link>
       </li>
     </>
-  );
+  )
 }
