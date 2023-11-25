@@ -107,6 +107,7 @@ export default function AuthForm({ authType }) {
       sendFormData(
         '/api/auth/login',
         formData,
+        'signin',
         '로그인에 성공했습니다.',
         '이메일과 비밀번호를 확인해주세요',
         setErrorMsg
@@ -146,6 +147,7 @@ export default function AuthForm({ authType }) {
       sendFormData(
         '/api/users/register',
         formData,
+        'signup',
         '회원가입에 성공했습니다.',
         '이메일과 비밀번호를 입력해주세요.',
         setErrorMsg

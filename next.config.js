@@ -2,7 +2,11 @@
 
 const nextConfig = {
   images: {
-    domains: ['play-lh.googleusercontent.com'],
+    domains: [
+      'play-lh.googleusercontent.com',
+      'mblogthumb-phinf.pstatic.net',
+      'res.cloudinary.com',
+    ],
   },
 }
 

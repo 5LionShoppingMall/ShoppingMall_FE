@@ -16,6 +16,7 @@ export const sendEmailVerification = async (email) => {
 export const sendFormData = async (
   url,
   formData,
+  type,
   successMsg,
   errorMsg,
   setErrorMsg
@@ -29,7 +30,19 @@ export const sendFormData = async (
     return true
   } catch (err) {
     console.error(`${errorMsg}: ${err}`)
-    setErrorMsg(errorMsg)
+    if (err.response && type == 'signin') {
+      switch (err.response.status) {
+        case 401: // Unauthorized
+        case 404: // Not Found
+          setErrorMsg('이메일과 비밀번호를 확인해주세요')
+          break
+        case 403: // Forbidden
+          setErrorMsg('이메일 인증을 해주세요')
+          break
+        default:
+          break
+      }
+    }
     return false
   }
 }
