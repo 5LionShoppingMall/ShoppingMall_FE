@@ -35,7 +35,7 @@ export const navIconType = {
     link: '/search',
   },
   cart: {
-    icon: <FiShoppingCart size={23} />,
+    icon: <FiShoppingCart size={25} />,
     link: '/products/cart',
   },
 };
