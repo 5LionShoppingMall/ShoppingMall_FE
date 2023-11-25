@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { navAvatarMenus } from '@/constants/navbar';
 import Signout from '@/components/auth/Signout';
 
-export default function AvatarMenu({ setIsMenuOpen, setLogin }) {
+export default function AvatarMenu({ setIsMenuOpen }) {
   return (
     <>
       {/* {navAvatarMenus.map((menu) => (
