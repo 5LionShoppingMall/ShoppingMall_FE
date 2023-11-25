@@ -3,13 +3,13 @@ import axios from 'axios'
 
 export const sendEmailVerification = async (email) => {
   try {
-    const response = await serverAxios.post('/api/auth/sendVerificationEmail', {
+    const response = await serverAxios.post('/api/auth/email-exists', {
       email,
     })
-    return response.data.message
+    return '가입 가능한 이메일입니다'
   } catch (err) {
     console.error(err)
-    return 'Verification email could not be sent'
+    return '이미 가입된 계정입니다'
   }
 }
 
