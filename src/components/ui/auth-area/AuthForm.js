@@ -11,10 +11,28 @@ import {
   sendEmailVerification,
   uploadImageToCloudinary,
 } from '../../../api/auth'
+import FieldError from '../auth-alert/FieldError'
+import {
+  isValidEmail,
+  isValidPassword,
+  isValidPhoneNumber,
+  isValidAddress,
+} from '@/utils/validation'
 
 export default function AuthForm({ authType }) {
   const title =
     (authType === 'signin' && '로그인') || (authType === 'signup' && '회원가입')
+
+  const [touched, setTouched] = useState({
+    email: false,
+    password: false,
+    phoneNumber: false,
+    address: false,
+  })
+
+  const handleBlur = (field) => () => {
+    setTouched((old) => ({ ...old, [field]: true }))
+  }
 
   const [form, setForm] = useState({
     email: '',
@@ -24,6 +42,23 @@ export default function AuthForm({ authType }) {
     profilePictureUrl: null, // 프로필 사진 상태 추가
     profilePictureName: '', // 추가: 프로필 사진 파일 이름 상태
   })
+
+  const emailError =
+    authType === 'signup'
+      ? FieldError('이메일', form.email, isValidEmail)
+      : null
+  const passwordError =
+    authType == 'signup'
+      ? FieldError('비밀번호', form.password, isValidPassword)
+      : null
+  const phoneNumberError =
+    authType === 'signup'
+      ? FieldError('휴대전화', form.phoneNumber, isValidPhoneNumber)
+      : null
+  const addressError =
+    authType === 'signup'
+      ? FieldError('주소', form.address, isValidAddress)
+      : null
 
   const [isOpen, setIsOpen] = useState(false)
   const [errorMsg, setErrorMsg] = useState(null)
@@ -79,6 +114,22 @@ export default function AuthForm({ authType }) {
         }
       })
     } else if (authType === 'signup') {
+      if (emailError) {
+        setErrorMsg('이메일을 확인해주세요.')
+        return
+      }
+      if (passwordError) {
+        setErrorMsg('비밀번호를 확인해주세요.')
+        return
+      }
+      if (phoneNumberError) {
+        setErrorMsg('휴대전화 번호를 확인해주세요.')
+        return
+      }
+      if (addressError) {
+        setErrorMsg('주소를 확인해주세요.')
+        return
+      }
       if (formData.profilePictureUrl) {
         const imageUrl = await uploadImageToCloudinary(
           formData.profilePictureUrl
@@ -115,20 +166,25 @@ export default function AuthForm({ authType }) {
             inputType='email'
             value={form.email}
             setValue={handleChange('email')}
+            onBlur={handleBlur('email')} // onBlur 추가
+            handleSendEmailVerification={handleSendEmailVerification} // 함수를 prop으로 전달
+            authType={authType}
           />
-          {authType === 'signup' && (
-            <button
-              onClick={handleSendEmailVerification}
-              className='absolute right-3 top-1/2 transform -translate-y-1/2 px-4 py-1.5 bg-indigo-500 text-white rounded-md hover:bg-indigo-600 focus:outline-none'>
-              확인
-            </button>
-          )}
+          <div className='mt-2 ml-2'>
+            {touched.email && emailError && (
+              <div className='text-red-400'>{emailError}</div>
+            )}
+          </div>
         </div>
         <AuthInput
           inputType='password'
           value={form.password}
           setValue={handleChange('password')}
+          onBlur={handleBlur('password')} // onBlur 추가
         />
+        {touched.password && passwordError && (
+          <div className='text-red-400 mt-2 ml-2'>{passwordError}</div>
+        )}
         {authType === 'signin' ? (
           <div className='flex justify-end mt-2 mb-8 text-sm sm:text-xs text-gray-600'>
             <Link href='#'>비밀번호를 잊으셨나요?</Link>
@@ -139,12 +195,20 @@ export default function AuthForm({ authType }) {
               inputType='phone'
               value={form.phoneNumber}
               setValue={handleChange('phoneNumber')}
+              onBlur={handleBlur('phoneNumber')} // onBlur 추가
             />
+            {touched.phoneNumber && phoneNumberError && (
+              <div className='text-red-400 mt-2 ml-2'>{phoneNumberError}</div>
+            )}
             <AuthInput
               inputType='address'
               value={form.address}
               setValue={handleChange('address')}
+              onBlur={handleBlur('address')} // onBlur 추가
             />
+            {touched.address && addressError && (
+              <div className='text-red-400 mt-2 ml-2'>{addressError}</div>
+            )}
             <ProfilePicture handleFileChange={handleFileChange} form={form} />
           </>
         )}
