@@ -11,6 +11,11 @@ export const authInputType = {
     type: 'password',
     placeholder: '비밀번호를 입력해 주세요.',
   },
+  passwordConfirm: {
+    title: '비밀번호 확인',
+    type: 'passwordConfirm',
+    placeholder: '비밀번호를 다시 한번 입력해 주세요.',
+  },
   phone: {
     title: '휴대전화',
     type: 'tel',
