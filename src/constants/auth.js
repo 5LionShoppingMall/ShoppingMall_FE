@@ -13,7 +13,7 @@ export const authInputType = {
   },
   passwordConfirm: {
     title: '비밀번호 확인',
-    type: 'passwordConfirm',
+    type: 'password',
     placeholder: '비밀번호를 다시 한번 입력해 주세요.',
   },
   phone: {

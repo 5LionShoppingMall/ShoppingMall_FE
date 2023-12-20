@@ -34,10 +34,10 @@ export const sendFormData = async (
       switch (err.response.status) {
         case 401: // Unauthorized
         case 404: // Not Found
-          setErrorMsg('이메일과 비밀번호를 확인해주세요')
+          alert('이메일 또는 비밀번호가 일치하지 않습니다')
           break
         case 403: // Forbidden
-          setErrorMsg('이메일 인증을 해주세요')
+          alert('이메일 인증이 완료되지 않았습니다')
           break
         default:
           break
