@@ -1,9 +1,9 @@
 /** @format */
 
-import '../styles/globals.css';
-import Navbar from '@/components/Navbar';
-import axios from '../config/axios-config';
-import TanstackProvider from '@/context/TanstackProvider';
+import '../styles/globals.css'
+import Navbar from '@/components/Navbar'
+import axios from '../config/axios-config'
+import TanstackProvider from '@/context/TanstackProvider'
 
 export const metadata = {
   title: {
@@ -11,7 +11,7 @@ export const metadata = {
     template: '# | %s',
   },
   description: 'home',
-};
+}
 
 export default function RootLayout({ children }) {
   /* const res = await axios.get('/check');
@@ -30,5 +30,5 @@ export default function RootLayout({ children }) {
         </TanstackProvider>
       </body>
     </html>
-  );
+  )
 }

@@ -36,16 +36,22 @@ export default function Navbar() {
               className='input input-bordered lg:w-96'
             />
           </div>
-
-          {user ? (
+          {isLoading ? (
+            <p></p>
+          ) : user ? (
             <>
               <NavbarIconBtn menu='cart' />
               <Dropdown menu='avatar' />
             </>
           ) : (
-            <Link href='/auth/signin'>
-              <button className='btn ml-2'>로그인</button>
-            </Link>
+            <>
+              <Link href='/auth/signin'>
+                <button className='btn ml-2'>로그인</button>
+              </Link>
+              <Link href='/auth/signup'>
+                <button className='btn ml-2'>회원가입</button>
+              </Link>
+            </>
           )}
         </div>
         {/* {!login && (
