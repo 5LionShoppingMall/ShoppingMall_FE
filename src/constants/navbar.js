@@ -1,3 +1,6 @@
+import CartIcon from '@/components/ui/icon/CartIcon';
+import SaleIcon from '@/components/ui/icon/SaleIcon';
+import SearchSvgIcon from '@/components/ui/icon/SearchSvgIcon';
 import { FiSearch } from 'react-icons/fi';
 import { FiMenu } from 'react-icons/fi';
 import { FiShoppingCart } from 'react-icons/fi';
@@ -31,12 +34,18 @@ export const navIconType = {
     link: '',
   },
   search: {
-    icon: <FiSearch size={20} />,
+    //icon: <FiSearch size={20} />,
+    icon: <SearchSvgIcon />,
     link: '/search',
   },
   cart: {
-    icon: <FiShoppingCart size={25} />,
+    //icon: <FiShoppingCart size={25} />,
+    icon: <CartIcon />,
     link: '/products/cart',
+  },
+  write: {
+    icon: <SaleIcon />,
+    link: '/products/write',
   },
 };
 

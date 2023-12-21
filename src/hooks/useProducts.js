@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { apiAxios } from '@/config/axios-config';
 
 // fetch ver
@@ -17,24 +17,27 @@ import { apiAxios } from '@/config/axios-config';
 }; */
 
 // axios ver
-const fetchProducts = async () => {
-  const {
-    data: { listData },
-  } = await apiAxios.get('http://localhost:3000/api/products');
+const fetchProducts = async (page, size) => {
+  const { data } = await apiAxios.get(`/products?page=${page}&size=${size}`);
 
-  return listData;
+  console.log('fetchProducts');
+  console.log(data);
+
+  return data;
 };
 
-export default function useProducts() {
+export default function useProducts(page, size) {
   const {
     data: products,
     isLoading,
     isError,
     error,
+    isPlaceholderData,
   } = useQuery({
-    queryKey: ['products'],
-    queryFn: fetchProducts,
+    queryKey: ['products', page, size],
+    queryFn: () => fetchProducts(page, size),
+    placeholderData: keepPreviousData,
   });
 
-  return { products, isLoading, isError, error };
+  return { products, isLoading, isError, error, isPlaceholderData };
 }

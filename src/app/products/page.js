@@ -32,5 +32,9 @@ export default async function ProductsPage() {
     .then((res) => res.listData);
   console.log(products); */
 
-  return <ProductMain />;
+  return (
+    <section className='max-w-screen-lg mx-auto h-full'>
+      <ProductMain />
+    </section>
+  );
 }

@@ -14,7 +14,7 @@ export default function Main() {
   } // 아직 유저 정보를 불러오는 중이면 빈 페이지를 보여줍니다.
 
   return (
-    <section className='flex flex-col justify-center items-center max-w-[850px] mx-auto mt-10'>
+    <section className='flex flex-col justify-center items-center max-w-[850px] mx-auto p-10'>
       <h1 className='flex items-center basis-1/12'>메인페이지</h1>
       <div className='max-w-[500px] w-full flex flex-col justify-center gap-10 mt-10 lg:flex-row lg:gap-32 basis-11/12 '>
         <Link href='/products' className='btn lg:w-32'>

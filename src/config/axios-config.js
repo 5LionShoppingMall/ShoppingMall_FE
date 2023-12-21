@@ -9,7 +9,7 @@ const instance = axios.create({
 });
 
 export const apiAxios = axios.create({
-  baseURL: 'http://localhost:3000/api/products',
+  baseURL: process.env.NEXT_PUBLIC_CLIENT_URL,
   withCredentials: true,
   Headers: {
     'Content-Type': 'application/json',
