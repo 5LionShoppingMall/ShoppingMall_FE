@@ -26,6 +26,7 @@ export default function AuthForm({ authType }) {
     email: null,
     password: null,
     passwordConfirm: null,
+    nickname: null,
     phoneNumber: null,
     address: null,
   })
@@ -33,6 +34,7 @@ export default function AuthForm({ authType }) {
   const [form, setForm] = useState({
     email: '',
     password: '',
+    nickname: '',
     phoneNumber: '',
     address: '',
     profilePictureUrl: null, // 프로필 사진 상태 추가
@@ -87,6 +89,8 @@ export default function AuthForm({ authType }) {
           : '유효한 전화번호를 입력해주세요.'
       case 'address':
         return value ? null : '주소를 입력해주세요.'
+      case 'nickname':
+        return value ? null : '닉네임을 입력해주세요.'
       default:
         return null
     }
@@ -193,6 +197,19 @@ export default function AuthForm({ authType }) {
                 {errors.passwordConfirm}
               </div>
             )}
+
+            <AuthInput
+              inputType='nickname'
+              value={form.nickname}
+              setValue={handleChange('nickname')}
+            />
+            {
+              <div className='text-red-400 mt-2 ml-2 font-semibold font-sans'>
+                {authType === 'signup' && errors.nickname && (
+                  <p className='error-text'>{errors.nickname}</p>
+                )}
+              </div>
+            }
             <AuthInput
               inputType='phone'
               value={form.phoneNumber}

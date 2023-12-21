@@ -1,27 +1,6 @@
-/** @format */
-
-'use client'
-
-import axios from '../config/axios-config'
 import Link from 'next/link'
-import { useQueryClient } from '@tanstack/react-query'
 
 export default function HomePage() {
-  const queryClient = useQueryClient()
-
-  const logout = () => {
-    axios
-      .post('/api/auth/logout')
-      .then((response) => {
-        queryClient.removeQueries('user')
-        window.location.reload()
-        // 로그아웃 후 메인 페이지로 리다이렉트
-      })
-      .catch((error) => {
-        console.error(error)
-      })
-  }
-
   return (
     <section className='flex flex-col justify-center items-center max-w-[850px] mx-auto mt-10'>
       <h1 className='flex items-center basis-1/12'>메인페이지</h1>

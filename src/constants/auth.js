@@ -16,6 +16,11 @@ export const authInputType = {
     type: 'password',
     placeholder: '비밀번호를 다시 한번 입력해 주세요.',
   },
+  nickname: {
+    title: '닉네임',
+    type: 'nickname',
+    placeholder: '닉네임을 입력해 주세요.',
+  },
   phone: {
     title: '휴대전화',
     type: 'tel',

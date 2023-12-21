@@ -1,11 +1,11 @@
-import { FiSearch } from 'react-icons/fi';
-import { FiMenu } from 'react-icons/fi';
-import { FiShoppingCart } from 'react-icons/fi';
+import { FiSearch } from 'react-icons/fi'
+import { FiMenu } from 'react-icons/fi'
+import { FiShoppingCart } from 'react-icons/fi'
 
 export const navMenuType = {
   dropdown: { btnClass: 'lg:hidden' },
   avatar: { btnClass: 'avatar' },
-};
+}
 
 export const navSvgType = {
   dropdown: {
@@ -23,7 +23,7 @@ export const navSvgType = {
     path: 'M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z',
     link: '/products/cart',
   },
-};
+}
 
 export const navIconType = {
   dropdown: {
@@ -38,12 +38,13 @@ export const navIconType = {
     icon: <FiShoppingCart size={23} />,
     link: '/products/cart',
   },
-};
+}
 
 export const navDefaultMenus = [
   { id: 1, title: '상품', link: '/products' },
   { id: 2, title: '커뮤니티', link: '/community' },
-];
+  { id: 3, title: '채팅', link: '/chat' },
+]
 
 export const navAvatarMenus = [
   {
@@ -56,4 +57,4 @@ export const navAvatarMenus = [
     title: '로그아웃',
     link: '',
   },
-];
+]
