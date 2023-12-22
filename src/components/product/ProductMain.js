@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import { useSearchParams } from 'next/navigation';
-import useProducts from '@/hooks/useProducts';
+import { useProducts } from '@/hooks/useProducts';
 import Pagination from '../ui/Pagination';
 import { useState } from 'react';
 

@@ -4,10 +4,21 @@ import { useRef, useState } from 'react';
 import CameraIcon from '../ui/icon/CameraIcon';
 import Image from 'next/image';
 import CloseIcon from '../ui/icon/CloseIcon';
+import { useWriteProduct } from '@/hooks/useProducts';
+
+const productInfoInit = {
+  title: '',
+  price: 0,
+  description: '',
+  seller: null,
+};
 
 export default function ProductWrite() {
   const fileInputRef = useRef();
   const [selectedImages, setSelectedImages] = useState([]);
+  const [productInfo, setProductInfo] = useState(productInfoInit);
+  //const [formData, setFormData] = useState(null);
+  const { submitWrite, isPending, isError, error } = useWriteProduct();
 
   const openFilePicker = (e) => {
     e.preventDefault();
@@ -111,8 +122,43 @@ export default function ProductWrite() {
     });
   };
 
+  const onChangeHandler = (e) => {
+    setProductInfo({
+      ...productInfo,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const wirteSubmitHandler = (e) => {
+    e.preventDefault();
+
+    const formData = new FormData();
+
+    formData.append(
+      'productInfo',
+      new Blob([JSON.stringify(productInfo)], { type: 'application/json' })
+    );
+    //formData.append('productInfo', productInfo);
+
+    selectedImages.forEach((image, index) => {
+      formData.append('files', image.file);
+    });
+
+    /* console.log('formData');
+    for (let [key, value] of formData.entries()) {
+      console.log(key, value);
+    } */
+
+    //setFormData(data);
+
+    submitWrite(formData);
+  };
+
   return (
-    <form className='flex flex-col items-center sm:w-2/3 mx-auto p-10 gap-5 h-full'>
+    <form
+      className='flex flex-col items-center sm:w-2/3 mx-auto p-10 gap-5 h-full'
+      onSubmit={wirteSubmitHandler}
+    >
       <div className='flex gap-4 justify-start w-full items-center'>
         <div className='w-fit'>
           <input
@@ -160,19 +206,27 @@ export default function ProductWrite() {
       </div>
       <div className='w-full h-fit bg-white flex justify-center items-center'>
         <textarea
+          name='title'
           className='w-full resize-none focus:outline-none text-sm p-3 border rounded-md'
           placeholder='상품명'
           rows={1}
+          onChange={onChangeHandler}
         ></textarea>
       </div>
       <div className='w-full h-fit bg-white'>
         <input
+          name='price'
           className='w-full text-sm focus:outline-none p-3 border rounded-md'
           placeholder='판매가격'
+          onChange={onChangeHandler}
         />
       </div>
       <div className='w-full h-full'>
-        <textarea className='resize-none w-full h-full text-sm p-3 focus:outline-none border rounded-md'></textarea>
+        <textarea
+          name='description'
+          className='resize-none w-full h-full text-sm p-3 focus:outline-none border rounded-md'
+          onChange={onChangeHandler}
+        ></textarea>
       </div>
       <div className='w-full flex justify-end items-center'>
         <button className='btn'>등록하기</button>
