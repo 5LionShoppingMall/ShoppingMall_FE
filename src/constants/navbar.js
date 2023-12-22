@@ -1,15 +1,9 @@
-<<<<<<< HEAD
+import CartIcon from '@/components/ui/icon/CartIcon'
+import SaleIcon from '@/components/ui/icon/SaleIcon'
+import SearchSvgIcon from '@/components/ui/icon/SearchSvgIcon'
 import { FiSearch } from 'react-icons/fi'
 import { FiMenu } from 'react-icons/fi'
 import { FiShoppingCart } from 'react-icons/fi'
-=======
-import CartIcon from '@/components/ui/icon/CartIcon';
-import SaleIcon from '@/components/ui/icon/SaleIcon';
-import SearchSvgIcon from '@/components/ui/icon/SearchSvgIcon';
-import { FiSearch } from 'react-icons/fi';
-import { FiMenu } from 'react-icons/fi';
-import { FiShoppingCart } from 'react-icons/fi';
->>>>>>> dc5ecc4d845ec4cabe0fcd02d832de93c6222c14
 
 export const navMenuType = {
   dropdown: { btnClass: 'lg:hidden' },
@@ -53,7 +47,7 @@ export const navIconType = {
     icon: <SaleIcon />,
     link: '/products/write',
   },
-};
+}
 
 export const navDefaultMenus = [
   { id: 1, title: '상품', link: '/products' },

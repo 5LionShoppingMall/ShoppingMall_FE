@@ -1,37 +1,15 @@
 /** @format */
 
-<<<<<<< HEAD
 import Link from 'next/link'
 import AuthInput from './AuthInput'
 import { useState } from 'react'
-import { toast, ToastContainer } from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.css'
+import { ToastContainer } from 'react-toastify'
 import ProfilePicture from './ProfilePicture'
-=======
-import Link from 'next/link';
-import AuthInput from './AuthInput';
-import { useState } from 'react';
-import ErrorMessage from '../auth-alert/ErrorMessage';
-import SignUpDialog from '../auth-alert/SignupDialog';
-import ProfilePicture from './ProfilePicture';
->>>>>>> dc5ecc4d845ec4cabe0fcd02d832de93c6222c14
 import {
   sendFormData,
   sendEmailVerification,
   uploadImageToCloudinary,
-<<<<<<< HEAD
 } from '../../../api/auth'
-import {
-  EMAIL_REGEX,
-  PASSWORD_REGEX,
-  PHONE_NUMBER_REGEX,
-} from '../../../constants/regex'
-import validateForm from '@/util/validateForm'
-import { FiCheck } from 'react-icons/fi'
-import axios from '../../../config/axios-config'
-=======
-} from '../../../api/auth';
->>>>>>> dc5ecc4d845ec4cabe0fcd02d832de93c6222c14
 
 export default function AuthForm({ authType }) {
   const title =
@@ -54,31 +32,31 @@ export default function AuthForm({ authType }) {
     address: '',
     profilePictureUrl: null, // 프로필 사진 상태 추가
     profilePictureName: '', // 추가: 프로필 사진 파일 이름 상태
-  });
+  })
 
-  const [isOpen, setIsOpen] = useState(false);
-  const [errorMsg, setErrorMsg] = useState(null);
+  const [isOpen, setIsOpen] = useState(false)
+  const [errorMsg, setErrorMsg] = useState(null)
 
   const closeModal = () => {
-    setIsOpen(false);
-  };
+    setIsOpen(false)
+  }
 
   const openModal = () => {
-    setIsOpen(true);
-  };
+    setIsOpen(true)
+  }
 
   const handleSendEmailVerification = async () => {
-    const message = await sendEmailVerification(form.email);
-    alert(message);
-  };
+    const message = await sendEmailVerification(form.email)
+    alert(message)
+  }
 
   const handleFileChange = (e) => {
     setForm((prev) => ({
       ...prev,
       profilePictureUrl: e.target.files[0],
       profilePictureName: e.target.files[0] ? e.target.files[0].name : '', // 추가: 파일 이름 저장
-    }));
-  }; // 프로필 사진 변경을 위한 메서드
+    }))
+  } // 프로필 사진 변경을 위한 메서드
 
   const handleChange = (name) => (value) => {
     if (name === 'nickname') {
@@ -131,24 +109,14 @@ export default function AuthForm({ authType }) {
   const loginHandler = async (e) => {
     e.preventDefault()
 
-<<<<<<< HEAD
     let formData = form
     delete formData.profilePictureName
-
-    if (authType === 'signin') {
-      await handleSignIn(formData)
-    } else if (authType === 'signup') {
-      if (!validateForm(form, 'signup')) {
-        return
-=======
-    let formData = form;
-    delete formData.profilePictureName;
 
     if (authType === 'signin') {
       formData = {
         email: form.email,
         password: form.password,
-      };
+      }
       sendFormData(
         '/api/auth/login',
         formData,
@@ -157,22 +125,21 @@ export default function AuthForm({ authType }) {
         setErrorMsg
       ).then((res) => {
         if (res) {
-          window.location.href = '/';
+          window.location.href = '/'
         }
-      });
+      })
     } else if (authType === 'signup') {
-      console.log(formData);
+      console.log(formData)
       if (formData.profilePictureUrl) {
         const imageUrl = await uploadImageToCloudinary(
           formData.profilePictureUrl
-        );
+        )
         if (imageUrl) {
           formData = {
             ...formData,
             profilePictureUrl: imageUrl,
-          };
+          }
         }
->>>>>>> dc5ecc4d845ec4cabe0fcd02d832de93c6222c14
       }
       await handleSignUp(formData)
     }
@@ -225,26 +192,13 @@ export default function AuthForm({ authType }) {
             isEmailUnique={isEmailUnique}
             authType={authType}
           />
-<<<<<<< HEAD
-          <div className='mt-2 ml-2'>
-            {
-              <div className='text-red-400 mt-2 ml-2 font-semibold font-sans'>
-                {authType === 'signup' && errors.email && (
-                  <p className='error-text'>{errors.email}</p>
-                )}
-              </div>
-            }
-          </div>
-=======
           {authType === 'signup' && (
             <button
               onClick={handleSendEmailVerification}
-              className='absolute right-3 top-1/2 transform -translate-y-1/2 px-4 py-1.5 bg-indigo-500 text-white rounded-md hover:bg-indigo-600 focus:outline-none'
-            >
+              className='absolute right-3 top-1/2 transform -translate-y-1/2 px-4 py-1.5 bg-indigo-500 text-white rounded-md hover:bg-indigo-600 focus:outline-none'>
               확인
             </button>
           )}
->>>>>>> dc5ecc4d845ec4cabe0fcd02d832de93c6222c14
         </div>
         <AuthInput
           inputType='password'
