@@ -9,6 +9,10 @@ import { useRouter } from 'next/navigation'
 export default function Profile() {
   const { user, isLoading, isError } = useUser()
 
+  const defaultImageUrl =
+    'https://mblogthumb-phinf.pstatic.net/MjAyMDExMDFfMTgy/MDAxNjA0MjI4ODc1NDMw.Ex906Mv9nnPEZGCh4SREknadZvzMO8LyDzGOHMKPdwAg.ZAmE6pU5lhEdeOUsPdxg8-gOuZrq_ipJ5VhqaViubI4g.JPEG.gambasg/%EC%9C%A0%ED%8A%9C%EB%B8%8C_%EA%B8%B0%EB%B3%B8%ED%94%84%EB%A1%9C%ED%95%84_%ED%95%98%EB%8A%98%EC%83%89.jpg?type=w800' // 기본 이미지 URL을 설정합니다.
+  const imageUrl = user?.profileImageUrl || defaultImageUrl // 사용자의 프로필 이미지가 없을 경우 기본 이미지를 사용합니다.
+
   const router = useRouter()
 
   if (isLoading) return <div></div>
@@ -25,7 +29,7 @@ export default function Profile() {
         <h3 className='font-bold text-lg mb-4 text-center'>유저 정보</h3>
         <div className='flex flex-col items-center'>
           <Image
-            src={user.profileImageUrl}
+            src={imageUrl}
             alt='Profile'
             width={128}
             height={128}

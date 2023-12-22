@@ -12,6 +12,10 @@ export default function validateForm(form, type) {
       toast.error('이메일을 입력해주세요.')
       return false
     }
+    if (!EMAIL_REGEX.test(form.email)) {
+      toast.error('유효하지 않은 이메일 형식입니다.')
+      return false
+    }
   }
 
   if (!form.nickname) {
@@ -21,11 +25,6 @@ export default function validateForm(form, type) {
 
   if (!form.password) {
     toast.error('비밀번호를 입력해주세요.')
-    return false
-  }
-
-  if (!EMAIL_REGEX.test(form.email)) {
-    toast.error('유효하지 않은 이메일 형식입니다.')
     return false
   }
 

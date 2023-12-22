@@ -6,10 +6,10 @@ export const sendEmailVerification = async (email) => {
     const response = await serverAxios.post('/api/auth/email-exists', {
       email,
     })
-    return '가입 가능한 이메일입니다'
+    return true
   } catch (err) {
     console.error(err)
-    return '이미 가입된 계정입니다'
+    return false
   }
 }
 

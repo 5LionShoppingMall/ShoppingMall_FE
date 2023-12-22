@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useUser } from '@/hooks/useUser'
 import ProfilePicture from './ui/auth-area/ProfilePicture'
 import {
@@ -9,12 +9,15 @@ import {
   PHONE_NUMBER_REGEX,
 } from '@/constants/regex'
 import validateForm from '@/util/validateForm'
-import { ToastContainer } from 'react-toastify'
+import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { FiCheck } from 'react-icons/fi'
 import axios from '../config/axios-config'
+import { uploadImageToCloudinary, sendFormData } from '@/api/auth'
+import { useRouter } from 'next/navigation'
 
 export default function EditProfile() {
+  const router = useRouter()
   const { user, isLoading } = useUser()
   const [isNicknameUnique, setIsNicknameUnique] = useState(false) // 닉네임 중복 상태
   const [errors, setErrors] = useState({
@@ -25,6 +28,14 @@ export default function EditProfile() {
     address: null,
   })
 
+  useEffect(() => {
+    const script = document.createElement('script')
+    script.src =
+      'https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js'
+    script.async = true
+    document.body.appendChild(script)
+  }, [])
+
   const [form, setForm] = useState({
     password: '',
     nickname: user.nickname,
@@ -33,6 +44,22 @@ export default function EditProfile() {
     profilePictureUrl: null,
     profilePictureName: '',
   })
+
+  const handleSearchAddress = (event) => {
+    event.preventDefault()
+    if (window.daum && window.daum.Postcode) {
+      new window.daum.Postcode({
+        oncomplete: function (data) {
+          setForm((prev) => ({
+            ...prev,
+            address: data.address,
+          }))
+        },
+      }).open()
+    } else {
+      alert('주소 검색 서비스를 불러오는 중입니다. 잠시 후 다시 시도해 주세요.')
+    }
+  }
 
   // 각 필드에 대한 유효성 검사 로직을 별도의 함수로 분리
   const validateField = (name, value) => {
@@ -77,23 +104,57 @@ export default function EditProfile() {
       ...prevErrors,
       [name]: error,
     }))
+
+    if (name === 'nickname') {
+      setIsNicknameUnique(false)
+    }
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
 
     if (!validateForm(form, 'edit')) {
       return
     }
 
+    if (!isNicknameUnique) {
+      toast.error('닉네임 중복 검사를 진행해주세요.')
+      return
+    }
+
     let formData = { ...form }
     delete formData.profilePictureName
+
+    if (formData.profilePictureUrl) {
+      const imageUrl = await uploadImageToCloudinary(formData.profilePictureUrl)
+      if (imageUrl) {
+        formData.profilePictureUrl = imageUrl
+      }
+    }
+    const response = await axios
+      .put('api/users/update', formData)
+      .then((res) => {
+        toast.success('회원정보가 수정되었습니다.')
+        router.push('/mypage/profile')
+      })
+      .catch((err) => console.log(err))
   }
 
-  const checkNickname = async (nickname) => {
+  const checkNickname = async () => {
     // 닉네임 중복 검사 로직 구현
     // 예: API 호출로 중복 검사 후 결과를 setIsNicknameUnique에 설정
-    // const response = axios.get(`/users/nickname/${form.nickname}`)
+    const response = axios
+      .post('api/users/nickname-exists', { nickname: form.nickname })
+      .then((res) => {
+        if (res.status === 200) {
+          toast.info('사용 가능한 닉네임입니다.')
+          setIsNicknameUnique(true)
+        }
+      })
+      .catch((err) => {
+        toast.error('이미 사용 중인 닉네임입니다.')
+        console.log(err)
+      })
   }
 
   if (isLoading) return <div></div>
@@ -217,6 +278,11 @@ export default function EditProfile() {
             onChange={handleChange}
             className='input input-bordered flex-grow'
           />
+          <button
+            onClick={handleSearchAddress} // Replace with your function name if different
+            className='btn btn-primary'>
+            검색
+          </button>
         </div>
         {
           <div className='text-red-400 mt-2 ml-32 font-semibold font-sans'>

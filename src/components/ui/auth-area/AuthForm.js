@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import AuthInput from './AuthInput'
 import { useState } from 'react'
-import { ToastContainer } from 'react-toastify'
+import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import ProfilePicture from './ProfilePicture'
 import {
@@ -17,6 +17,8 @@ import {
   PHONE_NUMBER_REGEX,
 } from '../../../constants/regex'
 import validateForm from '@/util/validateForm'
+import { FiCheck } from 'react-icons/fi'
+import axios from '../../../config/axios-config'
 
 export default function AuthForm({ authType }) {
   const title =
@@ -41,10 +43,37 @@ export default function AuthForm({ authType }) {
     profilePictureName: '', // 추가: 프로필 사진 파일 이름 상태
   })
 
-  const handleSendEmailVerification = async (e) => {
+  const [isNicknameUnique, setIsNicknameUnique] = useState(false) // 닉네임 중복 상태
+  const [isEmailUnique, setIsEmailUnique] = useState(false) // 이메일 중복 상태
+
+  const checkEmailExist = async (e) => {
     e.preventDefault()
-    const message = await sendEmailVerification(form.email)
-    alert(message)
+    const response = axios
+      .post('/api/users/email-exists', { email: form.email })
+      .then((res) => {
+        toast.error('이미 사용 중인 이메일입니다.')
+      })
+      .catch((err) => {
+        toast.info('사용 가능한 이메일입니다.')
+        setIsEmailUnique(true)
+      })
+  }
+
+  const checkNickname = async () => {
+    // 닉네임 중복 검사 로직 구현
+    // 예: API 호출로 중복 검사 후 결과를 setIsNicknameUnique에 설정
+    const response = axios
+      .post('api/users/nickname-exists', { nickname: form.nickname })
+      .then((res) => {
+        if (res.status === 200) {
+          toast.info('사용 가능한 닉네임입니다.')
+          setIsNicknameUnique(true)
+        }
+      })
+      .catch((err) => {
+        toast.error('이미 사용 중인 닉네임입니다.')
+        console.log(err)
+      })
   }
 
   const handleFileChange = (e) => {
@@ -57,6 +86,14 @@ export default function AuthForm({ authType }) {
   } // 프로필 사진 변경을 위한 메서드
 
   const handleChange = (name) => (value) => {
+    if (name === 'nickname') {
+      setIsNicknameUnique(false)
+    }
+
+    if (name === 'email') {
+      setIsEmailUnique(false)
+    }
+
     // 입력 필드 값 변경
     setForm((prev) => ({
       ...prev,
@@ -155,7 +192,8 @@ export default function AuthForm({ authType }) {
             inputType='email'
             value={form.email}
             setValue={handleChange('email')}
-            handleSendEmailVerification={handleSendEmailVerification} // 함수를 prop으로 전달
+            checkEmailExist={checkEmailExist}
+            isEmailUnique={isEmailUnique}
             authType={authType}
           />
           <div className='mt-2 ml-2'>
@@ -199,10 +237,14 @@ export default function AuthForm({ authType }) {
             )}
 
             <AuthInput
+              className='flex-grow'
               inputType='nickname'
               value={form.nickname}
               setValue={handleChange('nickname')}
+              checkNickname={checkNickname}
+              isNicknameUnique={isNicknameUnique}
             />
+
             {
               <div className='text-red-400 mt-2 ml-2 font-semibold font-sans'>
                 {authType === 'signup' && errors.nickname && (
