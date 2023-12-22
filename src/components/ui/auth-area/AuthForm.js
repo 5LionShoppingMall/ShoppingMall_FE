@@ -105,7 +105,7 @@ export default function AuthForm({ authType }) {
     if (authType === 'signin') {
       await handleSignIn(formData)
     } else if (authType === 'signup') {
-      if (!validateForm(form)) {
+      if (!validateForm(form, 'signup')) {
         return
       }
       await handleSignUp(formData)

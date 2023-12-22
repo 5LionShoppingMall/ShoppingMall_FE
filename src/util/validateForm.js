@@ -6,9 +6,21 @@ import {
   PHONE_NUMBER_REGEX,
 } from '@/constants/regex'
 
-export default function validateForm(form) {
-  if (!form.email || !form.password) {
-    toast.error('이메일과 비밀번호를 모두 입력해주세요.')
+export default function validateForm(form, type) {
+  if (type === 'signup') {
+    if (!form.email) {
+      toast.error('이메일을 입력해주세요.')
+      return false
+    }
+  }
+
+  if (!form.nickname) {
+    toast.error('닉네임을 입력해주세요.')
+    return false
+  }
+
+  if (!form.password) {
+    toast.error('비밀번호를 입력해주세요.')
     return false
   }
 
