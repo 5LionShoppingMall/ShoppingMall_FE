@@ -5,8 +5,8 @@ export default function NavbarIconBtn({ menu }) {
   const type = navIconType[menu];
 
   return (
-    <Link href={type.link}>
-      <label className='btn btn-ghost btn-circle'>{type.icon}</label>
+    <Link href={type.link} className='btn btn-ghost btn-circle'>
+      {type.icon}
     </Link>
   );
 }

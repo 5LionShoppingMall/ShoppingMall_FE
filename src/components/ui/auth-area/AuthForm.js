@@ -1,15 +1,25 @@
 /** @format */
 
+<<<<<<< HEAD
 import Link from 'next/link'
 import AuthInput from './AuthInput'
 import { useState } from 'react'
 import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import ProfilePicture from './ProfilePicture'
+=======
+import Link from 'next/link';
+import AuthInput from './AuthInput';
+import { useState } from 'react';
+import ErrorMessage from '../auth-alert/ErrorMessage';
+import SignUpDialog from '../auth-alert/SignupDialog';
+import ProfilePicture from './ProfilePicture';
+>>>>>>> dc5ecc4d845ec4cabe0fcd02d832de93c6222c14
 import {
   sendFormData,
   sendEmailVerification,
   uploadImageToCloudinary,
+<<<<<<< HEAD
 } from '../../../api/auth'
 import {
   EMAIL_REGEX,
@@ -19,6 +29,9 @@ import {
 import validateForm from '@/util/validateForm'
 import { FiCheck } from 'react-icons/fi'
 import axios from '../../../config/axios-config'
+=======
+} from '../../../api/auth';
+>>>>>>> dc5ecc4d845ec4cabe0fcd02d832de93c6222c14
 
 export default function AuthForm({ authType }) {
   const title =
@@ -41,49 +54,31 @@ export default function AuthForm({ authType }) {
     address: '',
     profilePictureUrl: null, // 프로필 사진 상태 추가
     profilePictureName: '', // 추가: 프로필 사진 파일 이름 상태
-  })
+  });
 
-  const [isNicknameUnique, setIsNicknameUnique] = useState(false) // 닉네임 중복 상태
-  const [isEmailUnique, setIsEmailUnique] = useState(false) // 이메일 중복 상태
+  const [isOpen, setIsOpen] = useState(false);
+  const [errorMsg, setErrorMsg] = useState(null);
 
-  const checkEmailExist = async (e) => {
-    e.preventDefault()
-    const response = axios
-      .post('/api/users/email-exists', { email: form.email })
-      .then((res) => {
-        toast.error('이미 사용 중인 이메일입니다.')
-      })
-      .catch((err) => {
-        toast.info('사용 가능한 이메일입니다.')
-        setIsEmailUnique(true)
-      })
-  }
+  const closeModal = () => {
+    setIsOpen(false);
+  };
 
-  const checkNickname = async () => {
-    // 닉네임 중복 검사 로직 구현
-    // 예: API 호출로 중복 검사 후 결과를 setIsNicknameUnique에 설정
-    const response = axios
-      .post('api/users/nickname-exists', { nickname: form.nickname })
-      .then((res) => {
-        if (res.status === 200) {
-          toast.info('사용 가능한 닉네임입니다.')
-          setIsNicknameUnique(true)
-        }
-      })
-      .catch((err) => {
-        toast.error('이미 사용 중인 닉네임입니다.')
-        console.log(err)
-      })
-  }
+  const openModal = () => {
+    setIsOpen(true);
+  };
+
+  const handleSendEmailVerification = async () => {
+    const message = await sendEmailVerification(form.email);
+    alert(message);
+  };
 
   const handleFileChange = (e) => {
-    e.preventDefault()
     setForm((prev) => ({
       ...prev,
       profilePictureUrl: e.target.files[0],
       profilePictureName: e.target.files[0] ? e.target.files[0].name : '', // 추가: 파일 이름 저장
-    }))
-  } // 프로필 사진 변경을 위한 메서드
+    }));
+  }; // 프로필 사진 변경을 위한 메서드
 
   const handleChange = (name) => (value) => {
     if (name === 'nickname') {
@@ -136,6 +131,7 @@ export default function AuthForm({ authType }) {
   const loginHandler = async (e) => {
     e.preventDefault()
 
+<<<<<<< HEAD
     let formData = form
     delete formData.profilePictureName
 
@@ -144,6 +140,39 @@ export default function AuthForm({ authType }) {
     } else if (authType === 'signup') {
       if (!validateForm(form, 'signup')) {
         return
+=======
+    let formData = form;
+    delete formData.profilePictureName;
+
+    if (authType === 'signin') {
+      formData = {
+        email: form.email,
+        password: form.password,
+      };
+      sendFormData(
+        '/api/auth/login',
+        formData,
+        '로그인에 성공했습니다.',
+        '이메일과 비밀번호를 확인해주세요',
+        setErrorMsg
+      ).then((res) => {
+        if (res) {
+          window.location.href = '/';
+        }
+      });
+    } else if (authType === 'signup') {
+      console.log(formData);
+      if (formData.profilePictureUrl) {
+        const imageUrl = await uploadImageToCloudinary(
+          formData.profilePictureUrl
+        );
+        if (imageUrl) {
+          formData = {
+            ...formData,
+            profilePictureUrl: imageUrl,
+          };
+        }
+>>>>>>> dc5ecc4d845ec4cabe0fcd02d832de93c6222c14
       }
       await handleSignUp(formData)
     }
@@ -196,6 +225,7 @@ export default function AuthForm({ authType }) {
             isEmailUnique={isEmailUnique}
             authType={authType}
           />
+<<<<<<< HEAD
           <div className='mt-2 ml-2'>
             {
               <div className='text-red-400 mt-2 ml-2 font-semibold font-sans'>
@@ -205,6 +235,16 @@ export default function AuthForm({ authType }) {
               </div>
             }
           </div>
+=======
+          {authType === 'signup' && (
+            <button
+              onClick={handleSendEmailVerification}
+              className='absolute right-3 top-1/2 transform -translate-y-1/2 px-4 py-1.5 bg-indigo-500 text-white rounded-md hover:bg-indigo-600 focus:outline-none'
+            >
+              확인
+            </button>
+          )}
+>>>>>>> dc5ecc4d845ec4cabe0fcd02d832de93c6222c14
         </div>
         <AuthInput
           inputType='password'

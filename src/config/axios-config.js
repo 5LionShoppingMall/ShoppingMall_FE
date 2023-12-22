@@ -8,4 +8,20 @@ const instance = axios.create({
   },
 });
 
+export const apiAxios = axios.create({
+  baseURL: process.env.NEXT_PUBLIC_CLIENT_URL,
+  withCredentials: true,
+  Headers: {
+    'Content-Type': 'application/json',
+  },
+});
+
+export const fileApiAxios = axios.create({
+  baseURL: process.env.NEXT_PUBLIC_CLIENT_URL,
+  withCredentials: true,
+  Headers: {
+    'Content-Type': 'multipart/form-data',
+  },
+});
+
 export default instance;
