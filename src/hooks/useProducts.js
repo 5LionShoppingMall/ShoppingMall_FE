@@ -3,24 +3,24 @@ import {
   useMutation,
   useQuery,
   useQueryClient,
-} from '@tanstack/react-query';
-import { apiAxios, fileApiAxios } from '@/config/axios-config';
+} from '@tanstack/react-query'
+import { apiAxios, fileApiAxios } from '@/config/axios-config'
 
 const fetchWrite = async (formData) => {
-  console.log('fetchWrite');
+  console.log('fetchWrite')
   for (let [key, value] of formData.entries()) {
-    console.log(key, value);
+    console.log(key, value)
   }
   /* for (let [key, value] of formData.entries()) {
     console.log(key, value);
   } */
-  return await fileApiAxios.post('/products/write', formData);
-};
+  return await fileApiAxios.post('/product/register', formData)
+}
 
 export const useWriteProduct = () => {
-  console.log('useWriteQuery');
+  console.log('useWriteQuery')
   //console.log(formData);
-  const queryClient = useQueryClient();
+  const queryClient = useQueryClient()
   const {
     mutate: submitWrite,
     isPending,
@@ -29,24 +29,24 @@ export const useWriteProduct = () => {
   } = useMutation({
     mutationFn: (formData) => {
       for (let [key, value] of formData.entries()) {
-        console.log(key, value);
+        console.log(key, value)
       }
-      return fetchWrite(formData);
+      return fetchWrite(formData)
     },
     onSuccess: (res) => {
-      console.log('상품 등록 성공');
-      console.log(res);
+      console.log('상품 등록 성공')
+      console.log(res)
 
-      queryClient.invalidateQueries({ queryKey: ['products'] });
+      queryClient.invalidateQueries({ queryKey: ['products'] })
     },
     onError: (err) => {
-      console.log('상품 등록 실패');
-      console.log(res);
+      console.log('상품 등록 실패')
+      console.log(res)
     },
-  });
+  })
 
-  return { submitWrite, isPending, isError, error };
-};
+  return { submitWrite, isPending, isError, error }
+}
 
 // fetch ver
 /* const fetchProducts = async () => {
@@ -65,13 +65,13 @@ export const useWriteProduct = () => {
 
 // axios ver
 const fetchProducts = async (page, size) => {
-  const { data } = await apiAxios.get(`/products?page=${page}&size=${size}`);
+  const { data } = await apiAxios.get(`/products?page=${page}&size=${size}`)
 
-  console.log('fetchProducts');
-  console.log(data);
+  console.log('fetchProducts')
+  console.log(data)
 
-  return data;
-};
+  return data
+}
 
 export const useProducts = (page, size) => {
   const {
@@ -84,7 +84,7 @@ export const useProducts = (page, size) => {
     queryKey: ['products', page, size],
     queryFn: () => fetchProducts(page, size),
     placeholderData: keepPreviousData,
-  });
+  })
 
-  return { products, isLoading, isError, error, isPlaceholderData };
-};
+  return { products, isLoading, isError, error, isPlaceholderData }
+}

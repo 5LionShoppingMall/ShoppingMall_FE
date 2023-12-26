@@ -1,3 +1,5 @@
+import { toast } from 'react-toastify'
+
 import serverAxios from '../config/axios-config'
 import axios from 'axios'
 
@@ -32,14 +34,11 @@ export const sendFormData = async (
     console.error(`${errorMsg}: ${err}`)
     if (err.response && type == 'signin') {
       switch (err.response.status) {
-        case 401: // Unauthorized
-        case 404: // Not Found
-          alert('이메일 또는 비밀번호가 일치하지 않습니다')
-          break
         case 403: // Forbidden
-          alert('이메일 인증이 완료되지 않았습니다')
+          toast.error('이메일 인증을 진행해주세요.')
           break
         default:
+          toast.error('이메일 또는 비밀번호가 일치하지 않습니다.')
           break
       }
     }

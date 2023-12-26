@@ -3,17 +3,24 @@
 import Link from 'next/link'
 import AuthInput from './AuthInput'
 import { useState } from 'react'
-import { ToastContainer } from 'react-toastify'
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 import ProfilePicture from './ProfilePicture'
+import { sendFormData, uploadImageToCloudinary } from '../../../api/auth'
+import axios from '../../../config/axios-config'
 import {
-  sendFormData,
-  sendEmailVerification,
-  uploadImageToCloudinary,
-} from '../../../api/auth'
+  EMAIL_REGEX,
+  PHONE_NUMBER_REGEX,
+  PASSWORD_REGEX,
+} from '@/constants/regex'
+import validateForm from '@/util/validateForm'
 
 export default function AuthForm({ authType }) {
   const title =
     (authType === 'signin' && '로그인') || (authType === 'signup' && '회원가입')
+
+  const [isEmailUnique, setIsEmailUnique] = useState(false)
+  const [isNicknameUnique, setIsNicknameUnique] = useState(false)
 
   const [errors, setErrors] = useState({
     email: null,
@@ -34,20 +41,33 @@ export default function AuthForm({ authType }) {
     profilePictureName: '', // 추가: 프로필 사진 파일 이름 상태
   })
 
-  const [isOpen, setIsOpen] = useState(false)
-  const [errorMsg, setErrorMsg] = useState(null)
-
-  const closeModal = () => {
-    setIsOpen(false)
+  const checkEmailExist = async () => {
+    const response = await axios
+      .post('/api/users/email-exists', { email: form.email })
+      .then((res) => {
+        toast.info('사용 가능한 이메일입니다.')
+        setIsEmailUnique(true)
+      })
+      .catch((err) => {
+        if (err.response.status == 400) {
+          console.log(err)
+          toast.error('유효하지 않은 이메일 형식입니다.')
+        } else {
+          toast.error('이미 사용중인 이메일입니다.')
+        }
+      })
   }
 
-  const openModal = () => {
-    setIsOpen(true)
-  }
-
-  const handleSendEmailVerification = async () => {
-    const message = await sendEmailVerification(form.email)
-    alert(message)
+  const checkNickname = async () => {
+    const response = await axios
+      .post('/api/users/nickname-exists', { nickname: form.nickname })
+      .then((res) => {
+        toast.info('사용 가능한 닉네임입니다.')
+        setIsNicknameUnique(true)
+      })
+      .catch((err) => {
+        toast.error('이미 사용중인 닉네임입니다.')
+      })
   }
 
   const handleFileChange = (e) => {
@@ -113,33 +133,10 @@ export default function AuthForm({ authType }) {
     delete formData.profilePictureName
 
     if (authType === 'signin') {
-      formData = {
-        email: form.email,
-        password: form.password,
-      }
-      sendFormData(
-        '/api/auth/login',
-        formData,
-        '로그인에 성공했습니다.',
-        '이메일과 비밀번호를 확인해주세요',
-        setErrorMsg
-      ).then((res) => {
-        if (res) {
-          window.location.href = '/'
-        }
-      })
+      await handleSignIn(formData)
     } else if (authType === 'signup') {
-      console.log(formData)
-      if (formData.profilePictureUrl) {
-        const imageUrl = await uploadImageToCloudinary(
-          formData.profilePictureUrl
-        )
-        if (imageUrl) {
-          formData = {
-            ...formData,
-            profilePictureUrl: imageUrl,
-          }
-        }
+      if (!validateForm(form, 'signup')) {
+        return
       }
       await handleSignUp(formData)
     }
@@ -192,13 +189,13 @@ export default function AuthForm({ authType }) {
             isEmailUnique={isEmailUnique}
             authType={authType}
           />
-          {authType === 'signup' && (
-            <button
-              onClick={handleSendEmailVerification}
-              className='absolute right-3 top-1/2 transform -translate-y-1/2 px-4 py-1.5 bg-indigo-500 text-white rounded-md hover:bg-indigo-600 focus:outline-none'>
-              확인
-            </button>
-          )}
+          {
+            <div className='text-red-400 mt-2 ml-2 font-semibold font-sans'>
+              {authType === 'signup' && errors.email && (
+                <p className='error-text'>{errors.email}</p>
+              )}
+            </div>
+          }
         </div>
         <AuthInput
           inputType='password'
