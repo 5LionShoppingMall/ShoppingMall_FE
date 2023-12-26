@@ -3,18 +3,16 @@
 import React, { useState, useEffect } from 'react'
 import { useUser } from '@/hooks/useUser'
 import ProfilePicture from './ui/auth-area/ProfilePicture'
-import {
-  EMAIL_REGEX,
-  PASSWORD_REGEX,
-  PHONE_NUMBER_REGEX,
-} from '@/constants/regex'
 import validateForm from '@/util/validateForm'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { FiCheck } from 'react-icons/fi'
 import axios from '../config/axios-config'
-import { uploadImageToCloudinary, sendFormData } from '@/api/auth'
+import { uploadImageToCloudinary } from '@/api/auth'
 import { useRouter } from 'next/navigation'
+import { validateField } from '@/util/validateField'
+import { checkNicknameExists } from '@/util/checkExist'
+import { useAddressSearch } from '@/util/useAddressSearch'
 
 export default function EditProfile() {
   const router = useRouter()
@@ -28,14 +26,6 @@ export default function EditProfile() {
     address: null,
   })
 
-  useEffect(() => {
-    const script = document.createElement('script')
-    script.src =
-      'https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js'
-    script.async = true
-    document.body.appendChild(script)
-  }, [])
-
   const [form, setForm] = useState({
     password: '',
     nickname: user.nickname,
@@ -45,43 +35,12 @@ export default function EditProfile() {
     profilePictureName: '',
   })
 
-  const handleSearchAddress = (event) => {
-    event.preventDefault()
-    if (window.daum && window.daum.Postcode) {
-      new window.daum.Postcode({
-        oncomplete: function (data) {
-          setForm((prev) => ({
-            ...prev,
-            address: data.address,
-          }))
-        },
-      }).open()
-    } else {
-      alert('주소 검색 서비스를 불러오는 중입니다. 잠시 후 다시 시도해 주세요.')
-    }
-  }
-
-  // 각 필드에 대한 유효성 검사 로직을 별도의 함수로 분리
-  const validateField = (name, value) => {
-    switch (name) {
-      case 'password':
-        return PASSWORD_REGEX.test(value)
-          ? null
-          : '비밀번호는 10자 이상, 대문자, 소문자, 숫자, 특수기호를 포함해야 합니다.'
-      case 'passwordConfirm':
-        return value === form.password ? null : '비밀번호가 일치하지 않습니다.'
-      case 'phoneNumber':
-        return PHONE_NUMBER_REGEX.test(value)
-          ? null
-          : '유효한 전화번호를 입력해주세요.'
-      case 'address':
-        return value ? null : '주소를 입력해주세요.'
-      case 'nickname':
-        return value ? null : '닉네임을 입력해주세요.'
-      default:
-        return null
-    }
-  }
+  const handleSearchAddress = useAddressSearch((address) => {
+    setForm((prev) => ({
+      ...prev,
+      address: address,
+    }))
+  })
 
   const handleFileChange = (e) => {
     e.preventDefault()
@@ -99,7 +58,7 @@ export default function EditProfile() {
       [name]: value,
     }))
 
-    const error = validateField(name, value)
+    const error = validateField(name, value, form, 'edit')
     setErrors((prevErrors) => ({
       ...prevErrors,
       [name]: error,
@@ -141,20 +100,15 @@ export default function EditProfile() {
   }
 
   const checkNickname = async () => {
-    // 닉네임 중복 검사 로직 구현
-    // 예: API 호출로 중복 검사 후 결과를 setIsNicknameUnique에 설정
-    const response = axios
-      .post('api/users/nickname-exists', { nickname: form.nickname })
-      .then((res) => {
-        if (res.status === 200) {
-          toast.info('사용 가능한 닉네임입니다.')
-          setIsNicknameUnique(true)
-        }
-      })
-      .catch((err) => {
-        toast.error('이미 사용 중인 닉네임입니다.')
-        console.log(err)
-      })
+    try {
+      const isAvailable = await checkNicknameExists(form.nickname)
+      if (isAvailable) {
+        toast.info('사용 가능한 닉네임입니다.')
+        setIsNicknameUnique(true)
+      }
+    } catch (err) {
+      toast.error('이미 사용 중인 닉네임입니다.')
+    }
   }
 
   if (isLoading) return <div></div>

@@ -8,12 +8,9 @@ import 'react-toastify/dist/ReactToastify.css'
 import ProfilePicture from './ProfilePicture'
 import { sendFormData, uploadImageToCloudinary } from '../../../api/auth'
 import axios from '../../../config/axios-config'
-import {
-  EMAIL_REGEX,
-  PHONE_NUMBER_REGEX,
-  PASSWORD_REGEX,
-} from '@/constants/regex'
 import validateForm from '@/util/validateForm'
+import { validateField } from '@/util/validateField'
+import { checkNicknameExists } from '@/util/checkExist'
 
 export default function AuthForm({ authType }) {
   const title =
@@ -59,15 +56,15 @@ export default function AuthForm({ authType }) {
   }
 
   const checkNickname = async () => {
-    const response = await axios
-      .post('/api/users/nickname-exists', { nickname: form.nickname })
-      .then((res) => {
+    try {
+      const isAvailable = await checkNicknameExists(form.nickname)
+      if (isAvailable) {
         toast.info('사용 가능한 닉네임입니다.')
         setIsNicknameUnique(true)
-      })
-      .catch((err) => {
-        toast.error('이미 사용중인 닉네임입니다.')
-      })
+      }
+    } catch (err) {
+      toast.error('이미 사용 중인 닉네임입니다.')
+    }
   }
 
   const handleFileChange = (e) => {
@@ -93,37 +90,11 @@ export default function AuthForm({ authType }) {
       [name]: value,
     }))
 
-    const error = validateField(name, value)
+    const error = validateField(name, value, form, 'signup')
     setErrors((prevErrors) => ({
       ...prevErrors,
       [name]: error,
     }))
-  }
-
-  // 각 필드에 대한 유효성 검사 로직을 별도의 함수로 분리
-  const validateField = (name, value) => {
-    switch (name) {
-      case 'email':
-        return EMAIL_REGEX.test(value)
-          ? null
-          : '유효한 이메일 주소를 입력해주세요.'
-      case 'password':
-        return PASSWORD_REGEX.test(value)
-          ? null
-          : '비밀번호는 10자 이상, 대문자, 소문자, 숫자, 특수기호를 포함해야 합니다.'
-      case 'passwordConfirm':
-        return value === form.password ? null : '비밀번호가 일치하지 않습니다.'
-      case 'phoneNumber':
-        return PHONE_NUMBER_REGEX.test(value)
-          ? null
-          : '유효한 전화번호를 입력해주세요.'
-      case 'address':
-        return value ? null : '주소를 입력해주세요.'
-      case 'nickname':
-        return value ? null : '닉네임을 입력해주세요.'
-      default:
-        return null
-    }
   }
 
   const loginHandler = async (e) => {
