@@ -183,7 +183,9 @@ export default function AuthForm({ authType }) {
 
         {authType === 'signin' ? (
           <div className='flex justify-end mt-2 mb-8 text-sm sm:text-xs text-gray-600'>
-            <Link href='#'>비밀번호를 잊으셨나요?</Link>
+            <Link href='/auth/reset-password/request'>
+              비밀번호를 잊으셨나요?
+            </Link>
           </div>
         ) : (
           <>
