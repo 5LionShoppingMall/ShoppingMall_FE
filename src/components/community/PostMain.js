@@ -15,7 +15,7 @@ export default function PostMain() {
   }
 
   const formatCreatedAt = (createdAt) => {
-    // "T" 이후의 부분을 제거하고 반환
+    // "T" 이후의 부분을 제거하고 반환 : 2023-12-22T20:26:02.865408
     return createdAt.split('T')[0];
   };
 
