@@ -12,8 +12,9 @@ export default function NavbarImageBtn() {
     <div className='w-10 rounded-full'>
       <Image
         alt='Tailwind CSS Navbar component'
-        src='/img/default-profile-img.png'
-        fill
+        src={imageUrl}
+        width={120}
+        height={120}
       />
     </div>
   )
