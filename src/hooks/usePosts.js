@@ -21,6 +21,5 @@ export default function usePosts() {
     queryFn: fetchPosts,
   });
 
-  console.log(posts);
   return { posts, isLoading, isError, error };
 }
