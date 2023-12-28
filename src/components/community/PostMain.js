@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import usePosts from '@/hooks/usePosts';
+import { usePosts } from '@/hooks/usePosts';
 import Link from 'next/link';
 
 export default function PostMain() {
@@ -68,7 +68,7 @@ export default function PostMain() {
                     {index + 1}
                   </td>
                   <td style={{ width: '40%' }} className="py-2 px-4 border-b">
-                    <Link href={`/post/${post.id}`} className="text-blue-500 hover:underline">
+                    <Link href={`/community/detail/${post.id}`} className="text-blue-500 hover:underline">
                       {post.title}
                     </Link>
                   </td>
