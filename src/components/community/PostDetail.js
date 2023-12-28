@@ -1,12 +1,12 @@
 'use client';
 
-// PostDetail.js (Next.js 컴포넌트)
+// PostDetail.js
 
 import { useEffect } from 'react';
 import { usePost } from '@/hooks/usePosts';
 
-const PostDetail = () => {
-  const postId = 1; // 조회하려는 게시물의 ID
+const PostDetail = (postId) => {
+  // postId : 조회하려는 게시물의 ID
   const { post, isLoading, isError } = usePost(postId);
 
   useEffect(() => {
@@ -14,11 +14,11 @@ const PostDetail = () => {
   }, [post]);
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <div className="text-center mt-8">Loading...</div>;
   }
 
   if (isError) {
-    return <div>Error fetching post</div>;
+    return <div className="text-center mt-8 text-red-500">Error fetching post</div>;
   }
 
   return (
