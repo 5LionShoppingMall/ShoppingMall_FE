@@ -5,9 +5,8 @@ export const metadata = {
 };
 
 export default async function CommunityDetail(props) {
-  console.log('props');
-  console.log(props);
-  const postId = props.params.id;
-  console.log(props.params.id);
+  // props : { params: { id: '16' }, searchParams: {} }
+
+  const postId = props.params.id; // 16
   return <PostDetail postId={postId} />;
 }

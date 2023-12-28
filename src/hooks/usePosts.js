@@ -36,9 +36,5 @@ export function usePost(postId) {
     queryFn: async () => getPostById(postId), // 수정된 부분
   });
 
-  console.log('postIdpostIdpostId');
-  console.log(postId);
-  console.log('usePost: ', post);
-
   return { post, isLoading, isError, error };
 }
