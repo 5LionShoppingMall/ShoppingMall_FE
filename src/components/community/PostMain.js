@@ -42,6 +42,10 @@ export default function PostMain() {
   return (
     <div className="overflow-x-auto">
       <h3 className="text-4xl font-bold mt-6 mb-6">게시글 리스트</h3>
+      {/* community/write로 이동하는 버튼 */}
+      <Link href="/community/write" className="text-blue-500 hover:underline mb-4 inline-block">
+        새 게시물 작성
+      </Link>
       {displayedPosts.length > 0 ? (
         <div className="overflow-x-auto">
           <table className="table">

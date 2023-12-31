@@ -26,3 +26,25 @@ export const getPostById = async (postId) => {
     return error;
   }
 };
+
+// 게시글 저장
+export const savePost = async (formData) => {
+  console.log('게시글 저장');
+  console.log(formData);
+  try {
+    const res = await fetch(`${BASE_URL}${PATH_POST}/save`, {
+      method: 'POST',
+      body: formData,
+    });
+    console.log('res');
+    console.log(res);
+
+    const data = await res.json();
+    console.log('data');
+    console.log(data);
+    return data;
+  } catch (error) {
+    console.log(error);
+    return error;
+  }
+};
