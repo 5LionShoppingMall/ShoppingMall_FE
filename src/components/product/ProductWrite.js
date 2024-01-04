@@ -17,8 +17,24 @@ export default function ProductWrite() {
   const fileInputRef = useRef();
   const [selectedImages, setSelectedImages] = useState([]);
   const [productInfo, setProductInfo] = useState(productInfoInit);
-  //const [formData, setFormData] = useState(null);
+  const [inputPrice, setInputPrice] = useState('0');
   const { submitWrite, isPending, isError, error } = useWriteProduct();
+
+  const handleChange = (event) => {
+    const numberOnly = event.target.value.replace(/,/g, '');
+    if (numberOnly === '') {
+      setInputPrice('0');
+    } else if (!isNaN(numberOnly)) {
+      setInputPrice(parseInt(numberOnly).toLocaleString());
+    }
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    const numberOnly = inputPrice.replace(/,/g, '');
+    // 서버로 데이터를 보내는 코드를 작성하세요
+    console.log(numberOnly); // 콘솔에서 확인
+  };
 
   const openFilePicker = (e) => {
     e.preventDefault();
@@ -47,70 +63,6 @@ export default function ProductWrite() {
     }
   };
 
-  /* const resizeImage = (file, maxWidth, maxHeight, quality) => {
-    return new Promise((resolve, reject) => {
-      const image = new window.Image();
-      image.src = URL.createObjectURL(file);
-      image.onload = () => {
-        let width = image.width;
-        let height = image.height;
-
-        if (width > height) {
-          if (width > maxWidth) {
-            height *= maxWidth / width;
-            width = maxWidth;
-          }
-        } else {
-          if (height > maxHeight) {
-            width *= maxHeight / height;
-            height = maxHeight;
-          }
-        }
-
-        const canvas = document.createElement('canvas');
-        canvas.width = width;
-        canvas.height = height;
-        const context = canvas.getContext('2d');
-        context.clearRect(0, 0, canvas.width, canvas.height);
-        context.drawImage(image, 0, 0, width, height);
-
-        canvas.toBlob(
-          (blob) => {
-            blob.name = file.name;
-            resolve(blob);
-          },
-          file.type,
-          quality
-        );
-      };
-      image.onerror = reject;
-    });
-  };
-
-  const imagesChangeHandler = async (e) => {
-    console.log('이미지체인지핸들러');
-    if (e.target.files) {
-      const files = Array.from(e.target.files);
-
-      if (selectedImages.length + files.length > 10) {
-        alert('사진은 최대 10장만 선택 가능합니다.');
-        return;
-      }
-
-      const newImages = [];
-
-      for (let file of files) {
-        const resizedImage = await resizeImage(file, 800, 800, 0.8);
-        newImages.push({
-          file: resizedImage,
-          url: URL.createObjectURL(resizedImage),
-        });
-      }
-
-      setSelectedImages((prevImages) => [...prevImages, ...newImages]);
-    }
-  }; */
-
   const removeImage = (e, index) => {
     e.preventDefault();
 
@@ -138,18 +90,10 @@ export default function ProductWrite() {
       'productInfo',
       new Blob([JSON.stringify(productInfo)], { type: 'application/json' })
     );
-    //formData.append('productInfo', productInfo);
 
     selectedImages.forEach((image, index) => {
       formData.append('files', image.file);
     });
-
-    /* console.log('formData');
-    for (let [key, value] of formData.entries()) {
-      console.log(key, value);
-    } */
-
-    //setFormData(data);
 
     submitWrite(formData);
   };
@@ -157,7 +101,7 @@ export default function ProductWrite() {
   return (
     <form
       className='flex flex-col items-center sm:w-2/3 mx-auto p-10 gap-5 h-full'
-      onSubmit={wirteSubmitHandler}
+      onSubmit={handleSubmit}
     >
       <div className='flex gap-4 justify-start w-full items-center'>
         <div className='w-fit'>
@@ -218,7 +162,8 @@ export default function ProductWrite() {
           name='price'
           className='w-full text-sm focus:outline-none p-3 border rounded-md'
           placeholder='판매가격'
-          onChange={onChangeHandler}
+          value={inputPrice}
+          onChange={handleChange}
         />
       </div>
       <div className='w-full h-full'>

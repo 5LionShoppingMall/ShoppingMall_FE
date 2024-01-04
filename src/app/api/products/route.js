@@ -20,7 +20,7 @@ export async function GET(req) {
   }
 }
 
-const formatPrice = (price) => {
+export const formatPrice = (price) => {
   // 출력 ex: ₩20,000
   /* return new Intl.NumberFormat('ko-KR', {
     style: 'currency',

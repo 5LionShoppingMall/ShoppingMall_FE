@@ -5,21 +5,38 @@ import {
   useQueryClient,
 } from '@tanstack/react-query';
 import { apiAxios, fileApiAxios } from '@/config/axios-config';
+import { useRouter } from 'next/navigation';
 
+const fetchProductDetail = async (id) => {
+  const res = await apiAxios.get(`/products/${id}`);
+
+  if (!res.data.result) return res.data;
+
+  return res.data.objData;
+};
+
+export const useProductDetail = (id) => {
+  const {
+    data: product,
+    isLoading,
+    isError,
+    error,
+  } = useQuery({
+    queryKey: ['productDetail', id],
+    queryFn: () => fetchProductDetail(id),
+  });
+
+  return { product, isLoading, isError, error };
+};
+
+/** 상품 등록 */
 const fetchWrite = async (formData) => {
-  console.log('fetchWrite');
-  for (let [key, value] of formData.entries()) {
-    console.log(key, value);
-  }
-  /* for (let [key, value] of formData.entries()) {
-    console.log(key, value);
-  } */
-  return await fileApiAxios.post('/products/write', formData);
+  return await fileApiAxios.post('/product/register', formData);
 };
 
 export const useWriteProduct = () => {
   console.log('useWriteQuery');
-  //console.log(formData);
+  const router = useRouter();
   const queryClient = useQueryClient();
   const {
     mutate: submitWrite,
@@ -37,7 +54,15 @@ export const useWriteProduct = () => {
       console.log('상품 등록 성공');
       console.log(res);
 
+      if (!res.data.result) {
+        alert('상품 등록에 실패하였습니다.');
+        return;
+      }
+
+      alert('상품 등록에 성공하였습니다.');
+
       queryClient.invalidateQueries({ queryKey: ['products'] });
+      router.replace('/products');
     },
     onError: (err) => {
       console.log('상품 등록 실패');
@@ -48,6 +73,7 @@ export const useWriteProduct = () => {
   return { submitWrite, isPending, isError, error };
 };
 
+/** 상품 리스트 */
 // fetch ver
 /* const fetchProducts = async () => {
   const res = await fetch('http://localhost:3000/api/products', {

@@ -1,0 +1,70 @@
+import SwiperCore from 'swiper';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation, HashNavigation, Pagination } from 'swiper/modules';
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
+import '@/styles/swiper.css';
+import Image from 'next/image';
+import LeftAngleBracket from './icon/LeftAngleBracket';
+import RightAngleBracket from './icon/RightAngleBracket';
+import { useEffect, useRef, useState } from 'react';
+
+export default function SwiperCarousel({ images }) {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const isFirst = currentIndex === 0;
+  const isLast = currentIndex === images.length - 1;
+
+  const pagination = {
+    clickable: true,
+    renderBullet: (index, className) => {
+      return `<span class=${className}></span>`;
+    },
+  };
+
+  return (
+    <div className='relative'>
+      <Swiper
+        //spaceBetween={30}
+        pagination={pagination}
+        navigation={{
+          nextEl: '.next-slide-button',
+          prevEl: '.prev-slide-button',
+        }}
+        modules={[Pagination, Navigation]}
+        onSlideChange={(swiper) => setCurrentIndex(swiper.activeIndex)}
+      >
+        {images.map((image, index) => (
+          <SwiperSlide key={index}>
+            <div className='pt-[100%]'>
+              <Image
+                src={image.url}
+                alt=''
+                layout='fill'
+                className='rounded-lg'
+              />
+            </div>
+          </SwiperSlide>
+        ))}
+      </Swiper>
+      <div className='flex items-center w-full absolute top-2/4 z-10'>
+        <button
+          className={`prev-slide-button -translate-x-1/2 absolute -left-4 text-gray-600 ${
+            isFirst && 'opacity-30 cursor-default'
+          }`}
+          disabled={isFirst}
+        >
+          <LeftAngleBracket classname='w-10 h-10' />
+        </button>
+        <button
+          className={`next-slide-button translate-x-1/2 absolute -right-4 text-gray-600 ${
+            isLast && 'opacity-30 cursor-default'
+          }`}
+          disabled={isLast}
+        >
+          <RightAngleBracket classname='w-10 h-10' />
+        </button>
+      </div>
+    </div>
+  );
+}

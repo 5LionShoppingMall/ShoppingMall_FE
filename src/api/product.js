@@ -1,9 +1,25 @@
-const BASE_URL = 'http://localhost:8082';
+//const BASE_URL = 'http://localhost:8082';
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 const PATH_PRODUCT = '/product';
+
+export const getProductDetail = async (id) => {
+  console.log('상품 상세글 서비스');
+  try {
+    const res = await fetch(`${BASE_URL}${PATH_PRODUCT}/${id}`, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      method: 'GET',
+    });
+
+    const data = await res.json();
+    console.log(data);
+    return data;
+  } catch (err) {}
+};
 
 export const addProduct = async (formData) => {
   console.log('상품 등록 서비스');
-  console.log(formData);
   try {
     const res = await fetch(`${BASE_URL}${PATH_PRODUCT}/register`, {
       method: 'POST',
