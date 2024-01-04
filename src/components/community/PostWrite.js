@@ -17,10 +17,6 @@ const PostWrite = () => {
       return;
     }
 
-    const formData = new FormData();
-    formData.append('title', title);
-    formData.append('content', content);
-
     try {
       // axios를 사용하여 백엔드 서버에 formData 전송
       const response = await axios.post('/api/posts/save', { title, content });
