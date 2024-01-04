@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { usePosts } from '@/hooks/usePosts';
 import Link from 'next/link';
+import { CiCirclePlus } from 'react-icons/ci';
 
 export default function PostMain() {
   const { posts, isLoading, isError, error } = usePosts();
@@ -40,69 +41,33 @@ export default function PostMain() {
   };
 
   return (
-    <div className="overflow-x-auto">
-      <h3 className="text-4xl font-bold mt-6 mb-6">게시글 리스트</h3>
-      {/* community/write로 이동하는 버튼 */}
-      <Link href="/community/write" className="text-blue-500 hover:underline mb-4 inline-block">
-        새 게시물 작성
+    <div className="p-4 bg-gray-50 rounded-lg shadow-md">
+      <h3 className="text-4xl font-bold mt-6 mb-6 text-blue-700">게시글 리스트</h3>
+      <Link href="/community/write">
+        <div className="mb-4 w-fit">
+          <CiCirclePlus className="mr-1 text-blue-300 w-9 h-9" />
+        </div>
       </Link>
       {displayedPosts.length > 0 ? (
-        <div className="overflow-x-auto">
-          <table className="table">
-            <thead className="bg-gray-200">
-              <tr>
-                <th style={{ width: '10%' }} className="py-2 px-4 border-b text-center">
-                  번호
-                </th>
-                <th style={{ width: '40%' }} className="py-2 px-4 border-b text-center">
-                  제목
-                </th>
-                <th style={{ width: '20%' }} className="py-2 px-4 border-b text-center">
-                  작성자
-                </th>
-                <th style={{ width: '30%' }} className="py-2 px-4 border-b text-center">
-                  작성일시
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {displayedPosts.map((post, index) => (
-                <tr key={post.id} className="hover:bg-gray-100 transition duration-300">
-                  <td style={{ width: '10%' }} className="py-2 px-4 border-b text-center">
-                    {index + 1}
-                  </td>
-                  <td style={{ width: '40%' }} className="py-2 px-4 border-b">
-                    <Link href={`/community/detail/${post.id}`} className="text-blue-500 hover:underline">
-                      {post.title}
-                    </Link>
-                  </td>
-                  <td style={{ width: '20%' }} className="py-2 px-4 border-b text-center">
-                    {post.user.nickname}
-                  </td>
-                  <td style={{ width: '30%' }} className="py-2 px-4 border-b text-center">
-                    {formatCreatedAt(post.createdAt)}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-
-          <div className="flex justify-center mt-4">
-            {Array.from({ length: totalPages }, (_, i) => (
-              <button
-                key={i + 1}
-                onClick={() => handlePageChange(i + 1)}
-                className={`mx-1 px-3 py-1 rounded-full ${
-                  currentPage === i + 1 ? 'bg-gray-500 text-white' : 'bg-gray-200'
-                }`}
+        <div className="grid grid-cols-3 gap-4">
+          {displayedPosts.map((post, index) => (
+            <div key={post.id} className="p-4 border rounded-lg hover:bg-gray-100 transition duration-300">
+              <h3 className="font-bold text-center">
+                {index + 1}. {post.title}
+              </h3>
+              <Link
+                href={`/community/detail/${post.id}`}
+                className="text-blue-500 hover:underline block text-center mt-2"
               >
-                {i + 1}
-              </button>
-            ))}
-          </div>
+                {post.title}
+              </Link>
+              <p className="text-center mt-2">{post.user.nickname}</p>
+              <p className="text-center mt-2">{formatCreatedAt(post.createdAt)}</p>
+            </div>
+          ))}
         </div>
       ) : (
-        <div className="text-center mt-8">현재 게시물이 없습니다.</div>
+        <div className="text-center mt-8 text-red-500">현재 게시물이 없습니다.</div>
       )}
     </div>
   );
