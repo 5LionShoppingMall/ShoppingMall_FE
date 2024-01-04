@@ -3,10 +3,13 @@
 import { useEffect } from 'react';
 import { usePost } from '@/hooks/usePosts';
 import { useUser } from '@/hooks/useUser';
+import { useRouter } from 'next/navigation';
+import axios from '../../config/axios-config'; // axios 추가
 
 const PostDetail = (postId) => {
   const { post, isLoading, isError } = usePost(postId);
   const { user } = useUser(); // useUser 훅을 이용하여 로그인 상태 및 사용자 정보 확인
+  const router = useRouter();
 
   useEffect(() => {
     // post 또는 user가 변경될 때의 추가 로직
@@ -29,6 +32,20 @@ const PostDetail = (postId) => {
     window.location.href = `/community/modify/${postId.postId}`;
   };
 
+  const handleDeletePost = async () => {
+    try {
+      // axios를 사용하여 백엔드 서버에 formData 전송
+      const response = await axios.delete(`/api/posts/delete/${postId.postId}`);
+
+      console.log('서버 응답:', response.data);
+
+      // 페이지 이동
+      router.push('/community'); // 새로고침 없음
+    } catch (error) {
+      console.error('삭제 중 오류:', error);
+    }
+  };
+
   return (
     <div className="max-w-3xl mx-auto mt-8">
       <h1 className="text-4xl font-bold mb-4">{post.objData.title}</h1>
@@ -44,7 +61,9 @@ const PostDetail = (postId) => {
           <button className="mr-2 bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600" onClick={handleModifyClick}>
             수정
           </button>
-          <button className="bg-red-500 text-white p-2 rounded-md hover:bg-red-600">삭제</button>
+          <button className="bg-red-500 text-white p-2 rounded-md hover:bg-red-600" onClick={handleDeletePost}>
+            삭제
+          </button>
         </div>
       )}
 
