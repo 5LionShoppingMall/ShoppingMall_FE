@@ -50,7 +50,7 @@ export default function PostMain() {
           href='/community/write'
           className='flex h-full items-center text-gray-500 hover:text-gray-800 space-x-2 group'
         >
-          <CiCirclePlus className='w-7 h-7' />
+          <CiCirclePlus className='w-8 h-8' />
           <span className='opacity-0 group-hover:opacity-100 group-hover:animate-slide transition-all duration-500'>
             새 글 작성
           </span>
