@@ -1,14 +1,13 @@
 'use client';
 
-// PostWrite.js
-
 import { useState } from 'react';
-import { useWritePost } from '@/hooks/usePosts'; // usePosts에서 useWritePost로 수정
+import { useWritePost } from '@/hooks/usePosts';
+import axios from '../../config/axios-config'; // axios 추가
 
 const PostWrite = () => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
-  const { submitWrite, isPending, isError, error } = useWritePost(); // useWritePost 사용
+  const { isPending, isError, submitWrite, error } = useWritePost();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -23,7 +22,14 @@ const PostWrite = () => {
     formData.append('content', content);
 
     try {
-      await submitWrite(formData); // useWritePost에서 반환된 submitWrite 함수 호출
+      // axios를 사용하여 백엔드 서버에 formData 전송
+      const response = await axios.post('/api/posts/save', { title, content });
+
+      console.log('서버 응답:', response.data);
+
+      // 성공적으로 데이터를 받았을 때의 로직 추가
+      // 페이지 이동
+      window.location.href = '/community';
     } catch (error) {
       console.error('게시물 제출 중 오류:', error);
     }

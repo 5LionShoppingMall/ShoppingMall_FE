@@ -6,7 +6,7 @@ import { getPostById } from '@/api/post';
 const fetchPosts = async () => {
   const {
     data: { listData },
-  } = await apiAxios.get('http://localhost:3000/api/posts');
+  } = await apiAxios.get('/posts');
 
   return listData;
 };
@@ -42,17 +42,15 @@ export function usePost(postId) {
 }
 
 const fetchWritePost = async (formData) => {
-  console.log('fetchWritePost');
   for (let [key, value] of formData.entries()) {
     console.log(key, value);
   }
 
-  return await apiAxios.post('http://localhost:3000/api/posts/write', formData);
+  return await apiAxios.post('/posts/write', formData);
 };
 
 // 게시글 저장
 export const useWritePost = () => {
-  console.log('useWritePost');
   const queryClient = useQueryClient();
   const {
     mutate: submitWrite,
@@ -67,14 +65,12 @@ export const useWritePost = () => {
       return fetchWritePost(formData);
     },
     onSuccess: (res) => {
-      console.log('게시글 작성 완료');
       console.log(res);
 
       queryClient.invalidateQueries({ queryKey: ['posts'] });
     },
     onError: (err) => {
-      console.log('게시글 작성 실패');
-      console.log(res);
+      console.log(err);
     },
   });
 

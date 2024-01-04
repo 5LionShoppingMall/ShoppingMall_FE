@@ -32,11 +32,11 @@ export default function PostMain() {
   const handlePageChange = (page) => {
     setCurrentPage(page);
     // router.pathname이 문자열인 경우에만 startsWith를 사용
-    if (typeof router.pathname === 'string') {
-      router.push({ pathname: router.pathname, query: { page } });
-    } else {
-      console.error('router.pathname is not a string:', router.pathname);
-    }
+    // if (typeof router.pathname === 'string') {
+    //   router.push({ pathname: router.pathname, query: { page } });
+    // } else {
+    //   console.error('router.pathname is not a string:', router.pathname);
+    // }
   };
 
   return (
