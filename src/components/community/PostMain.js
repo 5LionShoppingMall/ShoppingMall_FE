@@ -23,7 +23,7 @@ export default function PostMain() {
     return createdAt.split('T')[0];
   };
 
-  const postsPerPage = 15;
+  const postsPerPage = 12;
   const startIndex = (currentPage - 1) * postsPerPage;
   const endIndex = startIndex + postsPerPage;
   const displayedPosts = posts.listData.slice(startIndex, endIndex);
@@ -42,33 +42,50 @@ export default function PostMain() {
 
   return (
     <div className="p-4 bg-gray-50 rounded-lg shadow-md">
-      <h3 className="text-4xl font-bold mt-6 mb-6 text-blue-700">게시글 리스트</h3>
-      <Link href="/community/write">
-        <div className="mb-4 w-fit">
-          <CiCirclePlus className="mr-1 text-blue-300 w-9 h-9" />
-        </div>
-      </Link>
+      <h3 className="text-4xl font-bold mt-6 mb-6 text-black-700 flex justify-center">게시글 리스트</h3>
+      <div className="w-32 mb-4">
+        <Link
+          href="/community/write"
+          className="flex h-full items-center text-gray-500 hover:text-gray-800 space-x-2 group"
+        >
+          <CiCirclePlus className="w-7 h-7" />
+          <span className="opacity-0 group-hover:opacity-100 group-hover:animate-slide transition-all duration-500">
+            새 글 작성
+          </span>
+        </Link>
+      </div>
       {displayedPosts.length > 0 ? (
         <div className="grid grid-cols-3 gap-4">
           {displayedPosts.map((post, index) => (
-            <div key={post.id} className="p-4 border rounded-lg hover:bg-gray-100 transition duration-300">
-              <h3 className="font-bold text-center">
-                {index + 1}. {post.title}
-              </h3>
-              <Link
-                href={`/community/detail/${post.id}`}
-                className="text-blue-500 hover:underline block text-center mt-2"
-              >
-                {post.title}
-              </Link>
-              <p className="text-center mt-2">{post.user.nickname}</p>
-              <p className="text-center mt-2">{formatCreatedAt(post.createdAt)}</p>
+            <div key={post.id} className="border rounded-lg p-4 hover:bg-gray-100 transition duration-300">
+              <p className="text-center">{index + 1}</p>
+              <h4 className="text-center flex justify-center">
+                <Link href={`/community/detail/${post.id}`} className="text-blue-500 hover:underline">
+                  {post.title}
+                </Link>
+              </h4>
+              <p className="text-center">글쓴이 : {post.user.nickname}</p>
+              <p className="text-center">작성일자 : {formatCreatedAt(post.createdAt)}</p>
             </div>
           ))}
         </div>
       ) : (
-        <div className="text-center mt-8 text-red-500">현재 게시물이 없습니다.</div>
+        <div className="text-center mt-8">현재 게시물이 없습니다.</div>
       )}
+
+      <div className="flex justify-center mt-4">
+        {Array.from({ length: totalPages }, (_, i) => (
+          <button
+            key={i + 1}
+            onClick={() => handlePageChange(i + 1)}
+            className={`mx-1 px-3 py-1 rounded-full ${
+              currentPage === i + 1 ? 'bg-gray-500 text-white' : 'bg-gray-200'
+            }`}
+          >
+            {i + 1}
+          </button>
+        ))}
+      </div>
     </div>
   );
 }

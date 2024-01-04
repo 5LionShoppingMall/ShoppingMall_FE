@@ -2,12 +2,14 @@
 
 import { useState } from 'react';
 import { useWritePost } from '@/hooks/usePosts';
+import { useRouter } from 'next/navigation';
 import axios from '../../config/axios-config'; // axios 추가
 
 const PostWrite = (postId) => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const { isPending, isError, submitWrite, error } = useWritePost();
+  const router = useRouter();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -19,13 +21,14 @@ const PostWrite = (postId) => {
 
     try {
       // axios를 사용하여 백엔드 서버에 formData 전송
-      const response = await axios.put(`/api/posts/modify/${postId.postId}`, { title, content });
+      // const response = await axios.put(`/api/posts/modify/${postId.postId}`, { title, content });
+      const response = await axios
+        .put(`/api/posts/modify/${postId.postId}`, { title, content })
+        .then((res) => console.log(res.data))
+        .catch((error) => cosole.log(error));
 
-      console.log('서버 응답:', response.data);
-
-      // 성공적으로 데이터를 받았을 때의 로직 추가
-      // 페이지 이동
-      window.location.href = `/community/detail/${postId.postId}`;
+      // 수정 후 게시글로 페이지 이동
+      router.push(`/community/detail/${postId.postId}`);
     } catch (error) {
       console.error('게시물 제출 중 오류:', error);
     }

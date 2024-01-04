@@ -29,7 +29,7 @@ const PostDetail = (postId) => {
 
   const handleModifyClick = () => {
     // 수정 버튼 클릭 시 PostModify 페이지로 이동
-    window.location.href = `/community/modify/${postId.postId}`;
+    router.push(`/community/modify/${postId.postId}`);
   };
 
   const handleDeletePost = async () => {
