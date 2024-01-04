@@ -17,7 +17,6 @@ export const apiAxios = axios.create({
 });
 
 export const fileApiAxios = axios.create({
-  //baseURL: process.env.NEXT_PUBLIC_CLIENT_URL,
   baseURL: process.env.NEXT_PUBLIC_BASE_URL,
   withCredentials: true,
   Headers: {
