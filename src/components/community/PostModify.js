@@ -1,15 +1,20 @@
 'use client';
 
 import { useState } from 'react';
-import { useWritePost } from '@/hooks/usePosts';
+import { usePost, useWritePost } from '@/hooks/usePosts';
 import { useRouter } from 'next/navigation';
+import { AiOutlineForm, AiOutlineFileText } from 'react-icons/ai';
 import axios from '../../config/axios-config'; // axios 추가
 
 const PostWrite = (postId) => {
-  const [title, setTitle] = useState('');
-  const [content, setContent] = useState('');
+  const { post } = usePost(postId);
+  const [title, setTitle] = useState(post.objData.title);
+  const [content, setContent] = useState(post.objData.content);
   const { isPending, isError, submitWrite, error } = useWritePost();
   const router = useRouter();
+
+  console.log('post');
+  console.log(post.objData.title);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -35,11 +40,11 @@ const PostWrite = (postId) => {
   };
 
   return (
-    <div className="max-w-3xl mx-auto mt-8">
+    <div className="max-w-3xl mx-auto mt-8 p-4 bg-white shadow rounded-lg h-[80vh]">
       <form onSubmit={handleSubmit}>
         <div className="mb-4">
-          <label htmlFor="title" className="block text-sm font-medium text-gray-700">
-            제목
+          <label htmlFor="title" className="text-lg font-bold text-gray-700 flex items-center mb-2">
+            <AiOutlineForm className="mr-1" /> 제목
           </label>
           <input
             type="text"
@@ -47,13 +52,13 @@ const PostWrite = (postId) => {
             name="title"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            className="mt-1 p-2 w-full border rounded-md"
+            className="mt-1 px-2 py-3 text-lg w-full border rounded-md shadow-sm mb-3"
           />
         </div>
 
-        <div className="mb-4">
-          <label htmlFor="content" className="block text-sm font-medium text-gray-700">
-            내용
+        <div className="mb-4 h-[50vh]">
+          <label htmlFor="content" className="text-lg font-bold text-gray-700 flex items-center mb-2">
+            <AiOutlineFileText className="mr-1" /> 내용
           </label>
           <textarea
             id="content"
@@ -61,11 +66,15 @@ const PostWrite = (postId) => {
             value={content}
             onChange={(e) => setContent(e.target.value)}
             rows="4"
-            className="mt-1 p-2 w-full border rounded-md"
+            className="mt-1 p-2 w-full border rounded-md shadow-sm resize-none h-full"
           />
         </div>
 
-        <button type="submit" className="bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600" disabled={isPending}>
+        <button
+          type="submit"
+          className="btn text-gray-700 px-5 py-2 rounded-full transition-all duration-200 ease-in-out transform hover:scale-105 mt-12"
+          disabled={isPending}
+        >
           {isPending ? '제출 중...' : '제출'}
         </button>
 
