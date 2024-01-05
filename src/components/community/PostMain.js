@@ -3,6 +3,7 @@
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { usePosts } from '@/hooks/usePosts';
+import { useUser } from '@/hooks/useUser';
 import Link from 'next/link';
 import { CiCirclePlus } from 'react-icons/ci';
 
@@ -10,6 +11,7 @@ export default function PostMain() {
   const { posts, isLoading, isError, error } = usePosts();
   const router = useRouter();
   const [currentPage, setCurrentPage] = useState(1);
+  const { user } = useUser(); // useUser 훅을 이용하여 로그인 상태 및 사용자 정보 확인
 
   if (isLoading) {
     return <div className="text-center mt-8">로딩 중</div>;
@@ -40,11 +42,23 @@ export default function PostMain() {
     // }
   };
 
+  const handleWritePost = (event) => {
+    if (!user) {
+      // 로그인하지 않은 상태라면
+      event.preventDefault(); // 링크 클릭에 따른 페이지 이동 막기
+      alert('로그인이 필요한 서비스입니다.'); // 알림창 표시
+    } else {
+      // 로그인한 상태라면
+      router.push('/community/write'); // 글 작성 페이지로 이동
+    }
+  };
+
   return (
     <div className="p-4 bg-gray-50 rounded-lg shadow-md">
       <h3 className="text-4xl font-bold mt-6 mb-6 text-black-700 flex justify-center">게시글 리스트</h3>
       <div className="w-32 mb-4">
         <Link
+          onClick={handleWritePost}
           href="/community/write"
           className="flex h-full items-center text-gray-500 hover:text-gray-800 space-x-2 group"
         >
