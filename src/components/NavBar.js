@@ -1,19 +1,23 @@
-'use client';
+'use client'
 
-import { useEffect, useState } from 'react';
-import Link from 'next/link';
-import Dropdown from './ui/navbar-menu/Dropdown';
-import NavbarSvgBtn from './ui/navbar-menu/NavbarSvgBtn';
-import CategoryMenu from './ui/navbar-menu/CategoryMenu';
-import NavbarIconBtn from './ui/navbar-menu/NavbarIconBtn';
+import Link from 'next/link'
+import Dropdown from './ui/navbar-menu/Dropdown'
+import NavbarSvgBtn from './ui/navbar-menu/NavbarSvgBtn'
+import CategoryMenu from './ui/navbar-menu/CategoryMenu'
+import NavbarIconBtn from './ui/navbar-menu/NavbarIconBtn'
+import { useUser } from '@/hooks/useUser'
+import SearchIcon from './ui/icon/SearchIcon'
+import SaleIcon from './ui/icon/SaleIcon'
 
 export default function Navbar() {
-  const [login, setLogin] = useState(false);
+  const { user, isLoading, isError } = useUser()
 
   return (
     <div className='navbar bg-base-100'>
       <div className='flex-1'>
-        <Link href='/' className='btn btn-ghost text-xl'>
+        <Link
+          href='/'
+          className='font-bold text-xl flex justify-center items-center px-3'>
           daisyUI
         </Link>
         <div className='hidden lg:flex'>
@@ -22,28 +26,42 @@ export default function Navbar() {
           </ul>
         </div>
       </div>
-      <div className='flex-none'>
-        <div className='lg:hidden'>
+      <div className='flex-none gap-1'>
+        <div className='lg:hidden flex gap-1'>
           <NavbarIconBtn menu='search' />
+          {user && <NavbarIconBtn menu='write' />}
         </div>
-        <div className='hidden lg:flex flex-none gap-2'>
-          <div className='form-control'>
+        <div className='hidden lg:flex flex-none gap-10'>
+          <div className='relative bg-zinc-100 rounded-full flex items-center'>
+            <div className='absolute flex items-center inset-y-0 left-0 pl-3 pointer-events-none'>
+              <SearchIcon />
+            </div>
             <input
               type='text'
               placeholder='Search'
-              className='input input-bordered lg:w-96'
+              className='bg-transparent py-3 pl-10 pr-5 focus:outline-none text-sm text-neutral-800'
             />
           </div>
-
-          {login ? (
-            <>
+          {user ? (
+            <div className='flex gap-4'>
+              <Link
+                href='/products/write'
+                className='text-sm flex items-center justify-center gap-1'>
+                <SaleIcon />
+                거래등록
+              </Link>
               <NavbarIconBtn menu='cart' />
-              <Dropdown menu='avatar' setLogin={setLogin} />
-            </>
+              <Dropdown menu='avatar' />
+            </div>
           ) : (
-            <button className='btn ml-2' onClick={() => setLogin(true)}>
-              로그인
-            </button>
+            <>
+              <Link href='/auth/signin'>
+                <button className='btn ml-2'>로그인</button>
+              </Link>
+              <Link href='/auth/signup'>
+                <button className='btn ml-2'>회원가입</button>
+              </Link>
+            </>
           )}
         </div>
         {/* {!login && (
@@ -56,8 +74,8 @@ export default function Navbar() {
             </button>
           </>
         )} */}
-        <Dropdown menu='dropdown' login={login} setLogin={setLogin} />
+        <Dropdown menu='dropdown' />
       </div>
     </div>
-  );
+  )
 }

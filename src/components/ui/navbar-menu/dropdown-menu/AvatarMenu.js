@@ -1,7 +1,10 @@
-import Link from 'next/link';
-import { navAvatarMenus } from '@/constants/navbar';
+/** @format */
 
-export default function AvatarMenu({ setIsMenuOpen, setLogin }) {
+import Link from 'next/link'
+import { navAvatarMenus } from '@/constants/navbar'
+import Signout from '@/components/auth/Signout'
+
+export default function AvatarMenu({ setIsMenuOpen }) {
   return (
     <>
       {/* {navAvatarMenus.map((menu) => (
@@ -13,11 +16,8 @@ export default function AvatarMenu({ setIsMenuOpen, setLogin }) {
         <Link href='/mypage'>마이페이지</Link>
       </li>
       <li onClick={() => setIsMenuOpen(false)}>
-        <Link href='/products/cart'>장바구니</Link>
-      </li>
-      <li onClick={() => setIsMenuOpen(false)}>
-        <a onClick={() => setLogin(false)}>로그아웃</a>
+        <Signout type='avatar' />
       </li>
     </>
-  );
+  )
 }

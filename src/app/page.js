@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import Link from 'next/link';
 
 export default async function HomePage() {
@@ -20,4 +21,10 @@ export default async function HomePage() {
       </div>
     </section>
   );
+=======
+import Main from '@/components/Main'
+
+export default function HomePage() {
+  return <Main />
+>>>>>>> e62a211ec4abca59bf8086a1ba240434f1eaf587
 }
