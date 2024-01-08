@@ -13,8 +13,8 @@ export default function NavbarImageBtn() {
       <Image
         alt='Tailwind CSS Navbar component'
         src={imageUrl}
-        width={50}
-        height={50}
+        width={120}
+        height={120}
       />
     </div>
   )

@@ -1,5 +1,7 @@
+import { sendEmailVerification } from '@/api/auth'
 import { authInputType } from '@/constants/auth'
 import { useEffect } from 'react'
+import { FiCheck } from 'react-icons/fi'
 
 export default function AuthInput({
   inputType,
@@ -7,7 +9,10 @@ export default function AuthInput({
   setValue,
   onBlur,
   authType,
-  handleSendEmailVerification,
+  checkEmailExist,
+  isEmailUnique,
+  checkNickname,
+  isNicknameUnique,
 }) {
   const type = authInputType[inputType]
 
@@ -55,9 +60,14 @@ export default function AuthInput({
         />
         {authType === 'signup' && inputType === 'email' && (
           <button
-            onClick={handleSendEmailVerification}
-            className='px-4 py-1.5 bg-indigo-500 text-white rounded-md hover:bg-indigo-600 focus:outline-none'>
-            확인
+            type='button' // 폼 제출을 방지하기 위해 type을 'button'으로 설정
+            onClick={checkEmailExist}
+            className='ml-2 border border-gray-500 p-2'>
+            {isEmailUnique ? (
+              <FiCheck className='text-green-500 text-2xl' />
+            ) : (
+              <FiCheck className='text-red-500 text-2xl' />
+            )}
           </button>
         )}
         {inputType === 'address' && (
@@ -65,6 +75,19 @@ export default function AuthInput({
             onClick={handleSearchAddress}
             className='px-4 py-1.5 bg-indigo-500 text-white rounded-md hover:bg-indigo-600 focus:outline-none'>
             검색
+          </button>
+        )}
+
+        {inputType === 'nickname' && (
+          <button
+            type='button' // 폼 제출을 방지하기 위해 type을 'button'으로 설정
+            onClick={checkNickname}
+            className='ml-2 border border-gray-500 p-2'>
+            {isNicknameUnique ? (
+              <FiCheck className='text-green-500 text-2xl' />
+            ) : (
+              <FiCheck className='text-red-500 text-2xl' />
+            )}
           </button>
         )}
       </div>

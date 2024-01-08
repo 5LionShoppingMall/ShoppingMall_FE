@@ -13,9 +13,11 @@ import {
 export default function Sidebar() {
   return (
     <div className='flex flex-col w-64 bg-gray-100 text-gray-800'>
-      <div className='flex items-center justify-center mt-10'>
-        <span className='text-2xl mx-2 font-semibold'>마이페이지</span>
-      </div>
+      <Link href='/mypage'>
+        <div className='flex items-center justify-center mt-10'>
+          <span className='text-2xl mx-2 font-semibold'>마이페이지</span>
+        </div>
+      </Link>
       <nav className='mt-10'>
         <Link href='/mypage/profile'>
           <div className='flex items-center mt-5 px-6 py-2 text-gray-700 cursor-pointer hover:bg-gray-200 border-b'>
