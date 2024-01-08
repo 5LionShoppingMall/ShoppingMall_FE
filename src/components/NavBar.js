@@ -64,16 +64,6 @@ export default function Navbar() {
             </>
           )}
         </div>
-        {/* {!login && (
-          <>
-            <Link href='/auth/signin' className='ml-2'>
-            <button className='btn'>로그인</button>
-          </Link>
-            <button className='btn ml-2' onClick={() => setLogin(true)}>
-              로그인
-            </button>
-          </>
-        )} */}
         <Dropdown menu='dropdown' />
       </div>
     </div>

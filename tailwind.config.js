@@ -27,6 +27,15 @@ module.exports = {
           '100%': { transform: 'translateX(0)' },
         },
       },
+      animation: {
+        slide: 'slide 0.7s forwards',
+      },
+      keyframes: {
+        slide: {
+          '0%': { transform: 'translateX(-20%)' },
+          '100%': { transform: 'translateX(0)' },
+        },
+      },
     },
   },
   plugins: [require('daisyui')],
