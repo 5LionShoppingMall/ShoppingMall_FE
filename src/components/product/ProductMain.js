@@ -24,9 +24,15 @@ export default function ProductMain() {
     return <div>{error}</div>;
   }
 
-  if (!products.objData) {
+  if (!products) {
+    return <>데이터가 없습니다.</>;
+  }
+
+  if (!products?.objData) {
     return <>상품이 없습니다.</>;
   }
+
+  console.log(products);
 
   const { content, totalPages } = products.objData;
 

@@ -10,12 +10,15 @@ export async function GET(req) {
   try {
     const res = await getProducts(page, size);
 
-    res.objData.content = res.objData.content.map((product) => {
-      return { ...product, price: formatPrice(product.price) };
-    });
+    if (res?.objData) {
+      res.objData.content = res.objData.content.map((product) => {
+        return { ...product, price: formatPrice(product.price) };
+      });
+    }
 
     return NextResponse.json(res);
   } catch (err) {
+    console.log(err);
     return new Response(JSON.stringify(err), { status: 500 });
   }
 }

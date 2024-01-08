@@ -3,6 +3,7 @@
 import { useProductDetail } from '@/hooks/useProducts';
 import Carousel from '../ui/Carousel';
 import SwiperCarousel from '../ui/SwiperCarousel';
+import Link from 'next/link';
 
 export default function ProductDetail({ id }) {
   const { product, isLoading, isError, error } = useProductDetail(id);
@@ -32,7 +33,13 @@ export default function ProductDetail({ id }) {
           )}
         </div>
         <div className='w-full h-full flex flex-col justify-between px-5'>
-          <div className='flex-grow pt-10'>
+          <div className='flex-grow'>
+            <div className='flex justify-end items-center gap-2 h-10'>
+              <Link href={`/products/${product.id}/modify`}>
+                <span>수정</span>
+              </Link>
+              <span>삭제</span>
+            </div>
             <h1 className='flex mb-1 text-lg font-bold align-middle text-heading md:text-2xl hover:text-black'>
               {product.title}
             </h1>

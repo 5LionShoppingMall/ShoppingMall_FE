@@ -1,24 +1,46 @@
 'use client';
 
-import { useRef, useState } from 'react';
-import CameraIcon from '../ui/icon/CameraIcon';
 import Image from 'next/image';
+import CameraIcon from '../ui/icon/CameraIcon';
 import CloseIcon from '../ui/icon/CloseIcon';
-import { useWriteProduct } from '@/hooks/useProducts';
+import { useModifyProduct, useProductDetail } from '@/hooks/useProducts';
+import { useEffect, useRef, useState } from 'react';
 
-const productInfoInit = {
-  title: '',
-  price: 0,
-  description: '',
-  seller: null,
-};
-
-export default function ProductWrite() {
+export default function ProductEdit({ id }) {
   const fileInputRef = useRef();
-  const [selectedImages, setSelectedImages] = useState([]);
-  const [productInfo, setProductInfo] = useState(productInfoInit);
-  const [inputPrice, setInputPrice] = useState('');
-  const { submitWrite, isPending, isError, error } = useWriteProduct();
+  const {
+    product,
+    isLoading,
+    isError: isDetailError,
+    error: detailError,
+  } = useProductDetail(id);
+
+  const {
+    submitModify,
+    isPending,
+    isError: isModifyError,
+    error: modifyError,
+  } = useModifyProduct();
+
+  const [productInfo, setProductInfo] = useState(product);
+  const [selectedImages, setSelectedImages] = useState(product?.images);
+  const [inputPrice, setInputPrice] = useState(product?.price.toLocaleString());
+
+  useEffect(() => {
+    if (product) {
+      setProductInfo({
+        ...product,
+        price: Number(product.price.replace(/,/g, '')),
+      });
+      setSelectedImages(
+        product.images.map((image) => ({
+          ...image,
+          isChanged: false, // 이미지가 변경되지 않았음을 명시
+        }))
+      );
+      setInputPrice(product.price);
+    }
+  }, [product]);
 
   const openFilePicker = (e) => {
     e.preventDefault();
@@ -42,8 +64,12 @@ export default function ProductWrite() {
       const newImages = files.map((file) => ({
         file,
         url: URL.createObjectURL(file),
+        isChanged: true,
       }));
+
       setSelectedImages((prevImages) => [...prevImages, ...newImages]);
+    } else {
+      setSelectedImages((prevImages) => [...prevImages, ...product.images]);
     }
   };
 
@@ -75,10 +101,11 @@ export default function ProductWrite() {
     });
   };
 
-  const wirteSubmitHandler = (e) => {
+  const modifySubmitHandler = (e) => {
     e.preventDefault();
 
     const formData = new FormData();
+    const existingImages = [];
 
     formData.append(
       'productInfo',
@@ -86,16 +113,25 @@ export default function ProductWrite() {
     );
 
     selectedImages.forEach((image, index) => {
-      formData.append('files', image.file);
+      if (image.isChanged) {
+        // 이미지가 변경되었으면 새 파일을 formData에 추가
+        formData.append('files', image?.file || null);
+      } else {
+        existingImages.push(image);
+      }
     });
 
-    submitWrite(formData);
+    formData.append('imagesJson', JSON.stringify(existingImages));
+
+    submitModify({ productId: id, formData });
   };
+
+  console.log(productInfo);
 
   return (
     <form
       className='flex flex-col items-center sm:w-2/3 mx-auto p-10 gap-5 h-full'
-      onSubmit={wirteSubmitHandler}
+      onSubmit={modifySubmitHandler}
     >
       <div className='flex gap-4 justify-start w-full items-center'>
         <div className='w-fit'>
@@ -115,7 +151,7 @@ export default function ProductWrite() {
           </button>
         </div>
         <div className='w-full flex items-center overflow-x-auto whitespace-nowrap gap-3 rounded-md'>
-          {selectedImages.map((image, index) => (
+          {selectedImages?.map((image, index) => (
             <div
               key={index}
               className='relative flex-shrink-0 w-24 h-24 rounded-md bg-cover'
@@ -139,6 +175,7 @@ export default function ProductWrite() {
       <div className='w-full h-fit bg-white flex justify-center items-center'>
         <textarea
           name='title'
+          value={productInfo?.title}
           className='w-full resize-none focus:outline-none text-sm p-3 border rounded-md'
           placeholder='상품명'
           rows={1}
@@ -157,6 +194,7 @@ export default function ProductWrite() {
       <div className='w-full h-full'>
         <textarea
           name='description'
+          value={productInfo?.description}
           className='resize-none w-full h-full text-sm p-3 focus:outline-none border rounded-md'
           onChange={onChangeHandler}
         ></textarea>
@@ -166,7 +204,7 @@ export default function ProductWrite() {
           {isPending ? (
             <span className='loading loading-spinner'></span>
           ) : (
-            '등록하기'
+            '수정하기'
           )}
         </button>
       </div>

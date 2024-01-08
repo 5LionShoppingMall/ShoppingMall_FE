@@ -6,6 +6,7 @@ export default function NavbarImageBtn() {
       <Image
         alt='Tailwind CSS Navbar component'
         src='/img/default-profile-img.png'
+        className='object-cover'
         fill
       />
     </div>

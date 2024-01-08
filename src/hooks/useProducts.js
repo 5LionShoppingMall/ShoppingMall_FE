@@ -7,6 +7,59 @@ import {
 import { apiAxios, fileApiAxios } from '@/config/axios-config';
 import { useRouter } from 'next/navigation';
 
+const fetchProductModify = async (productId, formData) => {
+  console.log('하아..');
+  /* const images = formData.getAll('images');
+  const image = images[0];
+  images.map((image) => console.log(JSON.parse(image)));
+  console.log(JSON.stringify(image, null, 2));
+
+  for (let [key, value] of formData.entries()) {
+    console.log(key, value);
+  } */
+
+  const res = await fileApiAxios.put(`/product/${productId}/modify`, formData);
+
+  return res.data;
+};
+
+export const useModifyProduct = () => {
+  const router = useRouter();
+  const queryClient = useQueryClient();
+  const {
+    mutate: submitModify,
+    isPending,
+    isError,
+    error,
+  } = useMutation({
+    mutationFn: ({ productId, formData }) =>
+      fetchProductModify(productId, formData),
+    onSuccess: (res) => {
+      console.log('상품 수정 성공');
+      console.log(res);
+
+      if (!res.result) {
+        alert('상품 수정에 실패하였습니다.');
+        return;
+      }
+
+      alert('상품 수정에 성공하였습니다.');
+
+      queryClient.invalidateQueries({ queryKey: ['productDetail'] });
+      router.back();
+    },
+    onError: (err) => {
+      console.log('상품 수정 실패');
+      console.log(err);
+
+      return err;
+    },
+  });
+
+  return { submitModify, isPending, isError, error };
+};
+
+/** 상품 상세 정보 */
 const fetchProductDetail = async (id) => {
   const res = await apiAxios.get(`/products/${id}`);
 
@@ -35,7 +88,6 @@ const fetchWrite = async (formData) => {
 };
 
 export const useWriteProduct = () => {
-  console.log('useWriteQuery');
   const router = useRouter();
   const queryClient = useQueryClient();
   const {
@@ -66,7 +118,9 @@ export const useWriteProduct = () => {
     },
     onError: (err) => {
       console.log('상품 등록 실패');
-      console.log(res);
+      console.log(err);
+
+      return err;
     },
   });
 

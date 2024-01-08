@@ -10,6 +10,7 @@ export const getProductDetail = async (id) => {
         'Content-Type': 'application/json',
       },
       method: 'GET',
+      cache: 'no-store',
     });
 
     const data = await res.json();
@@ -49,7 +50,11 @@ export const getProducts = async (page, size) => {
       }
     ).then((res) => res.json());
 
-    console.log(res);
+    if (!res.result) {
+      throw new Error(res.error);
+    }
+
+    console.log(res.objData.content);
 
     return res;
   } catch (err) {

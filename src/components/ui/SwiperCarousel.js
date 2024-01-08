@@ -36,12 +36,12 @@ export default function SwiperCarousel({ images }) {
       >
         {images.map((image, index) => (
           <SwiperSlide key={index}>
-            <div className='pt-[100%]'>
+            <div className='relative overflow-hidden pt-[100%]'>
               <Image
                 src={image.url}
                 alt=''
-                layout='fill'
-                className='rounded-lg'
+                className='rounded-lg object-cover'
+                fill
               />
             </div>
           </SwiperSlide>
