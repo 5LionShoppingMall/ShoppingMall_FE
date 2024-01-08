@@ -58,8 +58,8 @@ export default function ProductWrite() {
     });
   };
 
-  const priceChangeHander = (event) => {
-    const numberOnly = event.target.value.replace(/,/g, '');
+  const priceChangeHander = (e) => {
+    const numberOnly = e.target.value.replace(/,/g, '');
     if (numberOnly === '') {
       setInputPrice(null);
     } else if (!isNaN(numberOnly)) {
