@@ -25,13 +25,13 @@ export default function ProductEdit({ id }) {
   const [productInfo, setProductInfo] = useState(product);
   const [selectedImages, setSelectedImages] = useState(product?.images);
   const [deletedImages, setDeletedImages] = useState([]);
-  const [inputPrice, setInputPrice] = useState(product?.price.toLocaleString());
+  const [inputPrice, setInputPrice] = useState(product?.price);
 
   useEffect(() => {
     if (product) {
       setProductInfo({
         ...product,
-        price: Number(product.price.replace(/,/g, '')),
+        price: product.price,
       });
       setSelectedImages(
         product.images.map((image) => ({
@@ -39,7 +39,7 @@ export default function ProductEdit({ id }) {
           isChanged: false, // 이미지가 변경되지 않았음을 명시
         }))
       );
-      setInputPrice(product.price);
+      setInputPrice(product.price.toLocaleString());
     }
   }, [product]);
 
@@ -77,7 +77,7 @@ export default function ProductEdit({ id }) {
   const removeImage = (e, index) => {
     e.preventDefault();
 
-    // 먼저, 삭제될 이미지에 대한 정보를 별도로 저장합니다.
+    // 삭제될 이미지에 대한 정보를 별도로 저장
     const imageToRemove = selectedImages[index];
 
     // 이미지가 서버에 이미 저장되어 있는 이미지라면 삭제 목록에 ID 추가
@@ -98,12 +98,18 @@ export default function ProductEdit({ id }) {
     });
   };
 
-  const priceChangeHander = (event) => {
-    const numberOnly = event.target.value.replace(/,/g, '');
-    if (numberOnly === '') {
-      setInputPrice(null);
-    } else if (!isNaN(numberOnly)) {
-      setInputPrice(parseInt(numberOnly).toLocaleString());
+  const priceChangeHander = (e) => {
+    const value = e.target.value.replace(/,/g, '');
+
+    if (value === '') {
+      setInputPrice('');
+    } else {
+      const numberValue = Number(value);
+
+      if (!isNaN(numberValue)) {
+        setInputPrice(numberValue.toLocaleString());
+        setProductInfo({ ...productInfo, price: numberValue }); // productInfo의 price를 업데이트
+      }
     }
   };
 
@@ -117,7 +123,7 @@ export default function ProductEdit({ id }) {
 
   const modifySubmitHandler = (e) => {
     e.preventDefault();
-
+    console.log('Submitting price:', productInfo.price);
     const formData = new FormData();
     const existingImages = [];
 
@@ -144,8 +150,6 @@ export default function ProductEdit({ id }) {
 
     submitModify({ productId: id, formData });
   };
-
-  console.log(deletedImages);
 
   return (
     <form
