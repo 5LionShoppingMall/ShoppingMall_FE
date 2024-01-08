@@ -7,6 +7,49 @@ import {
 import { apiAxios, fileApiAxios } from '@/config/axios-config';
 import { useRouter } from 'next/navigation';
 
+/** 상품 삭제 */
+const fetchProductDelete = async (productId) => {
+  const res = await fileApiAxios.delete(`/product/${productId}/delete`);
+
+  return res.data;
+};
+
+export const useDeleteProduct = (productId) => {
+  const router = useRouter();
+  const queryClient = useQueryClient();
+  const {
+    mutate: submitDelete,
+    isPending,
+    isError,
+    error,
+  } = useMutation({
+    mutationFn: () => fetchProductDelete(productId),
+    onSuccess: (res) => {
+      console.log('상품 삭제 성공');
+      console.log(res);
+
+      if (!res.result) {
+        alert('상품 삭제에 실패하였습니다.');
+        return;
+      }
+
+      alert('상품 삭제에 성공하였습니다.');
+
+      queryClient.invalidateQueries({ queryKey: ['products'] });
+      router.replace('/products');
+    },
+    onError: (err) => {
+      console.log('상품 삭제 실패');
+      console.log(err);
+
+      return err;
+    },
+  });
+
+  return { submitDelete, isPending, isError, error };
+};
+
+/** 상품 수정 */
 const fetchProductModify = async (productId, formData) => {
   const res = await fileApiAxios.put(`/product/${productId}/modify`, formData);
 
