@@ -24,6 +24,7 @@ export default function ProductEdit({ id }) {
 
   const [productInfo, setProductInfo] = useState(product);
   const [selectedImages, setSelectedImages] = useState(product?.images);
+  const [deletedImages, setDeletedImages] = useState([]);
   const [inputPrice, setInputPrice] = useState(product?.price.toLocaleString());
 
   useEffect(() => {
@@ -76,10 +77,23 @@ export default function ProductEdit({ id }) {
   const removeImage = (e, index) => {
     e.preventDefault();
 
+    // 먼저, 삭제될 이미지에 대한 정보를 별도로 저장합니다.
+    const imageToRemove = selectedImages[index];
+
+    // 이미지가 서버에 이미 저장되어 있는 이미지라면 삭제 목록에 ID 추가
+    if (imageToRemove.id) {
+      setDeletedImages((prevDeletedImages) => [
+        ...prevDeletedImages,
+        imageToRemove,
+      ]);
+    }
+
     setSelectedImages((prevImages) => {
       const newImages = [...prevImages];
+
       URL.revokeObjectURL(newImages[index].url);
       newImages.splice(index, 1);
+
       return newImages;
     });
   };
@@ -123,10 +137,15 @@ export default function ProductEdit({ id }) {
 
     formData.append('imagesJson', JSON.stringify(existingImages));
 
+    // 삭제할 이미지 ID 목록을 서버에 전송
+    if (deletedImages.length > 0) {
+      formData.append('deletedImages', JSON.stringify(deletedImages));
+    }
+
     submitModify({ productId: id, formData });
   };
 
-  console.log(productInfo);
+  console.log(deletedImages);
 
   return (
     <form
