@@ -1,23 +1,24 @@
-/** @format */
+import { toast } from 'react-toastify'
 
 import serverAxios from '../config/axios-config'
 import axios from 'axios'
 
 export const sendEmailVerification = async (email) => {
   try {
-    const response = await serverAxios.post('/api/auth/sendVerificationEmail', {
+    const response = await serverAxios.post('/api/auth/email-exists', {
       email,
     })
-    return response.data.message
+    return true
   } catch (err) {
     console.error(err)
-    return 'Verification email could not be sent'
+    return false
   }
 }
 
 export const sendFormData = async (
   url,
   formData,
+  type,
   successMsg,
   errorMsg,
   setErrorMsg
@@ -31,7 +32,16 @@ export const sendFormData = async (
     return true
   } catch (err) {
     console.error(`${errorMsg}: ${err}`)
-    setErrorMsg(errorMsg)
+    if (err.response && type == 'signin') {
+      switch (err.response.status) {
+        case 403: // Forbidden
+          toast.error('이메일 인증을 진행해주세요.')
+          break
+        default:
+          toast.error('이메일 또는 비밀번호가 일치하지 않습니다.')
+          break
+      }
+    }
     return false
   }
 }

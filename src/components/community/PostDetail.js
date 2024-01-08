@@ -4,6 +4,12 @@ import { useEffect } from 'react';
 import { usePost } from '@/hooks/usePosts';
 import { useUser } from '@/hooks/useUser';
 import { useRouter } from 'next/navigation';
+import {
+  AiOutlineUser,
+  AiOutlineEye,
+  AiFillEdit,
+  AiFillDelete,
+} from 'react-icons/ai';
 import axios from '../../config/axios-config'; // axios 추가
 
 const PostDetail = (postId) => {
@@ -16,11 +22,13 @@ const PostDetail = (postId) => {
   }, [post, user]);
 
   if (isLoading) {
-    return <div className="text-center mt-8">Loading...</div>;
+    return <div className='text-center mt-8'>Loading...</div>;
   }
 
   if (isError) {
-    return <div className="text-center mt-8 text-red-500">Error fetching post</div>;
+    return (
+      <div className='text-center mt-8 text-red-500'>Error fetching post</div>
+    );
   }
 
   // 현재 로그인한 사용자가 작성자인지 확인
@@ -29,10 +37,13 @@ const PostDetail = (postId) => {
 
   const handleModifyClick = () => {
     // 수정 버튼 클릭 시 PostModify 페이지로 이동
-    window.location.href = `/community/modify/${postId.postId}`;
+    router.push(`/community/modify/${postId.postId}`);
   };
 
   const handleDeletePost = async () => {
+    if (!confirm('정말로 삭제하시겠습니까?')) {
+      return;
+    }
     try {
       // axios를 사용하여 백엔드 서버에 formData 전송
       const response = await axios.delete(`/api/posts/delete/${postId.postId}`);
@@ -47,27 +58,39 @@ const PostDetail = (postId) => {
   };
 
   return (
-    <div className="max-w-3xl mx-auto mt-8">
-      <h1 className="text-4xl font-bold mb-4">{post.objData.title}</h1>
+    <div className='mx-auto mt-8 p-4 min-h-[400px] bg-white shadow rounded-lg flex flex-col'>
+      <h1 className='text-4xl font-bold mb-4'>{post.objData.title}</h1>
 
-      <div className="border-t border-b py-2 mb-4">
-        <p className="text-gray-500">작성자: {post.objData.user.nickname}</p>
-        <p className="text-gray-500">조회수: {post.objData.viewCount}</p>
+      <div className='border-t border-b py-2 mb-4 flex justify-between items-center'>
+        <p className='text-gray-500 flex items-center'>
+          <AiOutlineUser className='mr-1' />
+          작성자: {post.objData.user.nickname}
+        </p>
+        <p className='text-gray-500 flex items-center'>
+          <AiOutlineEye className='mr-1' />
+          조회수: {post.objData.viewCount}
+        </p>
       </div>
 
+      <div className='text-gray-600 flex-grow'>{post.objData.content}</div>
+
       {isAuthor && (
-        <div className="mb-4">
+        <div className='mb-4 flex'>
           {/* 수정 및 삭제 버튼 */}
-          <button className="mr-2 bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600" onClick={handleModifyClick}>
-            수정
+          <button
+            className='mr-2 bg-cyan-500 text-white p-2 rounded-md hover:bg-cyan-600 flex items-center transition-all duration-200 ease-in-out transform hover:scale-105'
+            onClick={handleModifyClick}
+          >
+            <AiFillEdit className='mr-1' /> 수정
           </button>
-          <button className="bg-red-500 text-white p-2 rounded-md hover:bg-red-600" onClick={handleDeletePost}>
-            삭제
+          <button
+            className='bg-rose-500 text-white p-2 rounded-md hover:bg-rose-600 flex items-center transition-all duration-200 ease-in-out transform hover:scale-105'
+            onClick={handleDeletePost}
+          >
+            <AiFillDelete className='mr-1' /> 삭제
           </button>
         </div>
       )}
-
-      <div className="text-gray-600">{post.objData.content}</div>
     </div>
   );
 };

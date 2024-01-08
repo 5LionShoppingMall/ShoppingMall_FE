@@ -56,21 +56,16 @@ export default function Navbar() {
               <Dropdown menu='avatar' />
             </div>
           ) : (
-            <Link href='/auth/signin'>
-              <button className='btn ml-2'>로그인</button>
-            </Link>
+            <>
+              <Link href='/auth/signin'>
+                <button className='btn ml-2'>로그인</button>
+              </Link>
+              <Link href='/auth/signup'>
+                <button className='btn ml-2'>회원가입</button>
+              </Link>
+            </>
           )}
         </div>
-        {/* {!login && (
-          <>
-            <Link href='/auth/signin' className='ml-2'>
-            <button className='btn'>로그인</button>
-          </Link>
-            <button className='btn ml-2' onClick={() => setLogin(true)}>
-              로그인
-            </button>
-          </>
-        )} */}
         <Dropdown menu='dropdown' />
       </div>
     </div>

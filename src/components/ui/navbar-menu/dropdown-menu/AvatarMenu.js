@@ -1,8 +1,8 @@
 /** @format */
 
-import Link from 'next/link';
-import { navAvatarMenus } from '@/constants/navbar';
-import Signout from '@/components/auth/Signout';
+import Link from 'next/link'
+import { navAvatarMenus } from '@/constants/navbar'
+import Signout from '@/components/auth/Signout'
 
 export default function AvatarMenu({ setIsMenuOpen }) {
   return (
@@ -19,5 +19,5 @@ export default function AvatarMenu({ setIsMenuOpen }) {
         <Signout type='avatar' />
       </li>
     </>
-  );
+  )
 }

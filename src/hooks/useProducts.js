@@ -8,16 +8,6 @@ import { apiAxios, fileApiAxios } from '@/config/axios-config';
 import { useRouter } from 'next/navigation';
 
 const fetchProductModify = async (productId, formData) => {
-  console.log('하아..');
-  /* const images = formData.getAll('images');
-  const image = images[0];
-  images.map((image) => console.log(JSON.parse(image)));
-  console.log(JSON.stringify(image, null, 2));
-
-  for (let [key, value] of formData.entries()) {
-    console.log(key, value);
-  } */
-
   const res = await fileApiAxios.put(`/product/${productId}/modify`, formData);
 
   return res.data;

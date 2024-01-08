@@ -1,12 +1,12 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { apiAxios } from '@/config/axios-config';
+import axios from '@/config/axios-config';
 import { getPostById } from '@/api/post';
 
 // axios ver
 const fetchPosts = async () => {
   const {
     data: { listData },
-  } = await apiAxios.get('/posts');
+  } = await axios.get('api/posts/list');
 
   return listData;
 };
