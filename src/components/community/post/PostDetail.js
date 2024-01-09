@@ -13,6 +13,7 @@ import {
 import axios from '@/config/axios-config' // axios 추가
 import { getAllComments } from '@/util/comment'
 import Comment from '../comment/Comment'
+import LikeButton from '../like/LikeButton'
 
 const PostDetail = (postId) => {
   const { post, isLoading, isError } = usePost(postId)
@@ -149,6 +150,11 @@ const PostDetail = (postId) => {
               onClick={handleDeletePost}>
               <AiFillDelete className='mr-1' /> 삭제
             </button>
+          </div>
+        )}
+        {user && (
+          <div className='mt-4'>
+            <LikeButton user={user} postId={postId.postId} />
           </div>
         )}
       </div>

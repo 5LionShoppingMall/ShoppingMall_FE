@@ -6,6 +6,7 @@ import { usePosts } from '@/hooks/usePosts'
 import { useUser } from '@/hooks/useUser'
 import Link from 'next/link'
 import { CiCirclePlus } from 'react-icons/ci'
+import { AiFillHeart } from 'react-icons/ai'
 
 export default function PostMain() {
   const { posts, isLoading, isError, error } = usePosts()
@@ -53,6 +54,8 @@ export default function PostMain() {
     }
   }
 
+  console.log(posts)
+
   return (
     <div className='p-4 bg-gray-50 rounded-lg shadow-md'>
       <h3 className='text-4xl font-bold mt-6 mb-6 text-black-700 flex justify-center'>
@@ -87,6 +90,16 @@ export default function PostMain() {
               <p className='text-center'>
                 작성일자 : {formatCreatedAt(post.createdAt)}
               </p>
+              <p className='text-green-500 text-center'>
+                조회수 : {post.viewCount}
+              </p>
+              <div className='flex items-center text-gray-500'>
+                <AiFillHeart className='text-red-500 mr-1' />
+                <span className='mr-2 text-red-300'>좋아요:</span>
+                <span className='badge badge-secondary badge-outline'>
+                  {post.likesCount}
+                </span>
+              </div>
             </div>
           ))}
         </div>
