@@ -31,8 +31,8 @@ export default function EditProfile() {
   const [form, setForm] = useState({
     password: '',
     nickname: user?.nickname,
-    phoneNumber: user.phoneNumber,
-    address: user.address,
+    phoneNumber: user?.phoneNumber,
+    address: user?.address,
     profilePictureUrl: null,
     profilePictureName: '',
   })
