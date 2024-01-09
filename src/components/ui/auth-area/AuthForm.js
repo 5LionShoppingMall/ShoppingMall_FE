@@ -46,15 +46,6 @@ export default function AuthForm({ authType }) {
   const [isEmailUnique, setIsEmailUnique] = useState(false)
   const [isNicknameUnique, setIsNicknameUnique] = useState(false)
 
-  const [errors, setErrors] = useState({
-    email: null,
-    password: null,
-    passwordConfirm: null,
-    nickname: null,
-    phoneNumber: null,
-    address: null,
-  })
-
   const [form, setForm] = useState({
     email: '',
     password: '',
@@ -70,7 +61,7 @@ export default function AuthForm({ authType }) {
     const message = await sendEmailVerification(form.email)
     alert(message)
   }
-  })
+  }
 
   const checkEmailExist = async () => {
     const response = await axios
@@ -158,14 +149,14 @@ export default function AuthForm({ authType }) {
         return null
     }
   }
-    }))
+    
 
     const error = validateField(name, value, form, 'signup')
     setErrors((prevErrors) => ({
       ...prevErrors,
       [name]: error,
     }))
-  }
+  
 
   const loginHandler = async (e) => {
     e.preventDefault()
@@ -268,7 +259,7 @@ export default function AuthForm({ authType }) {
             checkEmailExist={checkEmailExist}
             isEmailUnique={isEmailUnique}
             authType={authType}
-          />
+          /
           {
             <div className='text-red-400 mt-2 ml-2 font-semibold font-sans'>
               {authType === 'signup' && errors.email && (
