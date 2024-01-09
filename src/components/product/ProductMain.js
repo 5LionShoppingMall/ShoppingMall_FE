@@ -7,29 +7,35 @@ import Pagination from '../ui/Pagination';
 import { useState } from 'react';
 import ProductListItem from './ProductListItem';
 import Link from 'next/link';
+import LoadingSpinnerCircle from '../ui/icon/LoadingSpinnerCircle';
+import ErrorMessage from '../error/ErrorMessage';
 
 export default function ProductMain() {
   const searchParams = useSearchParams();
   const page = Number(searchParams.get('page')) || 1;
   const size = Number(searchParams.get('size')) || 36;
   const [pageSize, setPageSize] = useState(size);
-  const { products, isLoading, isError, error, isPlaceholderData } =
+  const { products, isLoading, isFetching, isError, error, isPlaceholderData } =
     useProducts(page, pageSize);
 
-  if (isLoading) {
-    return <div>loading</div>;
+  if (isLoading || isFetching) {
+    return (
+      <div className='w-full h-full flex justify-center items-center -mt-[68px]'>
+        <LoadingSpinnerCircle color='text-gray-500' />
+      </div>
+    );
   }
 
   if (isError) {
     return <div>{error}</div>;
   }
 
-  if (!products) {
-    return <>데이터가 없습니다.</>;
-  }
-
-  if (!products?.objData) {
-    return <>상품이 없습니다.</>;
+  if (!products || !products?.objData) {
+    return (
+      <div className='w-full h-full -mt-[68px]'>
+        <ErrorMessage message='데이터를 찾을 수 없어요.. 🥲' />
+      </div>
+    );
   }
 
   console.log(products);

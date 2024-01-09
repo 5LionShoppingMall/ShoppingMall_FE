@@ -16,9 +16,6 @@ export const metadata = {
 };
 
 export default async function RootLayout({ children }) {
-  /* const res = await axios.get('/check');
-  console.dir(res); */
-
   return (
     <html lang='ko'>
       <body className='w-full sm:bg-neutral-50 overflow-auto'>

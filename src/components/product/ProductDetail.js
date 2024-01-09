@@ -6,14 +6,21 @@ import SwiperCarousel from '../ui/SwiperCarousel';
 import Link from 'next/link';
 import { useState } from 'react';
 import ConfirmAlert from '../ui/modal/ConfirmAlert';
+import LoadingSpinnerCircle from '../ui/icon/LoadingSpinnerCircle';
+import ErrorMessage from '../error/ErrorMessage';
 
 export default function ProductDetail({ id }) {
-  const { product, isLoading, isError, error } = useProductDetail(id);
+  const { product, isLoading, isFetching, isError, error } =
+    useProductDetail(id);
   const { submitDelete, isPending } = useDeleteProduct(id);
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
 
-  if (isLoading) {
-    return <>Loading</>;
+  if (isLoading || isFetching) {
+    return (
+      <div className='w-full h-full flex justify-center items-center -mt-[68px]'>
+        <LoadingSpinnerCircle color='text-gray-500' />
+      </div>
+    );
   }
 
   if (isError) {
@@ -21,7 +28,11 @@ export default function ProductDetail({ id }) {
   }
 
   if (!product) {
-    return <>Data Not Found</>;
+    return (
+      <div className='w-full h-full -mt-[68px]'>
+        <ErrorMessage message='데이터를 찾을 수 없어요.. 🥲' />
+      </div>
+    );
   }
 
   console.log(product);
@@ -33,7 +44,11 @@ export default function ProductDetail({ id }) {
           {product.images.length > 0 ? (
             <SwiperCarousel images={product.images} />
           ) : (
-            'no image'
+            <div className='lg:w-[444px] lg:h-[444px]'>
+              <span className='flex justify-center items-center h-full'>
+                no image
+              </span>
+            </div>
           )}
         </div>
         <div className='w-full h-full flex flex-col justify-between px-5'>

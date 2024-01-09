@@ -110,6 +110,7 @@ export const useProductDetail = (id) => {
   const {
     data: product,
     isLoading,
+    isFetching,
     isError,
     error,
   } = useQuery({
@@ -117,7 +118,7 @@ export const useProductDetail = (id) => {
     queryFn: () => fetchProductDetail(id),
   });
 
-  return { product, isLoading, isError, error };
+  return { product, isLoading, isFetching, isError, error };
 };
 
 /** 상품 등록 */
@@ -197,6 +198,7 @@ export const useProducts = (page, size) => {
   const {
     data: products,
     isLoading,
+    isFetching,
     isError,
     error,
     isPlaceholderData,
@@ -206,5 +208,5 @@ export const useProducts = (page, size) => {
     placeholderData: keepPreviousData,
   });
 
-  return { products, isLoading, isError, error, isPlaceholderData };
+  return { products, isLoading, isFetching, isError, error, isPlaceholderData };
 };
