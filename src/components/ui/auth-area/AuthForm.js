@@ -17,10 +17,34 @@ import {
   PHONE_NUMBER_REGEX,
 } from '../../../constants/regex'
 import validateForm from '@/util/validateForm'
+import Link from 'next/link'
+import AuthInput from './AuthInput'
+import { useState } from 'react'
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
+import ProfilePicture from './ProfilePicture'
+import { sendFormData, uploadImageToCloudinary } from '../../../api/auth'
+import axios from '../../../config/axios-config'
+import validateForm from '@/util/validateForm'
+import { validateField } from '@/util/validateField'
+import { checkNicknameExists } from '@/util/checkExist'
 
 export default function AuthForm({ authType }) {
   const title =
     (authType === 'signin' && '로그인') || (authType === 'signup' && '회원가입')
+
+  const [errors, setErrors] = useState({
+    email: null,
+    password: null,
+    passwordConfirm: null,
+    nickname: null,
+    phoneNumber: null,
+    address: null,
+  })
+    (authType === 'signin' && '로그인') || (authType === 'signup' && '회원가입')
+
+  const [isEmailUnique, setIsEmailUnique] = useState(false)
+  const [isNicknameUnique, setIsNicknameUnique] = useState(false)
 
   const [errors, setErrors] = useState({
     email: null,
@@ -46,6 +70,36 @@ export default function AuthForm({ authType }) {
     const message = await sendEmailVerification(form.email)
     alert(message)
   }
+  })
+
+  const checkEmailExist = async () => {
+    const response = await axios
+      .post('/api/users/email-exists', { email: form.email })
+      .then((res) => {
+        toast.info('사용 가능한 이메일입니다.')
+        setIsEmailUnique(true)
+      })
+      .catch((err) => {
+        if (err.response.status == 400) {
+          console.log(err)
+          toast.error('유효하지 않은 이메일 형식입니다.')
+        } else {
+          toast.error('이미 사용중인 이메일입니다.')
+        }
+      })
+  }
+
+  const checkNickname = async () => {
+    try {
+      const isAvailable = await checkNicknameExists(form.nickname)
+      if (isAvailable) {
+        toast.info('사용 가능한 닉네임입니다.')
+        setIsNicknameUnique(true)
+      }
+    } catch (err) {
+      toast.error('이미 사용 중인 닉네임입니다.')
+    }
+  }
 
   const handleFileChange = (e) => {
     e.preventDefault()
@@ -57,6 +111,15 @@ export default function AuthForm({ authType }) {
   } // 프로필 사진 변경을 위한 메서드
 
   const handleChange = (name) => (value) => {
+    // 입력 필드 값 변경
+    if (name === 'nickname') {
+      setIsNicknameUnique(false)
+    }
+
+    if (name === 'email') {
+      setIsEmailUnique(false)
+    }
+
     // 입력 필드 값 변경
     setForm((prev) => ({
       ...prev,
@@ -95,6 +158,14 @@ export default function AuthForm({ authType }) {
         return null
     }
   }
+    }))
+
+    const error = validateField(name, value, form, 'signup')
+    setErrors((prevErrors) => ({
+      ...prevErrors,
+      [name]: error,
+    }))
+  }
 
   const loginHandler = async (e) => {
     e.preventDefault()
@@ -106,6 +177,33 @@ export default function AuthForm({ authType }) {
       await handleSignIn(formData)
     } else if (authType === 'signup') {
       if (!validateForm(form)) {
+        return
+      }
+      await handleSignUp(formData)
+    }
+  }
+
+  const handleSignIn = async (formData) => {
+    const result = await sendFormData(
+      '/api/auth/login',
+      formData,
+      'signin',
+      '로그인에 성공했습니다.',
+      '이메일과 비밀번호를 확인해주세요'
+    )
+    if (result) {
+      window.location.href = '/'
+    }
+  }
+
+  const handleSignUp = async (formData) => {
+    if (formData.profilePictureUrl) {
+      const imageUrl = await uploadImageToCloudinary(formData.profilePictureUrl)
+      if (imageUrl) {
+        formData.profilePictureUrl = imageUrl
+      await handleSignIn(formData)
+    } else if (authType === 'signup') {
+      if (!validateForm(form, 'signup')) {
         return
       }
       await handleSignUp(formData)
@@ -167,6 +265,17 @@ export default function AuthForm({ authType }) {
               </div>
             }
           </div>
+            checkEmailExist={checkEmailExist}
+            isEmailUnique={isEmailUnique}
+            authType={authType}
+          />
+          {
+            <div className='text-red-400 mt-2 ml-2 font-semibold font-sans'>
+              {authType === 'signup' && errors.email && (
+                <p className='error-text'>{errors.email}</p>
+              )}
+            </div>
+          }
         </div>
         <AuthInput
           inputType='password'
@@ -183,7 +292,9 @@ export default function AuthForm({ authType }) {
 
         {authType === 'signin' ? (
           <div className='flex justify-end mt-2 mb-8 text-sm sm:text-xs text-gray-600'>
-            <Link href='#'>비밀번호를 잊으셨나요?</Link>
+            <Link href='/auth/reset-password/request'>
+              비밀번호를 잊으셨나요?
+            </Link>
           </div>
         ) : (
           <>
@@ -199,10 +310,14 @@ export default function AuthForm({ authType }) {
             )}
 
             <AuthInput
+              className='flex-grow'
               inputType='nickname'
               value={form.nickname}
               setValue={handleChange('nickname')}
+              checkNickname={checkNickname}
+              isNicknameUnique={isNicknameUnique}
             />
+
             {
               <div className='text-red-400 mt-2 ml-2 font-semibold font-sans'>
                 {authType === 'signup' && errors.nickname && (

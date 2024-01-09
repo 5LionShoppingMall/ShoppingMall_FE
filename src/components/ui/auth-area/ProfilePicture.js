@@ -1,5 +1,3 @@
-/** @format */
-
 export default function ProfilePicture({ handleFileChange, form }) {
   return (
     <label className='block mt-4'>

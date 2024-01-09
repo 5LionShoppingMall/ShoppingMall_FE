@@ -2,12 +2,9 @@
 
 const nextConfig = {
   images: {
-    domains: [
-      'play-lh.googleusercontent.com',
-      'mblogthumb-phinf.pstatic.net',
-      'res.cloudinary.com',
-    ],
+    domains: ['res.cloudinary.com', 'kr.object.ncloudstorage.com','play-lh.googleusercontent.com',
+      'mblogthumb-phinf.pstatic.net',],
   },
-}
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;
