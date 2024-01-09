@@ -1,33 +1,35 @@
+import dateConverter from '@/util/dateConverter';
 import Image from 'next/image';
 
 export default function ProductListItem({ product }) {
   return (
     <li
       key={product.id}
-      className='relative card bg-base-100 mx-auto shadow-md rounded-md mb-2 w-full'
+      className='flex flex-row sm:flex-col bg-base-100 mx-auto border-b sm:shadow-md sm:rounded-md w-full h-full p-5 sm:p-0'
     >
-      <figure className='relative w-full h-36 md:h-52'>
+      <figure className='relative w-2/5 sm:w-full h-full sm:h-44'>
         {product.thumbnailImage ? (
           <Image
             src={product.thumbnailImage}
             alt='썸네일'
-            className='h-full rounded-t-md object-cover'
+            className='rounded-md sm:rounded-b-none object-cover'
             fill
           />
         ) : (
-          <div className='w-full h-full bg-base-200'></div>
+          <div className='w-full h-full rounded-md sm:rounded-b-none bg-base-200'></div>
         )}
       </figure>
-      <div className='card-body items-start p-4 gap-0 max-sm:p-0'>
-        <p className='text-sm'>{product.seller.email}</p>
-        <h2 className='card-title text-lg overflow-ellipsis overflow-hidden line-clamp-1'>
+      <div className='card-body items-start gap-0 px-4 py-2 sm:p-4'>
+        <h2 className='card-title font-medium text-lg overflow-ellipsis overflow-hidden line-clamp-1'>
           {product.title}
-          {/* <div className='badge badge-secondary'>NEW</div> */}
         </h2>
-        <p>{product.price}원</p>
-        <div className='card-actions justify-end mt-5'>
-          <div className='badge badge-outline'>Fashion</div>
-          <div className='badge badge-outline'>Products</div>
+        <div>
+          <span className='text-lg font-semibold'>{product.price}원</span>
+        </div>
+        <div className='card-actions justify-end items-center w-full mt-5 text-sm text-neutral-500'>
+          <span>{product.seller.address}</span>
+          <span className='hidden sm:block h-[13px] w-[1px] bg-neutral-500'></span>
+          <span>{dateConverter(product.createdAt)}</span>
         </div>
       </div>
     </li>
