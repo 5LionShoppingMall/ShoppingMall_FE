@@ -1,7 +1,9 @@
-export const metadata = {
-  title: 'Community',
-};
+import PostMain from '@/components/community/post/PostMain'
 
-export default function CommunityPage() {
-  return <div>커뮤니티 페이지</div>;
+export const metadata = {
+  title: 'Posts',
+}
+
+export default function CommunityList() {
+  return <PostMain />
 }

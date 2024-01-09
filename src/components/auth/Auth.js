@@ -1,8 +1,8 @@
 'use client';
 
 import Link from 'next/link';
-import AuthForm from './ui/auth-area/AuthForm';
-import SocialLoginBtnArea from './ui/auth-area/SocialLoginBtnArea';
+import AuthForm from '../ui/auth-area/AuthForm';
+import SocialLoginBtnArea from '../ui/auth-area/SocialLoginBtnArea';
 
 export default function Auth({ authType }) {
   return (
