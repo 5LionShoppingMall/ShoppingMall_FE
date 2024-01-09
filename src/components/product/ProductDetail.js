@@ -8,11 +8,17 @@ import { useState } from 'react';
 import ConfirmAlert from '../ui/modal/ConfirmAlert';
 import LoadingSpinnerCircle from '../ui/icon/LoadingSpinnerCircle';
 import ErrorMessage from '../error/ErrorMessage';
+import { useUser } from '@/hooks/useUser';
 
 export default function ProductDetail({ id }) {
   const { product, isLoading, isFetching, isError, error } =
     useProductDetail(id);
   const { submitDelete, isPending } = useDeleteProduct(id);
+  const {
+    user,
+    isLoading: isUserLoading,
+    isFetching: isUserFetching,
+  } = useUser();
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
 
   if (isLoading || isFetching) {
@@ -35,7 +41,7 @@ export default function ProductDetail({ id }) {
     );
   }
 
-  console.log(product);
+  console.log(user);
 
   return (
     <div className='flex flex-col'>
@@ -53,14 +59,17 @@ export default function ProductDetail({ id }) {
         </div>
         <div className='w-full h-full flex flex-col justify-between px-5'>
           <div className='flex-grow'>
-            <div className='flex justify-end items-center gap-2 h-10'>
-              <Link href={`/products/${product.id}/modify`}>
-                <span>수정</span>
-              </Link>
-              <button onClick={() => setIsConfirmOpen(true)}>
-                <span>삭제</span>
-              </button>
-            </div>
+            {!isUserFetching && user?.email === product.seller.email && (
+              <div className='flex justify-end items-center gap-2 h-10 text-sm'>
+                <Link href={`/products/${product.id}/modify`}>
+                  <span>수정</span>
+                </Link>
+                <button onClick={() => setIsConfirmOpen(true)}>
+                  <span>삭제</span>
+                </button>
+              </div>
+            )}
+
             <h1 className='flex mb-1 text-lg font-bold align-middle text-heading md:text-2xl hover:text-black'>
               {product.title}
             </h1>
@@ -73,7 +82,9 @@ export default function ProductDetail({ id }) {
         </div>
       </div>
       <div className='px-5 flex flex-col gap-5'>
-        <h1 className='text-3xl font-bold border-b pb-3'>상품정보</h1>
+        <h1 className='text-3xl font-bold border-b border-slate-600/40 pb-3'>
+          상품정보
+        </h1>
         <div className='whitespace-pre-line'>{product.description}</div>
       </div>
       {isConfirmOpen && (

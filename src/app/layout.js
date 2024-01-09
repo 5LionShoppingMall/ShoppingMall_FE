@@ -17,7 +17,7 @@ export const metadata = {
 export default async function RootLayout({ children }) {
   return (
     <html lang='ko'>
-      <body className='w-full sm:bg-neutral-50 overflow-auto'>
+      <body className='w-full bg-base-100 overflow-auto'>
         <ToastContainer
           position='top-center'
           autoClose={2000}
@@ -25,8 +25,8 @@ export default async function RootLayout({ children }) {
           pauseOnFocusLoss={false}
         />
         <TanstackProvider>
-          <header className='sticky top-0 bg-white border-b z-[999]'>
-            <div className='max-w-screen-xl mx-auto'>
+          <header className='sticky top-0 shadow-md dark:border-slate-600/40 z-[999] bg-base-100'>
+            <div className='max-w-screen-lg mx-auto'>
               <Navbar />
             </div>
           </header>
