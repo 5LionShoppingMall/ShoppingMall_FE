@@ -1,9 +1,8 @@
 /** @format */
 
 import '../styles/globals.css';
-import axios from '../config/axios-config';
 import TanstackProvider from '@/context/TanstackProvider';
-import Navbar from '@/components/Navbar';
+import Navbar from '@/components/NavBar';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
