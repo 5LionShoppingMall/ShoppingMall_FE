@@ -4,10 +4,13 @@ import { useDeleteProduct, useProductDetail } from '@/hooks/useProducts';
 import Carousel from '../ui/Carousel';
 import SwiperCarousel from '../ui/SwiperCarousel';
 import Link from 'next/link';
+import { useState } from 'react';
+import ConfirmAlert from '../ui/modal/ConfirmAlert';
 
 export default function ProductDetail({ id }) {
   const { product, isLoading, isError, error } = useProductDetail(id);
   const { submitDelete, isPending } = useDeleteProduct(id);
+  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
 
   if (isLoading) {
     return <>Loading</>;
@@ -39,7 +42,7 @@ export default function ProductDetail({ id }) {
               <Link href={`/products/${product.id}/modify`}>
                 <span>수정</span>
               </Link>
-              <button onClick={submitDelete}>
+              <button onClick={() => setIsConfirmOpen(true)}>
                 <span>삭제</span>
               </button>
             </div>
@@ -58,6 +61,15 @@ export default function ProductDetail({ id }) {
         <h1 className='text-3xl font-bold border-b pb-3'>상품정보</h1>
         <div className='whitespace-pre-line'>{product.description}</div>
       </div>
+      {isConfirmOpen && (
+        <ConfirmAlert
+          isOpen={isConfirmOpen}
+          onClose={() => setIsConfirmOpen(false)}
+          onSubmit={submitDelete}
+        >
+          삭제시 복구가 불가능합니다. <br /> 정말로 삭제하시겠어요?
+        </ConfirmAlert>
+      )}
     </div>
   );
 }

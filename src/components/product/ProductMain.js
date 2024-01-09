@@ -37,8 +37,8 @@ export default function ProductMain() {
   const { content, totalPages } = products.objData;
 
   return (
-    <div className='w-full text-center lg:p-10'>
-      <ul className='grid grid-cols-3 md:grid-cols-4 gap-3 px-2 py-4 lg:gap-4 lg:px-8 mb-8 w-full'>
+    <div className='w-full text-center p-5 sm:p-1 lg:p-10'>
+      <ul className='grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 px-2 py-4 sm:gap-3 lg:gap-4 lg:px-4 mb-8 w-full'>
         {content.map((product) => (
           <Link href={`/products/${product.id}`} key={product.id}>
             <ProductListItem product={product} />

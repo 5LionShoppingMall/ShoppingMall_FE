@@ -39,7 +39,7 @@ export default function ProductEdit({ id }) {
           isChanged: false, // 이미지가 변경되지 않았음을 명시
         }))
       );
-      setInputPrice(product.price.toLocaleString());
+      setInputPrice(product.price ? product.price.toLocaleString() : '');
     }
   }, [product]);
 
@@ -116,7 +116,6 @@ export default function ProductEdit({ id }) {
   const onChangeHandler = (e) => {
     setProductInfo({
       ...productInfo,
-      price: Number(inputPrice?.replace(/,/g, '')),
       [e.target.name]: e.target.value,
     });
   };
@@ -127,9 +126,16 @@ export default function ProductEdit({ id }) {
     const formData = new FormData();
     const existingImages = [];
 
+    const submitProductInfo = {
+      ...productInfo,
+      price: Number(productInfo.price.toString().replace(/,/g, '')),
+    };
+
     formData.append(
       'productInfo',
-      new Blob([JSON.stringify(productInfo)], { type: 'application/json' })
+      new Blob([JSON.stringify(submitProductInfo)], {
+        type: 'application/json',
+      })
     );
 
     selectedImages.forEach((image, index) => {
@@ -189,7 +195,7 @@ export default function ProductEdit({ id }) {
                 className='absolute top-0 right-0 rounded-full bg-white m-1'
                 onClick={(e) => removeImage(e, index)}
               >
-                <CloseIcon />
+                <CloseIcon className='w-3 h-3 text-zinc-500' />
               </button>
             </div>
           ))}
