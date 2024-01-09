@@ -1,40 +1,40 @@
-'use client';
+'use client'
 
-import Image from 'next/image';
-import { useSearchParams } from 'next/navigation';
-import { useProducts } from '@/hooks/useProducts';
-import Pagination from '../ui/Pagination';
-import { useState } from 'react';
-import ProductListItem from './ProductListItem';
-import Link from 'next/link';
+import Image from 'next/image'
+import { useSearchParams } from 'next/navigation'
+import { useProducts } from '@/hooks/useProducts'
+import Pagination from '../ui/Pagination'
+import { useState } from 'react'
+import ProductListItem from './ProductListItem'
+import Link from 'next/link'
 
 export default function ProductMain() {
-  const searchParams = useSearchParams();
-  const page = Number(searchParams.get('page')) || 1;
-  const size = Number(searchParams.get('size')) || 36;
-  const [pageSize, setPageSize] = useState(size);
+  const searchParams = useSearchParams()
+  const page = Number(searchParams.get('page')) || 1
+  const size = Number(searchParams.get('size')) || 36
+  const [pageSize, setPageSize] = useState(size)
   const { products, isLoading, isError, error, isPlaceholderData } =
-    useProducts(page, pageSize);
+    useProducts(page, pageSize)
 
   if (isLoading) {
-    return <div>loading</div>;
+    return <div>loading</div>
   }
 
   if (isError) {
-    return <div>{error}</div>;
+    return <div>{error}</div>
   }
 
   if (!products) {
-    return <>데이터가 없습니다.</>;
+    return <>데이터가 없습니다.</>
   }
 
   if (!products?.objData) {
-    return <>상품이 없습니다.</>;
+    return <>상품이 없습니다.</>
   }
 
-  console.log(products);
+  console.log(products)
 
-  const { content, totalPages } = products.objData;
+  const { content, totalPages } = products.objData
 
   return (
     <div className='w-full text-center lg:p-10'>
@@ -51,5 +51,5 @@ export default function ProductMain() {
         pageSize={pageSize}
       />
     </div>
-  );
+  )
 }

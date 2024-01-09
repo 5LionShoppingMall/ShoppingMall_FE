@@ -1,26 +1,26 @@
-'use client';
+'use client'
 
-import { useProductDetail } from '@/hooks/useProducts';
-import Carousel from '../ui/Carousel';
-import SwiperCarousel from '../ui/SwiperCarousel';
-import Link from 'next/link';
+import { useProductDetail } from '@/hooks/useProducts'
+import Carousel from '../ui/Carousel'
+import SwiperCarousel from '../ui/SwiperCarousel'
+import Link from 'next/link'
 
 export default function ProductDetail({ id }) {
-  const { product, isLoading, isError, error } = useProductDetail(id);
+  const { product, isLoading, isError, error } = useProductDetail(id)
 
   if (isLoading) {
-    return <>Loading</>;
+    return <>Loading</>
   }
 
   if (isError) {
-    return <>{error}</>;
+    return <>{error}</>
   }
 
   if (!product) {
-    return <>Data Not Found</>;
+    return <>Data Not Found</>
   }
 
-  console.log(product);
+  console.log(product)
 
   return (
     <div className='flex flex-col'>
@@ -56,5 +56,5 @@ export default function ProductDetail({ id }) {
         <div className='whitespace-pre-line'>{product.description}</div>
       </div>
     </div>
-  );
+  )
 }
