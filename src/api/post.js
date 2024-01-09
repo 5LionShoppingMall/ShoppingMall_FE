@@ -1,4 +1,4 @@
-const BASE_URL = 'https://api.lionshop.me'
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL
 const PATH_POST = '/api/posts'
 
 // 모든 게시글 조회

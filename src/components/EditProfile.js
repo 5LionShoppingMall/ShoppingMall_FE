@@ -17,6 +17,8 @@ import { useAddressSearch } from '@/util/useAddressSearch'
 export default function EditProfile() {
   const router = useRouter()
   const { user, isLoading } = useUser()
+
+  console.log(user)
   const [isNicknameUnique, setIsNicknameUnique] = useState(false) // 닉네임 중복 상태
   const [errors, setErrors] = useState({
     password: null,
