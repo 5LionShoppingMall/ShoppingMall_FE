@@ -3,7 +3,7 @@
 import '../styles/globals.css'
 import axios from '../config/axios-config'
 import TanstackProvider from '@/context/TanstackProvider'
-import Navbar from '@/components/Navbar'
+import Navbar from '@/components/NavBar'
 
 export const metadata = {
   title: {
