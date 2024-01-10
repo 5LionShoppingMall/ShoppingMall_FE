@@ -22,7 +22,7 @@ const ChatRoom = () => {
   }, [userData])
 
   const connect = () => {
-    let Sock = new SockJS('http://localhost:8082/ws')
+    let Sock = new SockJS('https://api.lionshop.me/wss')
     stompClient = over(Sock)
     stompClient.connect({}, onConnected, onError)
   }
