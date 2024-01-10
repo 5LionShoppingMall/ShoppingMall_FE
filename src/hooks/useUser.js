@@ -12,8 +12,9 @@ export function useUser() {
   const {
     data: user,
     isLoading,
+    isFetching,
     isError,
     error,
   } = useQuery({ queryKey: ['user'], queryFn: fetchUser, retry: 0 });
-  return { user, isLoading, isError, error };
+  return { user, isLoading, isFetching, isError, error };
 }

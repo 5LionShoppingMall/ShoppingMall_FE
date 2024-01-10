@@ -57,7 +57,7 @@ export default function PostMain() {
   console.log(posts)
 
   return (
-    <div className='p-4 bg-gray-50 rounded-lg shadow-md'>
+    <div className='px-4 py-16'>
       <h3 className='text-4xl font-bold mt-6 mb-6 text-black-700 flex justify-center'>
         게시글 리스트
       </h3>
@@ -107,7 +107,7 @@ export default function PostMain() {
         <div className='text-center mt-8'>현재 게시물이 없습니다.</div>
       )}
 
-      <div className='flex justify-center mt-4'>
+      <div className='flex justify-center mt-10'>
         {Array.from({ length: totalPages }, (_, i) => (
           <button
             key={i + 1}
