@@ -24,13 +24,14 @@ export default function ProductEdit({ id }) {
 
   const [productInfo, setProductInfo] = useState(product);
   const [selectedImages, setSelectedImages] = useState(product?.images);
-  const [inputPrice, setInputPrice] = useState(product?.price.toLocaleString());
+  const [deletedImages, setDeletedImages] = useState([]);
+  const [inputPrice, setInputPrice] = useState(product?.price);
 
   useEffect(() => {
     if (product) {
       setProductInfo({
         ...product,
-        price: Number(product.price.replace(/,/g, '')),
+        price: product.price,
       });
       setSelectedImages(
         product.images.map((image) => ({
@@ -38,7 +39,7 @@ export default function ProductEdit({ id }) {
           isChanged: false, // 이미지가 변경되지 않았음을 명시
         }))
       );
-      setInputPrice(product.price);
+      setInputPrice(product.price ? product.price.toLocaleString() : '');
     }
   }, [product]);
 
@@ -76,40 +77,65 @@ export default function ProductEdit({ id }) {
   const removeImage = (e, index) => {
     e.preventDefault();
 
+    // 삭제될 이미지에 대한 정보를 별도로 저장
+    const imageToRemove = selectedImages[index];
+
+    // 이미지가 서버에 이미 저장되어 있는 이미지라면 삭제 목록에 ID 추가
+    if (imageToRemove.id) {
+      setDeletedImages((prevDeletedImages) => [
+        ...prevDeletedImages,
+        imageToRemove,
+      ]);
+    }
+
     setSelectedImages((prevImages) => {
       const newImages = [...prevImages];
+
       URL.revokeObjectURL(newImages[index].url);
       newImages.splice(index, 1);
+
       return newImages;
     });
   };
 
-  const priceChangeHander = (event) => {
-    const numberOnly = event.target.value.replace(/,/g, '');
-    if (numberOnly === '') {
-      setInputPrice(null);
-    } else if (!isNaN(numberOnly)) {
-      setInputPrice(parseInt(numberOnly).toLocaleString());
+  const priceChangeHander = (e) => {
+    const value = e.target.value.replace(/,/g, '');
+
+    if (value === '') {
+      setInputPrice('');
+    } else {
+      const numberValue = Number(value);
+
+      if (!isNaN(numberValue)) {
+        setInputPrice(numberValue.toLocaleString());
+        setProductInfo({ ...productInfo, price: numberValue }); // productInfo의 price를 업데이트
+      }
     }
   };
 
   const onChangeHandler = (e) => {
     setProductInfo({
       ...productInfo,
-      price: Number(inputPrice?.replace(/,/g, '')),
       [e.target.name]: e.target.value,
     });
   };
 
   const modifySubmitHandler = (e) => {
     e.preventDefault();
-
+    console.log('Submitting price:', productInfo.price);
     const formData = new FormData();
     const existingImages = [];
 
+    const submitProductInfo = {
+      ...productInfo,
+      price: Number(productInfo.price.toString().replace(/,/g, '')),
+    };
+
     formData.append(
       'productInfo',
-      new Blob([JSON.stringify(productInfo)], { type: 'application/json' })
+      new Blob([JSON.stringify(submitProductInfo)], {
+        type: 'application/json',
+      })
     );
 
     selectedImages.forEach((image, index) => {
@@ -123,10 +149,13 @@ export default function ProductEdit({ id }) {
 
     formData.append('imagesJson', JSON.stringify(existingImages));
 
+    // 삭제할 이미지 ID 목록을 서버에 전송
+    if (deletedImages.length > 0) {
+      formData.append('deletedImages', JSON.stringify(deletedImages));
+    }
+
     submitModify({ productId: id, formData });
   };
-
-  console.log(productInfo);
 
   return (
     <form
@@ -166,7 +195,7 @@ export default function ProductEdit({ id }) {
                 className='absolute top-0 right-0 rounded-full bg-white m-1'
                 onClick={(e) => removeImage(e, index)}
               >
-                <CloseIcon />
+                <CloseIcon className='w-3 h-3 text-zinc-500' />
               </button>
             </div>
           ))}

@@ -1,6 +1,5 @@
-import SwiperCore from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation, HashNavigation, Pagination } from 'swiper/modules';
+import { Navigation, Pagination } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
@@ -8,7 +7,7 @@ import '@/styles/swiper.css';
 import Image from 'next/image';
 import LeftAngleBracket from './icon/LeftAngleBracket';
 import RightAngleBracket from './icon/RightAngleBracket';
-import { useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 
 export default function SwiperCarousel({ images }) {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -25,7 +24,6 @@ export default function SwiperCarousel({ images }) {
   return (
     <div className='relative'>
       <Swiper
-        //spaceBetween={30}
         pagination={pagination}
         navigation={{
           nextEl: '.next-slide-button',
@@ -47,9 +45,9 @@ export default function SwiperCarousel({ images }) {
           </SwiperSlide>
         ))}
       </Swiper>
-      <div className='flex items-center w-full absolute top-2/4 z-10'>
+      <div className='flex items-center w-full absolute top-2/4 z-10 text-gray-600 dark:text-gray-400'>
         <button
-          className={`prev-slide-button -translate-x-1/2 absolute -left-4 text-gray-600 ${
+          className={`prev-slide-button -translate-x-1/2 absolute -left-6 ${
             isFirst && 'opacity-30 cursor-default'
           }`}
           disabled={isFirst}
@@ -57,7 +55,7 @@ export default function SwiperCarousel({ images }) {
           <LeftAngleBracket classname='w-10 h-10' />
         </button>
         <button
-          className={`next-slide-button translate-x-1/2 absolute -right-4 text-gray-600 ${
+          className={`next-slide-button translate-x-1/2 absolute -right-6 ${
             isLast && 'opacity-30 cursor-default'
           }`}
           disabled={isLast}
