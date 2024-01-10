@@ -1,32 +1,32 @@
-'use client';
+'use client'
 
-import { useSearchParams } from 'next/navigation';
-import { useProducts } from '@/hooks/useProducts';
-import Pagination from '../ui/Pagination';
-import { useState } from 'react';
-import ProductListItem from './ProductListItem';
-import Link from 'next/link';
-import LoadingSpinnerCircle from '../ui/icon/LoadingSpinnerCircle';
-import ErrorMessage from '../error/ErrorMessage';
+import { useSearchParams } from 'next/navigation'
+import { useProducts } from '@/hooks/useProducts'
+import Pagination from '../ui/Pagination'
+import { useState } from 'react'
+import ProductListItem from './ProductListItem'
+import Link from 'next/link'
+import LoadingSpinnerCircle from '../ui/icon/LoadingSpinnerCircle'
+import ErrorMessage from '../error/ErrorMessage'
 
 export default function ProductMain() {
-  const searchParams = useSearchParams();
-  const page = Number(searchParams.get('page')) || 1;
-  const size = Number(searchParams.get('size')) || 36;
-  const [pageSize, setPageSize] = useState(size);
+  const searchParams = useSearchParams()
+  const page = Number(searchParams.get('page')) || 1
+  const size = Number(searchParams.get('size')) || 36
+  const [pageSize, setPageSize] = useState(size)
   const { products, isLoading, isFetching, isError, error, isPlaceholderData } =
-    useProducts(page, pageSize);
+    useProducts(page, pageSize)
 
   if (isLoading || isFetching) {
     return (
       <div className='w-full h-full flex justify-center items-center -mt-[68px]'>
         <LoadingSpinnerCircle color='text-gray-500' />
       </div>
-    );
+    )
   }
 
   if (isError) {
-    return <div>{error}</div>;
+    return <div>{error}</div>
   }
 
   if (!products || !products?.objData) {
@@ -34,10 +34,10 @@ export default function ProductMain() {
       <div className='w-full h-full -mt-[68px]'>
         <ErrorMessage message='데이터를 찾을 수 없어요.. 🥲' />
       </div>
-    );
+    )
   }
 
-  const { content, totalPages } = products.objData;
+  const { content, totalPages } = products.objData
 
   return (
     <div className='w-full text-center px-5 py-10 max-[280px]:px-0 max-[280px]:pt-0'>
@@ -56,5 +56,5 @@ export default function ProductMain() {
         />
       </div>
     </div>
-  );
+  )
 }

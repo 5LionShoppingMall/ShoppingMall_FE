@@ -1,36 +1,36 @@
-import React, { useState } from 'react';
+import React, { useState } from 'react'
 import {
   AiFillEdit,
   AiFillDelete,
   AiOutlineSave,
   AiOutlineClose,
-} from 'react-icons/ai';
-import { useUser } from '@/hooks/useUser';
+} from 'react-icons/ai'
+import { useUser } from '@/hooks/useUser'
 
 export default function Comment({
   commentData,
   onCommentUpdate,
   onCommentDelete,
 }) {
-  const { user, isLoading } = useUser();
-  const [isEditing, setIsEditing] = useState(false);
-  const [editedContent, setEditedContent] = useState(commentData.content);
+  const { user, isLoading } = useUser()
+  const [isEditing, setIsEditing] = useState(false)
+  const [editedContent, setEditedContent] = useState(commentData.content)
 
-  const isAuthor = user && user.nickname === commentData.author;
+  const isAuthor = user && user.nickname === commentData.author
 
   const handleEditClick = () => {
-    setIsEditing(true);
-  };
+    setIsEditing(true)
+  }
 
   const handleCancelClick = () => {
-    setIsEditing(false);
-    setEditedContent(commentData.content); // Reset the content to original
-  };
+    setIsEditing(false)
+    setEditedContent(commentData.content) // Reset the content to original
+  }
 
   const handleSaveClick = () => {
-    onCommentUpdate(commentData.id, editedContent);
-    setIsEditing(false);
-  };
+    onCommentUpdate(commentData.id, editedContent)
+    setIsEditing(false)
+  }
 
   return (
     <div className='p-4 bg-gray-100 rounded-lg shadow-md mb-3'>
@@ -53,14 +53,12 @@ export default function Comment({
                 <div className='flex justify-end space-x-2 mt-2'>
                   <button
                     onClick={handleSaveClick}
-                    className='btn btn-primary btn-sm flex items-center'
-                  >
+                    className='btn btn-primary btn-sm flex items-center'>
                     <AiOutlineSave className='mr-2' /> 저장
                   </button>
                   <button
                     onClick={handleCancelClick}
-                    className='btn btn-error btn-sm flex items-center'
-                  >
+                    className='btn btn-error btn-sm flex items-center'>
                     <AiOutlineClose className='mr-2' /> 취소
                   </button>
                 </div>
@@ -83,19 +81,17 @@ export default function Comment({
           <div className='flex flex-col items-center ml-3'>
             <button
               onClick={handleEditClick}
-              className='mb-2 p-2 text-blue-600 hover:text-blue-800'
-            >
+              className='mb-2 p-2 text-blue-600 hover:text-blue-800'>
               <AiFillEdit size='1.25em' />
             </button>
             <button
               onClick={() => onCommentDelete(commentData.id)}
-              className='p-2 text-red-600 hover:text-red-800'
-            >
+              className='p-2 text-red-600 hover:text-red-800'>
               <AiFillDelete size='1.25em' />
             </button>
           </div>
         )}
       </div>
     </div>
-  );
+  )
 }

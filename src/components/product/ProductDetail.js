@@ -1,36 +1,36 @@
-'use client';
+'use client'
 
-import { useDeleteProduct, useProductDetail } from '@/hooks/useProducts';
-import Carousel from '../ui/Carousel';
-import SwiperCarousel from '../ui/SwiperCarousel';
-import Link from 'next/link';
-import { useState } from 'react';
-import ConfirmAlert from '../ui/modal/ConfirmAlert';
-import LoadingSpinnerCircle from '../ui/icon/LoadingSpinnerCircle';
-import ErrorMessage from '../error/ErrorMessage';
-import { useUser } from '@/hooks/useUser';
+import { useDeleteProduct, useProductDetail } from '@/hooks/useProducts'
+import Carousel from '../ui/Carousel'
+import SwiperCarousel from '../ui/SwiperCarousel'
+import Link from 'next/link'
+import { useState } from 'react'
+import ConfirmAlert from '../ui/modal/ConfirmAlert'
+import LoadingSpinnerCircle from '../ui/icon/LoadingSpinnerCircle'
+import ErrorMessage from '../error/ErrorMessage'
+import { useUser } from '@/hooks/useUser'
 
 export default function ProductDetail({ id }) {
   const { product, isLoading, isFetching, isError, error } =
-    useProductDetail(id);
-  const { submitDelete, isPending } = useDeleteProduct(id);
+    useProductDetail(id)
+  const { submitDelete, isPending } = useDeleteProduct(id)
   const {
     user,
     isLoading: isUserLoading,
     isFetching: isUserFetching,
-  } = useUser();
-  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
+  } = useUser()
+  const [isConfirmOpen, setIsConfirmOpen] = useState(false)
 
   if (isLoading || isFetching) {
     return (
       <div className='w-full h-full flex justify-center items-center -mt-[68px]'>
         <LoadingSpinnerCircle color='text-gray-500' />
       </div>
-    );
+    )
   }
 
   if (isError) {
-    return <>{error}</>;
+    return <>{error}</>
   }
 
   if (!product) {
@@ -38,10 +38,10 @@ export default function ProductDetail({ id }) {
       <div className='w-full h-full -mt-[68px]'>
         <ErrorMessage message='데이터를 찾을 수 없어요.. 🥲' />
       </div>
-    );
+    )
   }
 
-  console.log(user);
+  console.log(user)
 
   return (
     <div className='flex flex-col'>
@@ -91,11 +91,10 @@ export default function ProductDetail({ id }) {
         <ConfirmAlert
           isOpen={isConfirmOpen}
           onClose={() => setIsConfirmOpen(false)}
-          onSubmit={submitDelete}
-        >
+          onSubmit={submitDelete}>
           삭제시 복구가 불가능합니다. <br /> 정말로 삭제하시겠어요?
         </ConfirmAlert>
       )}
     </div>
-  );
+  )
 }
