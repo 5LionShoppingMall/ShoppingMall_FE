@@ -8,8 +8,8 @@ import 'react-toastify/dist/ReactToastify.css'
 
 export const metadata = {
   title: {
-    default: '#',
-    template: '# | %s',
+    default: 'LION',
+    template: '%s | LION',
   },
   description: 'home',
 }
