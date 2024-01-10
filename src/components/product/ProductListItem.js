@@ -19,7 +19,7 @@ export default function ProductListItem({ product }) {
           <div className='w-full h-full rounded-md bg-base-200'></div>
         )}
       </figure>
-      <div className='card-body items-start gap-0 px-4 py-2 sm:p-4'>
+      <div className='card-body items-start gap-0 px-4 py-2 sm:py-4 sm:px-2'>
         <h2 className='card-title font-semibold text-lg overflow-ellipsis overflow-hidden line-clamp-1 tracking-wider pb-[2px]'>
           {product.title}
         </h2>
