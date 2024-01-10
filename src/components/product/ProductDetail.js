@@ -27,29 +27,25 @@ export default function ProductDetail({ id }) {
 
   const [userData, setUserData] = useState({
     username: user?.nickname,
-    receivername: product?.seller?.nickname,
+    receivername: '',
     connected: false,
     message: '',
   })
 
   const [showChatWidget, setShowChatWidget] = useState(false)
-  const [privateChats, setPrivateChats] = useState(new Map())
+  const [publicChats, setPublicChats] = useState([])
 
   const toggleChatWidget = () => {
     setShowChatWidget(!showChatWidget)
   }
 
-  const onPrivateMessage = (payload) => {
-    console.log(payload)
+  const onMessageReceived = (payload) => {
     var payloadData = JSON.parse(payload.body)
-    if (privateChats.get(payloadData.senderName)) {
-      privateChats.get(payloadData.senderName).push(payloadData)
-      setPrivateChats(new Map(privateChats))
-    } else {
-      let list = []
-      list.push(payloadData)
-      privateChats.set(payloadData.senderName, list)
-      setPrivateChats(new Map(privateChats))
+    switch (payloadData.status) {
+      case 'MESSAGE':
+        publicChats.push(payloadData)
+        setPublicChats([...publicChats])
+        break
     }
   }
 
@@ -59,14 +55,7 @@ export default function ProductDetail({ id }) {
 
   const onConnected = () => {
     setUserData({ ...userData, connected: true })
-    stompClient.subscribe(
-      '/user/' + userData.username + '/private',
-      onPrivateMessage
-    )
-    stompClient.subscribe(
-      '/user/' + product.seller.nickname + '/private',
-      onPrivateMessage
-    )
+    stompClient.subscribe('/chatroom/public', onMessageReceived)
     userJoin()
   }
 
@@ -80,7 +69,7 @@ export default function ProductDetail({ id }) {
 
   const userJoin = () => {
     var chatMessage = {
-      senderName: userData.username,
+      senderName: user?.nickname,
       status: 'JOIN',
     }
     stompClient.send('/app/message', {}, JSON.stringify(chatMessage))
@@ -95,44 +84,17 @@ export default function ProductDetail({ id }) {
     }
   }
 
-  const sendPrivateValue = (chatMessage) => {
+  const sendValue = (message) => {
+    console.log(message)
     if (stompClient) {
-      var newChatMessage = {
-        senderName: userData.username,
-        receiverName: product.seller.nickname,
-        message: chatMessage.message,
+      var chatMessage = {
+        senderName: user?.nickname,
+        message: message.message,
         status: 'MESSAGE',
       }
-
-      // 새로운 Map 객체 생성
-      const updatedChats = new Map(privateChats)
-
-      // 현재 상대방과의 채팅 내역 가져오기 (없으면 새로운 배열 생성)
-      const currentMessages = updatedChats.get(product.seller.nickname) || []
-
-      // 새 메시지가 이미 추가되지 않았는지 확인
-      if (
-        !currentMessages.find((msg) => msg.message === newChatMessage.message)
-      ) {
-        // 새 메시지 추가
-        currentMessages.push(newChatMessage)
-
-        // 업데이트된 채팅 내역을 Map에 설정
-        updatedChats.set(product.seller.nickname, currentMessages)
-
-        // 상태 업데이트
-        setPrivateChats(updatedChats)
-
-        // 메시지를 서버로 전송
-        stompClient.send(
-          '/app/private-message',
-          {},
-          JSON.stringify(newChatMessage)
-        )
-
-        // 입력 필드 초기화
-        setUserData({ ...userData, message: '' })
-      }
+      console.log(chatMessage)
+      stompClient.send('/app/message', {}, JSON.stringify(chatMessage))
+      setUserData({ ...userData, message: '' })
     }
   }
 
@@ -199,8 +161,8 @@ export default function ProductDetail({ id }) {
           {showChatWidget && (
             <div className='chat-widget'>
               <ChatWidget
-                onSendMessage={sendPrivateValue}
-                privateChats={privateChats}
+                onSendMessage={sendValue}
+                publicChats={publicChats}
                 userData={userData}
               />
               <button className='btn mt-5' onClick={toggleChatWidget}>
