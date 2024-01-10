@@ -123,7 +123,7 @@ const ChatRoom = () => {
     connect();
   };
   return (
-    <div className='container py-10'>
+    <div className={`container mx-auto ${userData.connected && 'py-20 px-16'}`}>
       {userData.connected ? (
         <div className='chat-box justify-around rounded-xl border p-8'>
           <div className='p-4'>
@@ -180,7 +180,6 @@ const ChatRoom = () => {
                   </li>
                 ))}
               </ul>
-
               <div className='pt-5 flex'>
                 <input
                   type='text'
@@ -250,7 +249,7 @@ const ChatRoom = () => {
           )}
         </div>
       ) : (
-        <div className='flex items-center justify-center h-screen'>
+        <div className='flex items-center justify-center h-screen -mt-[69px] w-full'>
           <div className='h-[50px] w-full text-center'>
             <input
               id='user-name'
