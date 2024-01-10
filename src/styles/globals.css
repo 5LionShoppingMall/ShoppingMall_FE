@@ -62,7 +62,6 @@ body {
     0 100px 80px rgba(0, 0, 0, 0.12);
   margin: 40px 50px;
   height: 600px;
-  padding: 10px;
   display: flex;
   flex-direction: row;
 }
@@ -73,12 +72,10 @@ body {
 
 .chat-content {
   width: 80%;
-  margin-left: 10px;
 }
 
 .chat-messages {
   height: 80%;
-  border: 1px solid #000;
 }
 
 .send-message {
