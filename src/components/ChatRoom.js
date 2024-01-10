@@ -200,7 +200,7 @@ const ChatRoom = () => {
                   placeholder='메시지를 입력하세요'
                   value={userData.message}
                   onChange={handleMessage}
-                  onKeyDown={handlePublicKeyDown}
+                  onKeyDown={handlePublicKeyDown} // 엔터 입력 시 메시지 전송
                 />
                 <button
                   type='button'
@@ -246,7 +246,7 @@ const ChatRoom = () => {
                   placeholder='메시지를 입력하세요'
                   value={userData.message}
                   onChange={handleMessage}
-                  onKeyDown={handlePrivateKeyDown} // 엔터로도 전송 가능
+                  onKeyDown={handlePrivateKeyDown} // 엔터 입력 시 메시지 전송
                 />
                 <button
                   type='button'

@@ -40,7 +40,7 @@ export default function ProductMain() {
   const { content, totalPages } = products.objData
 
   return (
-    <div className='w-full text-center px-5 py-10'>
+    <div className='w-full text-center px-5 py-10 max-[280px]:px-0 max-[280px]:pt-0'>
       <ul className='grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 px-2 py-4 sm:gap-3 lg:gap-4 lg:px-4 mb-8 w-full'>
         {content.map((product) => (
           <Link href={`/products/${product.id}`} key={product.id}>
@@ -48,11 +48,13 @@ export default function ProductMain() {
           </Link>
         ))}
       </ul>
-      <Pagination
-        totalPages={totalPages || 0}
-        currentPage={page}
-        pageSize={pageSize}
-      />
+      <div className='max-[280px]:px-1'>
+        <Pagination
+          totalPages={totalPages || 0}
+          currentPage={page}
+          pageSize={pageSize}
+        />
+      </div>
     </div>
   )
 }
