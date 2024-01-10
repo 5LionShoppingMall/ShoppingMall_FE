@@ -17,8 +17,8 @@ export default function Navbar() {
       <div className='flex-1'>
         <Link
           href='/'
-          className='font-bold text-xl flex justify-center items-center px-3'>
-          daisyUI
+          className='font-bold text-xl flex justify-center items-center px-3 font-jeju'>
+          LION
         </Link>
         <div className='hidden lg:flex'>
           <ul className='menu menu-horizontal px-1'>

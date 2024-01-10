@@ -14,9 +14,16 @@ module.exports = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        suite: ['SUITE-Regular', 'sans-serif'],
+        lotteria: ['LOTTERIACHAB', 'sans-serif'],
+        giants: ['Giants-Inline', 'sans-serif'],
+        jeju: ['EF_jejudoldam', 'sans-serif'],
+      },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-        'gradient-conic': 'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
+        'gradient-conic':
+          'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
       },
       animation: {
         slide: 'slide 0.7s forwards',
