@@ -14,9 +14,23 @@ module.exports = {
   ],
   theme: {
     extend: {
+      colors: {
+        cream: '#FCF8E8',
+        coral: {
+          200: '#FFD4B2',
+          400: '#ECB390',
+          500: '#FF9A76',
+          600: '#DF7861',
+        },
+        sage: {
+          300: '#D9EDBF',
+          500: '#94B49F',
+        },
+      },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-        'gradient-conic': 'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
+        'gradient-conic':
+          'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
       },
       animation: {
         slide: 'slide 0.7s forwards',
@@ -39,4 +53,4 @@ module.exports = {
     },
   },
   plugins: [require('daisyui')],
-}
+};
