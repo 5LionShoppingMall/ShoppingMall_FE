@@ -11,7 +11,7 @@ const dateConverter = (createdAt) => {
     return '방금 전';
   } else if (minutes < 60) {
     return `${minutes}분 전`;
-  } else if (hours < 60) {
+  } else if (hours < 24) {
     return `${hours}시간 전`;
   } else if (days < 7) {
     return `${days}일 전`;
