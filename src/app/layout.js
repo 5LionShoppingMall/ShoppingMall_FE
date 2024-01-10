@@ -25,7 +25,7 @@ export default async function RootLayout({ children }) {
           pauseOnFocusLoss={false}
         />
         <TanstackProvider>
-          <header className='sticky top-0 shadow-md dark:border-slate-600/40 z-[999] bg-base-100'>
+          <header className='sticky top-0 border-b dark:border-slate-600/40 z-[999] bg-base-100'>
             <div className='max-w-screen-lg mx-auto'>
               <Navbar />
             </div>

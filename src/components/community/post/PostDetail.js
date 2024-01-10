@@ -136,6 +136,7 @@ const PostDetail = (postId) => {
             조회수: {post.objData.viewCount}
           </p>
         </div>
+        {/* whitespace-pre-line : 글에서 한줄로 나열해서 출력하는 것이 아닌 줄바꿈을 해준다. */}
         <div className='text-gray-600 flex-grow whitespace-pre-line'>
           {post.objData.content}
         </div>

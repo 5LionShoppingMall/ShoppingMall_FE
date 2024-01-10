@@ -1,6 +1,5 @@
 'use client';
 
-import Image from 'next/image';
 import { useSearchParams } from 'next/navigation';
 import { useProducts } from '@/hooks/useProducts';
 import Pagination from '../ui/Pagination';
@@ -37,8 +36,6 @@ export default function ProductMain() {
       </div>
     );
   }
-
-  console.log(products);
 
   const { content, totalPages } = products.objData;
 
