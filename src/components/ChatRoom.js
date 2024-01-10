@@ -114,6 +114,24 @@ const ChatRoom = () => {
     }
   }
 
+  // 전체 채팅 엔터키
+  const handlePublicKeyDown = (event) => {
+    // 엔터 키가 눌렸고 메시지가 비어있지 않은 경우
+    if (event.key === 'Enter' && userData.message.trim()) {
+      sendValue()
+      event.preventDefault() // 엔터 키의 기본 동작을 방지
+    }
+  }
+
+  // 개인 채팅 엔터키
+  const handlePrivateKeyDown = (event) => {
+    // 엔터 키가 눌렸고 메시지가 비어있지 않은 경우
+    if (event.key === 'Enter' && userData.message.trim()) {
+      sendPrivateValue()
+      event.preventDefault() // 엔터 키의 기본 동작을 방지
+    }
+  }
+
   const handleUsername = (event) => {
     const { value } = event.target
     setUserData({ ...userData, username: value })
@@ -183,6 +201,7 @@ const ChatRoom = () => {
                   placeholder='메시지를 입력하세요'
                   value={userData.message}
                   onChange={handleMessage}
+                  onKeyDown={handlePublicKeyDown} // 엔터 입력 시 메시지 전송
                 />
                 <button
                   type='button'
@@ -228,6 +247,7 @@ const ChatRoom = () => {
                   placeholder='메시지를 입력하세요'
                   value={userData.message}
                   onChange={handleMessage}
+                  onKeyDown={handlePrivateKeyDown} // 엔터 입력 시 메시지 전송
                 />
                 <button
                   type='button'
