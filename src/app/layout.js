@@ -1,23 +1,23 @@
 /** @format */
 
-import '../styles/globals.css';
-import TanstackProvider from '@/context/TanstackProvider';
-import Navbar from '@/components/NavBar';
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import '../styles/globals.css'
+import TanstackProvider from '@/context/TanstackProvider'
+import Navbar from '@/components/NavBar'
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 export const metadata = {
   title: {
-    default: '#',
-    template: '# | %s',
+    default: 'LION',
+    template: '%s | LION',
   },
   description: 'home',
-};
+}
 
 export default async function RootLayout({ children }) {
   return (
     <html lang='ko'>
-      <body className='w-full bg-base-100 overflow-auto'>
+      <body className='w-full bg-base-100 overflow-auto font-suite'>
         <ToastContainer
           position='top-center'
           autoClose={2000}
@@ -37,5 +37,5 @@ export default async function RootLayout({ children }) {
         </TanstackProvider>
       </body>
     </html>
-  );
+  )
 }

@@ -1,25 +1,24 @@
-'use client';
+'use client'
 
-import Link from 'next/link';
-import Dropdown from './ui/navbar-menu/Dropdown';
-import NavbarSvgBtn from './ui/navbar-menu/NavbarSvgBtn';
-import CategoryMenu from './ui/navbar-menu/CategoryMenu';
-import NavbarIconBtn from './ui/navbar-menu/NavbarIconBtn';
-import { useUser } from '@/hooks/useUser';
-import SearchIcon from './ui/icon/SearchIcon';
-import SaleIcon from './ui/icon/SaleIcon';
+import Link from 'next/link'
+import Dropdown from './ui/navbar-menu/Dropdown'
+import NavbarSvgBtn from './ui/navbar-menu/NavbarSvgBtn'
+import CategoryMenu from './ui/navbar-menu/CategoryMenu'
+import NavbarIconBtn from './ui/navbar-menu/NavbarIconBtn'
+import { useUser } from '@/hooks/useUser'
+import SearchIcon from './ui/icon/SearchIcon'
+import SaleIcon from './ui/icon/SaleIcon'
 
 export default function Navbar() {
-  const { user, isLoading, isError } = useUser();
+  const { user, isLoading, isError } = useUser()
 
   return (
     <div className='navbar bg-base-100'>
       <div className='flex-1'>
         <Link
           href='/'
-          className='font-bold text-xl flex justify-center items-center px-3'
-        >
-          daisyUI
+          className='font-bold text-xl flex justify-center items-center px-3 font-jeju'>
+          LION
         </Link>
         <div className='hidden lg:flex'>
           <ul className='menu menu-horizontal px-1'>
@@ -47,8 +46,7 @@ export default function Navbar() {
             <div className='flex gap-4'>
               <Link
                 href='/products/write'
-                className='text-sm flex items-center justify-center gap-1'
-              >
+                className='text-sm flex items-center justify-center gap-1'>
                 <SaleIcon />
                 거래등록
               </Link>
@@ -69,5 +67,5 @@ export default function Navbar() {
         <Dropdown menu='dropdown' />
       </div>
     </div>
-  );
+  )
 }

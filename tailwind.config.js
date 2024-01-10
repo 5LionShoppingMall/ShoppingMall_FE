@@ -26,31 +26,37 @@ module.exports = {
           300: '#D9EDBF',
           500: '#94B49F',
         },
-      },
-      backgroundImage: {
-        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-        'gradient-conic':
-          'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
-      },
-      animation: {
-        slide: 'slide 0.7s forwards',
-      },
-      keyframes: {
-        slide: {
-          '0%': { transform: 'translateX(-20%)' },
-          '100%': { transform: 'translateX(0)' },
+        fontFamily: {
+          suite: ['SUITE-Regular', 'sans-serif'],
+          lotteria: ['LOTTERIACHAB', 'sans-serif'],
+          giants: ['Giants-Inline', 'sans-serif'],
+          jeju: ['EF_jejudoldam', 'sans-serif'],
         },
-      },
-      animation: {
-        slide: 'slide 0.7s forwards',
-      },
-      keyframes: {
-        slide: {
-          '0%': { transform: 'translateX(-20%)' },
-          '100%': { transform: 'translateX(0)' },
+        backgroundImage: {
+          'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+          'gradient-conic':
+            'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
+        },
+        animation: {
+          slide: 'slide 0.7s forwards',
+        },
+        keyframes: {
+          slide: {
+            '0%': { transform: 'translateX(-20%)' },
+            '100%': { transform: 'translateX(0)' },
+          },
+        },
+        animation: {
+          slide: 'slide 0.7s forwards',
+        },
+        keyframes: {
+          slide: {
+            '0%': { transform: 'translateX(-20%)' },
+            '100%': { transform: 'translateX(0)' },
+          },
         },
       },
     },
+    plugins: [require('daisyui')],
   },
-  plugins: [require('daisyui')],
 };
