@@ -11,7 +11,7 @@ export async function GET(req) {
     const res = await getProducts(page, size)
 
     if (res?.objData) {
-      res.objData.content = res.objData.content.map((product) => {
+      res.objData.content = res.objData?.content.map((product) => {
         return { ...product, price: formatPrice(product.price) }
       })
     }

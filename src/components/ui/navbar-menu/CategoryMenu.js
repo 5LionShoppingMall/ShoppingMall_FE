@@ -7,6 +7,7 @@ export default function CategoryMenu({ setIsMenuOpen }) {
       {navDefaultMenus.map((category) => (
         <li
           key={category.id}
+          className='px-2'
           onClick={() =>
             typeof setIsMenuOpen === 'function' && setIsMenuOpen(false)
           }

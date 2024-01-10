@@ -1,9 +1,9 @@
-import Link from 'next/link';
 import LastPageIcon from './icon/LastPageIcon';
 import NextIcon from './icon/NextIcon';
 import PrevIcon from './icon/PrevIcon';
 import FirstPageIcon from './icon/FirstPageIcon';
 import PageButton from './button/PageButton';
+import PageLink from './PageLink';
 
 export default function Pagination({ totalPages, currentPage, pageSize }) {
   const pagesToShow = 5;
@@ -20,32 +20,32 @@ export default function Pagination({ totalPages, currentPage, pageSize }) {
       : Math.min(totalPages, currentPage + pagesToShow);
 
   return (
-    <div className='join'>
-      <Link href={`/products?page=1&size=${pageSize}`}>
+    <div className='flex justify-center items-center gap-2 h-8'>
+      <PageLink href={`/products?page=1&size=${pageSize}`}>
         <PageButton btnType='start' cond={currentPage === 1}>
           <FirstPageIcon />
         </PageButton>
-      </Link>
-      <Link href={`/products?page=${prevPage}&size=${pageSize}`}>
+      </PageLink>
+      <PageLink href={`/products?page=${prevPage}&size=${pageSize}`}>
         <PageButton cond={startPage === currentPage}>
           <PrevIcon />
         </PageButton>
-      </Link>
+      </PageLink>
       {pages.map((page) => (
-        <Link key={page} href={`/products?page=${page}&size=${pageSize}`}>
+        <PageLink key={page} href={`/products?page=${page}&size=${pageSize}`}>
           <PageButton cond={page === currentPage}>{page}</PageButton>
-        </Link>
+        </PageLink>
       ))}
-      <Link href={`/products?page=${nextPage}&size=${pageSize}`}>
+      <PageLink href={`/products?page=${nextPage}&size=${pageSize}`}>
         <PageButton cond={currentPage === totalPages}>
           <NextIcon />
         </PageButton>
-      </Link>
-      <Link href={`/products?page=${totalPages}&size=${pageSize}`}>
+      </PageLink>
+      <PageLink href={`/products?page=${totalPages}&size=${pageSize}`}>
         <PageButton btnType='end' cond={currentPage === totalPages}>
           <LastPageIcon />
         </PageButton>
-      </Link>
+      </PageLink>
     </div>
   );
 }
