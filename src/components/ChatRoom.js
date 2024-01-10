@@ -1,100 +1,100 @@
-'use client';
+'use client'
 
-import React, { useEffect, useState } from 'react';
-import { over } from 'stompjs';
-import SockJS from 'sockjs-client';
-import { useUser } from '@/hooks/useUser';
+import React, { useEffect, useState } from 'react'
+import { over } from 'stompjs'
+import SockJS from 'sockjs-client'
+import { useUser } from '@/hooks/useUser'
 
-var stompClient = null;
+var stompClient = null
 const ChatRoom = () => {
-  const [privateChats, setPrivateChats] = useState(new Map());
-  const [publicChats, setPublicChats] = useState([]);
-  const [tab, setTab] = useState('CHATROOM');
-  const { user, isLoading, isError } = useUser();
+  const [privateChats, setPrivateChats] = useState(new Map())
+  const [publicChats, setPublicChats] = useState([])
+  const [tab, setTab] = useState('CHATROOM')
+  const { user, isLoading, isError } = useUser()
   const [userData, setUserData] = useState({
     username: '',
     receivername: '',
     connected: false,
     message: '',
-  });
+  })
   useEffect(() => {
-    console.log(userData);
-  }, [userData]);
+    console.log(userData)
+  }, [userData])
 
   const connect = () => {
-    let Sock = new SockJS('https://api.lionshop.me/wss');
-    stompClient = over(Sock);
-    stompClient.connect({}, onConnected, onError);
-  };
+    let Sock = new SockJS('https://api.lionshop.me/wss')
+    stompClient = over(Sock)
+    stompClient.connect({}, onConnected, onError)
+  }
 
   const onConnected = () => {
-    setUserData({ ...userData, connected: true });
-    stompClient.subscribe('/chatroom/public', onMessageReceived);
+    setUserData({ ...userData, connected: true })
+    stompClient.subscribe('/chatroom/public', onMessageReceived)
     stompClient.subscribe(
       '/user/' + userData.username + '/private',
       onPrivateMessage
-    );
-    userJoin();
-  };
+    )
+    userJoin()
+  }
 
   const userJoin = () => {
     var chatMessage = {
       senderName: userData.username,
       status: 'JOIN',
-    };
-    stompClient.send('/app/message', {}, JSON.stringify(chatMessage));
-  };
+    }
+    stompClient.send('/app/message', {}, JSON.stringify(chatMessage))
+  }
 
   const onMessageReceived = (payload) => {
-    var payloadData = JSON.parse(payload.body);
+    var payloadData = JSON.parse(payload.body)
     switch (payloadData.status) {
       case 'JOIN':
         if (!privateChats.get(payloadData.senderName)) {
-          privateChats.set(payloadData.senderName, []);
-          setPrivateChats(new Map(privateChats));
+          privateChats.set(payloadData.senderName, [])
+          setPrivateChats(new Map(privateChats))
         }
-        break;
+        break
       case 'MESSAGE':
-        publicChats.push(payloadData);
-        setPublicChats([...publicChats]);
-        break;
+        publicChats.push(payloadData)
+        setPublicChats([...publicChats])
+        break
     }
-  };
+  }
 
   const onPrivateMessage = (payload) => {
-    console.log(payload);
-    var payloadData = JSON.parse(payload.body);
+    console.log(payload)
+    var payloadData = JSON.parse(payload.body)
     if (privateChats.get(payloadData.senderName)) {
-      privateChats.get(payloadData.senderName).push(payloadData);
-      setPrivateChats(new Map(privateChats));
+      privateChats.get(payloadData.senderName).push(payloadData)
+      setPrivateChats(new Map(privateChats))
     } else {
-      let list = [];
-      list.push(payloadData);
-      privateChats.set(payloadData.senderName, list);
-      setPrivateChats(new Map(privateChats));
+      let list = []
+      list.push(payloadData)
+      privateChats.set(payloadData.senderName, list)
+      setPrivateChats(new Map(privateChats))
     }
-  };
+  }
 
   const onError = (err) => {
-    console.log(err);
-  };
+    console.log(err)
+  }
 
   const handleMessage = (event) => {
-    const { value } = event.target;
-    setUserData({ ...userData, message: value });
-  };
+    const { value } = event.target
+    setUserData({ ...userData, message: value })
+  }
   const sendValue = () => {
     if (stompClient) {
       var chatMessage = {
         senderName: userData.username,
         message: userData.message,
         status: 'MESSAGE',
-      };
-      console.log(chatMessage);
-      stompClient.send('/app/message', {}, JSON.stringify(chatMessage));
-      setUserData({ ...userData, message: '' });
+      }
+      console.log(chatMessage)
+      stompClient.send('/app/message', {}, JSON.stringify(chatMessage))
+      setUserData({ ...userData, message: '' })
     }
-  };
+  }
 
   const sendPrivateValue = () => {
     if (stompClient) {
@@ -103,25 +103,43 @@ const ChatRoom = () => {
         receiverName: tab,
         message: userData.message,
         status: 'MESSAGE',
-      };
+      }
 
       if (userData.username !== tab) {
-        privateChats.get(tab).push(chatMessage);
-        setPrivateChats(new Map(privateChats));
+        privateChats.get(tab).push(chatMessage)
+        setPrivateChats(new Map(privateChats))
       }
-      stompClient.send('/app/private-message', {}, JSON.stringify(chatMessage));
-      setUserData({ ...userData, message: '' });
+      stompClient.send('/app/private-message', {}, JSON.stringify(chatMessage))
+      setUserData({ ...userData, message: '' })
     }
-  };
+  }
+
+  // 전체 채팅 엔터키
+  const handlePublicKeyDown = (event) => {
+    // 엔터 키가 눌렸고 메시지가 비어있지 않은 경우
+    if (event.key === 'Enter' && userData.message.trim()) {
+      sendValue()
+      event.preventDefault() // 엔터 키의 기본 동작을 방지
+    }
+  }
+
+  // 개인 채팅 엔터키
+  const handlePrivateKeyDown = (event) => {
+    // 엔터 키가 눌렸고 메시지가 비어있지 않은 경우
+    if (event.key === 'Enter' && userData.message.trim()) {
+      sendPrivateValue()
+      event.preventDefault() // 엔터 키의 기본 동작을 방지
+    }
+  }
 
   const handleUsername = (event) => {
-    const { value } = event.target;
-    setUserData({ ...userData, username: value });
-  };
+    const { value } = event.target
+    setUserData({ ...userData, username: value })
+  }
 
   const registerUser = () => {
-    connect();
-  };
+    connect()
+  }
   return (
     <div className={`container mx-auto ${userData.connected && 'py-20 px-16'}`}>
       {userData.connected ? (
@@ -132,8 +150,7 @@ const ChatRoom = () => {
                 onClick={() => setTab('CHATROOM')}
                 className={`member cursor-pointer p-2 mb-2 rounded-lg dark:text-gray-600 hover:bg-blue-200 ${
                   tab === 'CHATROOM' ? 'bg-blue-300' : ''
-                }`}
-              >
+                }`}>
                 전체 채팅방
               </li>
               {[...privateChats.keys()].map((name, index) => (
@@ -142,8 +159,7 @@ const ChatRoom = () => {
                   className={`member cursor-pointer p-2 mb-2 rounded-lg hover:bg-blue-200 ${
                     tab === name ? 'bg-blue-300' : ''
                   }`}
-                  key={index}
-                >
+                  key={index}>
                   {name}
                 </li>
               ))}
@@ -159,13 +175,11 @@ const ChatRoom = () => {
                         ? 'flex-row-reverse'
                         : ''
                     }`}
-                    key={index}
-                  >
+                    key={index}>
                     <div
                       className={`avatar bg-gray-200 p-2 rounded-full text-sm ${
                         chat.senderName === userData.username ? 'self' : ''
-                      }`}
-                    >
+                      }`}>
                       {chat.senderName}
                     </div>
                     <div
@@ -173,8 +187,7 @@ const ChatRoom = () => {
                         chat.senderName === userData.username
                           ? 'bg-blue-100'
                           : ''
-                      }`}
-                    >
+                      }`}>
                       {chat.message}
                     </div>
                   </li>
@@ -187,12 +200,12 @@ const ChatRoom = () => {
                   placeholder='메시지를 입력하세요'
                   value={userData.message}
                   onChange={handleMessage}
+                  onKeyDown={handlePublicKeyDown}
                 />
                 <button
                   type='button'
                   className='send-button bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-r-lg'
-                  onClick={sendValue}
-                >
+                  onClick={sendValue}>
                   보내기
                 </button>
               </div>
@@ -208,13 +221,11 @@ const ChatRoom = () => {
                         ? 'flex-row-reverse'
                         : ''
                     }`}
-                    key={index}
-                  >
+                    key={index}>
                     <div
                       className={`avatar bg-gray-200 p-2 rounded-full text-sm ${
                         chat.senderName === userData.username ? 'self' : ''
-                      }`}
-                    >
+                      }`}>
                       {chat.senderName}
                     </div>
                     <div
@@ -222,8 +233,7 @@ const ChatRoom = () => {
                         chat.senderName === userData.username
                           ? 'bg-blue-100'
                           : ''
-                      }`}
-                    >
+                      }`}>
                       {chat.message}
                     </div>
                   </li>
@@ -236,12 +246,12 @@ const ChatRoom = () => {
                   placeholder='메시지를 입력하세요'
                   value={userData.message}
                   onChange={handleMessage}
+                  onKeyDown={handlePrivateKeyDown} // 엔터로도 전송 가능
                 />
                 <button
                   type='button'
                   className='send-button bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-r-lg'
-                  onClick={sendPrivateValue}
-                >
+                  onClick={sendPrivateValue}>
                   보내기
                 </button>
               </div>
@@ -262,15 +272,14 @@ const ChatRoom = () => {
             <button
               type='button'
               className='ml-4 mb-3 bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg h-full'
-              onClick={registerUser}
-            >
+              onClick={registerUser}>
               연결하기
             </button>
           </div>
         </div>
       )}
     </div>
-  );
-};
+  )
+}
 
-export default ChatRoom;
+export default ChatRoom
