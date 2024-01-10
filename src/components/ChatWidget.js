@@ -5,6 +5,14 @@ const ChatWidget = ({ onSendMessage, publicChats, userData }) => {
 
   console.log(userData)
 
+  const handleKeyDown = (event) => {
+    // 엔터 키가 눌렸고 메시지가 비어있지 않은 경우
+    if (event.key === 'Enter' && message.trim()) {
+      handleSendMessage(event)
+      event.preventDefault() // 엔터 키의 기본 동작을 방지
+    }
+  }
+
   const handleSendMessage = (e) => {
     e.preventDefault()
     if (message.trim()) {
@@ -59,6 +67,7 @@ const ChatWidget = ({ onSendMessage, publicChats, userData }) => {
           className='flex-grow p-2 border rounded-l focus:outline-none'
           value={message}
           onChange={handleMessageChange}
+          onKeyDown={handleKeyDown}
           placeholder='메시지를 입력하세요'
         />
         <button

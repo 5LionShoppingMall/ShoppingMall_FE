@@ -12,6 +12,7 @@ import { useUser } from '@/hooks/useUser'
 import { over } from 'stompjs'
 import SockJS from 'sockjs-client'
 import ChatWidget from '../ChatWidget'
+import { useRouter } from 'next/navigation'
 
 var stompClient = null
 export default function ProductDetail({ id }) {
@@ -24,6 +25,7 @@ export default function ProductDetail({ id }) {
     isFetching: isUserFetching,
   } = useUser()
   const [isConfirmOpen, setIsConfirmOpen] = useState(false)
+  const router = useRouter()
 
   const [userData, setUserData] = useState({
     username: user?.nickname,
@@ -76,6 +78,11 @@ export default function ProductDetail({ id }) {
   }
 
   const registerUser = () => {
+    if (!user) {
+      router.push('/auth/signin')
+      return
+    }
+
     if (!userData.connected) {
       connect()
     }
@@ -118,8 +125,6 @@ export default function ProductDetail({ id }) {
     )
   }
 
-  console.log(user)
-
   return (
     <div className='flex flex-col'>
       <div className='items-start block grid-cols-2 pt-5 md:grid gap-x-10 xl:gap-x-14 pb-14 lg:py-10 lg:pb-14 2xl:pb-20'>
@@ -155,9 +160,11 @@ export default function ProductDetail({ id }) {
               <span className='text-xl'>원</span>
             </div>
           </div>
+
           <button className='btn mt-auto' onClick={registerUser}>
             채팅하기
           </button>
+
           {showChatWidget && (
             <div className='chat-widget'>
               <ChatWidget
