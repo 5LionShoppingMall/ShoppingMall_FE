@@ -1,7 +1,9 @@
 import React, { useState } from 'react'
 
-const ChatWidget = ({ onSendMessage, privateChats, userData }) => {
+const ChatWidget = ({ onSendMessage, publicChats, userData }) => {
   const [message, setMessage] = useState('')
+
+  console.log(userData)
 
   const handleSendMessage = (e) => {
     e.preventDefault()
@@ -17,7 +19,7 @@ const ChatWidget = ({ onSendMessage, privateChats, userData }) => {
     }
   }
 
-  console.log(privateChats)
+  console.log(publicChats)
 
   const handleMessageChange = (event) => {
     event.preventDefault()
@@ -28,7 +30,7 @@ const ChatWidget = ({ onSendMessage, privateChats, userData }) => {
     <div className='chat-widget p-4 bg-white shadow rounded'>
       <div className='chat-history h-64 overflow-auto mb-4'>
         {/* Map 객체를 배열로 변환하고 각 채팅 메시지를 렌더링 */}
-        {Array.from(privateChats.values())
+        {Array.from(publicChats.values())
           .flat()
           .map((chat, index) => (
             <li
