@@ -2,7 +2,7 @@
 
 import '../styles/globals.css'
 import TanstackProvider from '@/context/TanstackProvider'
-import Navbar from '@/components/NavBar'
+import Navbar from '@/components/ui/NavBar'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 

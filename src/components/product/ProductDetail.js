@@ -11,7 +11,7 @@ import ErrorMessage from '../error/ErrorMessage'
 import { useUser } from '@/hooks/useUser'
 import { over } from 'stompjs'
 import SockJS from 'sockjs-client'
-import ChatWidget from '../ChatWidget'
+import ChatWidget from '../chat/ChatWidget'
 import { useRouter } from 'next/navigation'
 
 var stompClient = null

@@ -1,13 +1,13 @@
 'use client'
 
 import Link from 'next/link'
-import Dropdown from './ui/navbar-menu/Dropdown'
-import NavbarSvgBtn from './ui/navbar-menu/NavbarSvgBtn'
-import CategoryMenu from './ui/navbar-menu/CategoryMenu'
-import NavbarIconBtn from './ui/navbar-menu/NavbarIconBtn'
+import Dropdown from './navbar-menu/Dropdown'
+import NavbarSvgBtn from './navbar-menu/NavbarSvgBtn'
+import CategoryMenu from './navbar-menu/CategoryMenu'
+import NavbarIconBtn from './navbar-menu/NavbarIconBtn'
 import { useUser } from '@/hooks/useUser'
-import SearchIcon from './ui/icon/SearchIcon'
-import SaleIcon from './ui/icon/SaleIcon'
+import SearchIcon from './icon/SearchIcon'
+import SaleIcon from './icon/SaleIcon'
 
 export default function Navbar() {
   const { user, isLoading, isError } = useUser()
@@ -52,6 +52,7 @@ export default function Navbar() {
               </Link>
               <NavbarIconBtn menu='cart' />
               <Dropdown menu='avatar' />
+              <p className='mt-3'>{user?.nickname} 님 환영합니다.</p>
             </div>
           ) : (
             <div className='flex justify-center gap-2'>

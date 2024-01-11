@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react'
 import { AiFillLock } from 'react-icons/ai'
-import axios from '../config/axios-config'
+import axios from '../../config/axios-config'
 import { PASSWORD_REGEX } from '@/constants/regex'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
