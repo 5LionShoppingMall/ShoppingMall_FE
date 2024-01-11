@@ -26,7 +26,7 @@ export default async function RootLayout({ children }) {
         />
         <TanstackProvider>
           <header className='fixed top-0 w-full mx-auto bg-white dark:border-slate-600/40 z-[999] dark:bg-base-100 py-1'>
-            <div className='max-w-screen-lg mx-auto'>
+            <div className='max-w-screen-xl mx-auto'>
               <Navbar />
             </div>
           </header>

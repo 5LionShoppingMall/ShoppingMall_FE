@@ -74,13 +74,13 @@ export default function LatestProductsCarousel({ products }) {
                   </div>
                   <div className='relative w-full overflow-hidden p-2'>
                     <div>
-                      <span className='text-lg font-semibold'>
+                      <span className='text-lg font-semibold overflow-ellipsis overflow-hidden line-clamp-1 tracking-wide'>
                         {product.title}
                       </span>
                     </div>
                     <div>
                       <span className='text-xl font-semibold'>
-                        {product.price}
+                        {product.price} 원
                       </span>
                     </div>
                     <div className='card-actions justify-end items-center w-full mt-8 text-sm dark:text-slate-400'>

@@ -216,7 +216,7 @@ export default function ProductDetail({ id }) {
             채팅하기
           </button>
           {showChatWidget && (
-            <div className='chat-widget'>
+            <div className='chat-widget z-50'>
               <ChatWidget
                 onSendMessage={sendValue}
                 publicChats={publicChats}
