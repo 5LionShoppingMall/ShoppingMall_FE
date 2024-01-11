@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import { useState } from 'react'
 import Dropdown from './navbar-menu/Dropdown'
 import NavbarSvgBtn from './navbar-menu/NavbarSvgBtn'
 import CategoryMenu from './navbar-menu/CategoryMenu'
@@ -8,9 +9,23 @@ import NavbarIconBtn from './navbar-menu/NavbarIconBtn'
 import { useUser } from '@/hooks/useUser'
 import SearchIcon from './icon/SearchIcon'
 import SaleIcon from './icon/SaleIcon'
+import { useRouter } from 'next/navigation'
 
 export default function Navbar() {
   const { user, isLoading, isError } = useUser()
+  const [keyword, setKeyword] = useState('')
+  const router = useRouter()
+
+  const handleSearch = () => {
+    // 검색 페이지로 리디렉션
+    router.push(`/search?kw=${encodeURIComponent(keyword)}`)
+  }
+
+  const handleKeyDown = (event) => {
+    if (event.key === 'Enter') {
+      handleSearch()
+    }
+  }
 
   return (
     <div className='navbar bg-base-100'>
@@ -34,12 +49,15 @@ export default function Navbar() {
         <div className='hidden lg:flex flex-none gap-10 h-full items-center'>
           <div className='relative bg-zinc-100 rounded-full flex items-center h-11'>
             <div className='absolute flex items-center inset-y-0 left-0 pl-3 pointer-events-none'>
-              <SearchIcon />
+              <SearchIcon onClick={handleSearch} />
             </div>
             <input
               type='text'
               placeholder='Search'
               className='bg-transparent pl-10 pr-5 focus:outline-none text-sm text-neutral-800'
+              value={keyword}
+              onChange={(e) => setKeyword(e.target.value)}
+              onKeyDown={handleKeyDown}
             />
           </div>
           {user ? (
