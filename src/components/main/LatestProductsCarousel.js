@@ -74,7 +74,7 @@ export default function LatestProductsCarousel({ products }) {
                   </div>
                   <div className='relative w-full overflow-hidden p-2'>
                     <div>
-                      <span className='text-lg font-semibold'>
+                      <span className='text-lg font-semibold overflow-ellipsis overflow-hidden line-clamp-1 tracking-wide'>
                         {product.title}
                       </span>
                     </div>
