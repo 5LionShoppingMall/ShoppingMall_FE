@@ -4,6 +4,6 @@ export const metadata = {
   title: 'Search',
 }
 
-export default function page() {
-  return <SearchPage />
+export default function page({ searchParams }) {
+  return <SearchPage kw={searchParams.kw} />
 }

@@ -3,89 +3,63 @@
 import React, { useState, useEffect } from 'react'
 import { AiOutlineLoading3Quarters } from 'react-icons/ai' // 로딩 아이콘
 import axios from '@/config/axios-config'
-import ProductListItem from '../product/ProductListItem'
+import { usePostSearch } from '@/hooks/usePosts'
+import SearchPagination from './SearchPagination'
+import { AiFillHeart } from 'react-icons/ai'
+import Link from 'next/link'
 
-export default function SearchPage() {
-  const [products, setProducts] = useState([])
-  const [posts, setPosts] = useState([])
-  const [loading, setLoading] = useState(false)
-  const [lastProductId, setLastProductId] = useState(null)
-  const [lastPostId, setLastPostId] = useState(null)
+export default function SearchPage({ kw }) {
+  const [postPage, setPostPage] = useState(0)
 
-  useEffect(() => {
-    const urlParams = new URLSearchParams(window.location.search)
-    const kw = urlParams.get('kw')
-    console.log(kw)
-    fetchData(kw) // 컴포넌트 마운트 시 최초 데이터 로딩
-  }, [])
+  const { posts } = usePostSearch(kw, postPage)
 
-  // 데이터 불러 오는 함수
-  const fetchData = async (kw) => {
-    setLoading(true)
+  console.log(posts)
 
-    try {
-      const productResponse = await axios.get('/product/search', {
-        params: { keyword: kw, lastId: lastProductId, limit: 10 },
-      })
-      const postResponse = await axios.get('/api/posts/search', {
-        params: { keyword: kw, lastId: lastPostId, limit: 10 },
-      })
-
-      const newProducts = productResponse.data // API 응답에서 데이터 추출
-      const newPosts = postResponse.data // API 응답에서 데이터 추출
-
-      console.log(newProducts)
-      console.log(newPosts)
-
-      setProducts((prev) => [...prev, ...newProducts])
-      setPosts((prev) => [...prev, ...newPosts])
-
-      // 마지막 ID 업데이트
-      if (newProducts.length > 0) {
-        setLastProductId(newProducts[newProducts.length - 1].id)
-      }
-      if (newPosts.length > 0) {
-        setLastPostId(newPosts[newPosts.length - 1].id)
-      }
-    } catch (error) {
-      console.error('데이터 로드 중 에러 발생:', error)
-      // 여기서 에러 처리 로직 구현
-    }
-
-    setLoading(false)
+  const formatCreatedAt = (createdAt) => {
+    return createdAt.split('T')[0]
   }
 
   return (
-    <div className='container mx-auto'>
-      <div className='my-4'>
-        <h2 className='text-2xl font-bold'>Products</h2>
-        <div>
-          {products.map((product) => (
-            <ProductListItem key={product.id} product={product} />
-          ))}
-        </div>
-      </div>
-      <div className='my-4'>
-        <h2 className='text-2xl font-bold'>Posts</h2>
-        <div>
-          {posts.map((post) => (
-            <div key={post.id} className='p-4 border-b border-gray-200'>
-              {/* 게시물 정보 렌더링 */}
+    <div className='flex flex-col mt-5'>
+      <p className='p-5'>
+        총 {posts?.totalElements}개의 게시글이 검색되었습니다.
+      </p>
+      <div className='grid md:grid-cols-3 sm:grid-cols-2 gap-4'>
+        {posts?.content.map((post, index) => (
+          <div
+            key={post.id}
+            className='border rounded-lg p-4 hover:bg-gray-100 transition duration-300'>
+            <p className='text-center'>{index + 1}</p>
+            <h4 className='text-center flex justify-center'>
+              <Link
+                href={`/community/detail/${post.id}`}
+                className='text-blue-500 hover:underline'>
+                {post.title}
+              </Link>
+            </h4>
+            <p className='text-center'>글쓴이 : {post?.user?.nickname}</p>
+            <p className='text-center'>
+              작성일자 : {formatCreatedAt(post.createdAt)}
+            </p>
+            <p className='text-green-500 text-center'>
+              조회수 : {post.viewCount}
+            </p>
+            <div className='flex items-center text-gray-500'>
+              <AiFillHeart className='text-red-500 mr-1' />
+              <span className='mr-2 text-red-300'>좋아요:</span>
+              <span className='badge badge-secondary badge-outline'>
+                {post.likesCount}
+              </span>
             </div>
-          ))}
-        </div>
+          </div>
+        ))}
       </div>
-      <div className='text-center my-4'>
-        <button
-          className='btn btn-primary'
-          onClick={fetchData}
-          disabled={loading}>
-          {loading ? (
-            <AiOutlineLoading3Quarters className='animate-spin' />
-          ) : (
-            '더보기'
-          )}
-        </button>
+      <div className='flex justify-center my-4'>
+        <SearchPagination
+          page={postPage}
+          setPage={setPostPage}
+          totalPages={posts?.totalPages}
+        />
       </div>
     </div>
   )

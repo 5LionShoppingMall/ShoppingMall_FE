@@ -18,7 +18,7 @@ export default function Navbar() {
 
   const handleSearch = () => {
     // 검색 페이지로 리디렉션
-    router.push(`/search?kw=${encodeURIComponent(keyword)}`)
+    router.push(`/search?kw=${keyword}`)
   }
 
   const handleKeyDown = (event) => {
@@ -49,7 +49,9 @@ export default function Navbar() {
         <div className='hidden lg:flex flex-none gap-10 h-full items-center'>
           <div className='relative bg-zinc-100 rounded-full flex items-center h-11'>
             <div className='absolute flex items-center inset-y-0 left-0 pl-3 pointer-events-none'>
-              <SearchIcon onClick={handleSearch} />
+              <button onClick={handleSearch}>
+                <SearchIcon />
+              </button>
             </div>
             <input
               type='text'
