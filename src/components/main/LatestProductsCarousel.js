@@ -80,7 +80,7 @@ export default function LatestProductsCarousel({ products }) {
                     </div>
                     <div>
                       <span className='text-xl font-semibold'>
-                        {product.price}
+                        {product.price} 원
                       </span>
                     </div>
                     <div className='card-actions justify-end items-center w-full mt-8 text-sm dark:text-slate-400'>
