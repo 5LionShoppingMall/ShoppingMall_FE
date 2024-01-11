@@ -31,7 +31,7 @@ export const authInputType = {
     type: 'address',
     placeholder: '주소를 입력해 주세요.',
   },
-}
+};
 
 export const authSocialBtnType = {
   google: {
@@ -58,4 +58,4 @@ export const authSocialBtnType = {
       />
     ),
   },
-}
+};
