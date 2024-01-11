@@ -13,12 +13,13 @@ import Link from 'next/link';
 import LeftAngleBracket from '../ui/icon/LeftAngleBracket';
 import RightAngleBracket from '../ui/icon/RightAngleBracket';
 import { CiImageOff } from 'react-icons/ci';
+import dateConverter from '@/util/dateConverter';
 
 export default function LatestProductsCarousel({ products }) {
   const { content, totalPages } = products.objData;
 
   return (
-    <div className='relative w-full flex flex-col gap-5'>
+    <div className='relative w-full flex flex-col gap-7'>
       <h1 className='text-2xl sm:text-3xl font-bold'># 최근 등록된 상품</h1>
       <div className='relative mx-4 sm:mx-8'>
         <Swiper
@@ -53,7 +54,7 @@ export default function LatestProductsCarousel({ products }) {
             <SwiperSlide key={product.id}>
               <div className='relative'>
                 <Link
-                  href={``}
+                  href={`/products/${product.id}`}
                   className='flex flex-col justify-center items-center w-full h-full'
                 >
                   <div className='relative w-full rounded-md overflow-hidden pt-[100%]'>
@@ -72,7 +73,21 @@ export default function LatestProductsCarousel({ products }) {
                     )}
                   </div>
                   <div className='relative w-full overflow-hidden p-2'>
-                    <span>{product.title}</span>
+                    <div>
+                      <span className='text-lg font-semibold'>
+                        {product.title}
+                      </span>
+                    </div>
+                    <div>
+                      <span className='text-xl font-semibold'>
+                        {product.price}
+                      </span>
+                    </div>
+                    <div className='card-actions justify-end items-center w-full mt-8 text-sm dark:text-slate-400'>
+                      <span>{product.seller.address}</span>
+                      <span className='hidden sm:block h-[13px] w-[1px] bg-black dark:bg-slate-400'></span>
+                      <span>{dateConverter(product.createdAt)}</span>
+                    </div>
                   </div>
                 </Link>
               </div>
