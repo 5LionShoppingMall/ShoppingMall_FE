@@ -1,27 +1,28 @@
-'use client'
+'use client';
 
-import Link from 'next/link'
-import Dropdown from './navbar-menu/Dropdown'
-import NavbarSvgBtn from './navbar-menu/NavbarSvgBtn'
-import CategoryMenu from './navbar-menu/CategoryMenu'
-import NavbarIconBtn from './navbar-menu/NavbarIconBtn'
-import { useUser } from '@/hooks/useUser'
-import SearchIcon from './icon/SearchIcon'
-import SaleIcon from './icon/SaleIcon'
+import Link from 'next/link';
+import { useUser } from '@/hooks/useUser';
+
+import Dropdown from './navbar-menu/Dropdown';
+import CategoryMenu from './navbar-menu/CategoryMenu';
+import NavbarIconBtn from './navbar-menu/NavbarIconBtn';
+import SearchIcon from './icon/SearchIcon';
+import SaleIcon from './icon/SaleIcon';
 
 export default function Navbar() {
-  const { user, isLoading, isError } = useUser()
+  const { user, isLoading, isError } = useUser();
 
   return (
-    <div className='navbar bg-base-100'>
-      <div className='flex-1'>
+    <div className='navbar bg-transparent'>
+      <div className='flex-1 gap-2'>
         <Link
           href='/'
-          className='font-bold text-xl flex justify-center items-center px-3 font-jeju'>
+          className='font-semibold text-2xl flex justify-center items-center px-3 font-jeju text-sage-750 dark:text-coral-500'
+        >
           LION
         </Link>
         <div className='hidden lg:flex'>
-          <ul className='menu menu-horizontal px-1'>
+          <ul className='flex gap-2 px-1 text-sage-700 dark:text-cream text-sm font-semibold tracking-widest'>
             <CategoryMenu />
           </ul>
         </div>
@@ -32,7 +33,7 @@ export default function Navbar() {
           {user && <NavbarIconBtn menu='write' />}
         </div>
         <div className='hidden lg:flex flex-none gap-10 h-full items-center'>
-          <div className='relative bg-zinc-100 rounded-full flex items-center h-11'>
+          <div className='relative bg-zinc-100 rounded-full flex items-center h-10'>
             <div className='absolute flex items-center inset-y-0 left-0 pl-3 pointer-events-none'>
               <SearchIcon />
             </div>
@@ -46,7 +47,8 @@ export default function Navbar() {
             <div className='flex gap-4'>
               <Link
                 href='/products/write'
-                className='text-sm flex items-center justify-center gap-1'>
+                className='text-sm flex items-center justify-center gap-1'
+              >
                 <SaleIcon />
                 거래등록
               </Link>
@@ -55,12 +57,16 @@ export default function Navbar() {
               <p className='mt-3'>{user?.nickname} 님 환영합니다.</p>
             </div>
           ) : (
-            <div className='flex justify-center gap-2'>
+            <div className='flex justify-center items-center gap-2'>
               <Link href='/auth/signin'>
-                <button className='btn ml-2'>로그인</button>
+                <button className='bg-sage-600 text-sm font-semibold text-white rounded-full py-3 px-4 tracking-widest hover:bg-sage-650 dark:bg-transparent dark:text-cream dark:hover:bg-transparent dark:hover:text-coral-400'>
+                  로그인
+                </button>
               </Link>
               <Link href='/auth/signup'>
-                <button className='btn ml-2'>회원가입</button>
+                <button className='bg-sage-600 text-sm font-semibold text-white rounded-full py-3 px-4 tracking-widest hover:bg-sage-650 dark:bg-transparent dark:text-cream dark:hover:bg-transparent dark:hover:text-coral-400'>
+                  회원가입
+                </button>
               </Link>
             </div>
           )}
@@ -68,5 +74,5 @@ export default function Navbar() {
         <Dropdown menu='dropdown' />
       </div>
     </div>
-  )
+  );
 }

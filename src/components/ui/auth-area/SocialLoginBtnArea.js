@@ -1,5 +1,4 @@
 import SocialLoginBtn from './SocialLoginBtn'
-import KakaoLogin from '@/components/auth/KakaoLogin'
 
 export default function SocialLoginBtnArea() {
   return (
@@ -13,8 +12,8 @@ export default function SocialLoginBtnArea() {
           style={{ height: '1px' }}
           className='bg-gray-300 block w-4/12'></div>
       </div>
-      <KakaoLogin />
       <div className='grid md:grid-cols-2 gap-2 mt-7'>
+        <SocialLoginBtn socialType='kakao' />
         <SocialLoginBtn socialType='google' />
         <SocialLoginBtn socialType='github' />
       </div>

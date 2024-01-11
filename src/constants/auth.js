@@ -1,4 +1,5 @@
 /** @format */
+import KakaoIcon from '../components/ui/icon/social/KakaoIcon';
 
 export const authInputType = {
   email: {
@@ -34,6 +35,11 @@ export const authInputType = {
 }
 
 export const authSocialBtnType = {
+  kakao: {
+    title: 'Kakao',
+    color: 'Kakao-btn-color',
+    Icon: KakaoIcon,
+  },
   google: {
     title: 'Google',
     color: 'google-btn-color',
