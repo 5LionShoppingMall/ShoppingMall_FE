@@ -83,7 +83,7 @@ const fetchPostSearch = async (kw, page) => {
     `/api/posts/search?keyword=${kw}&page=${page}`
   )
 
-  console.log('fetchSearch')
+  console.log('fetchPostSearch')
   console.log(data)
 
   return data

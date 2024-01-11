@@ -4,7 +4,7 @@ import {
   useQuery,
   useQueryClient,
 } from '@tanstack/react-query'
-import { apiAxios, fileApiAxios } from '@/config/axios-config'
+import axios, { apiAxios, fileApiAxios } from '@/config/axios-config'
 import { useRouter } from 'next/navigation'
 import { toast } from 'react-toastify'
 
@@ -206,6 +206,31 @@ export const useProducts = (page, size) => {
     queryKey: ['products', page, size],
     queryFn: () => fetchProducts(page, size),
     placeholderData: keepPreviousData,
+  })
+
+  return { products, isLoading, isFetching, isError, error, isPlaceholderData }
+}
+
+const fetchProductSearch = async (kw, page) => {
+  const { data } = await axios.get(`/product/search?keyword=${kw}&page=${page}`)
+
+  console.log('fetchSearchProducts')
+  console.log(data)
+
+  return data
+}
+
+export const useProductSearch = (kw, page) => {
+  const {
+    data: products,
+    isLoading,
+    isFetching,
+    isError,
+    error,
+    isPlaceholderData,
+  } = useQuery({
+    queryKey: ['searchProducts', kw, page],
+    queryFn: () => fetchProductSearch(kw, page),
   })
 
   return { products, isLoading, isFetching, isError, error, isPlaceholderData }

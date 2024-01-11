@@ -32,7 +32,7 @@ export default function ProductListItem({ product }) {
           </div>
         </div>
         <div className='card-actions justify-end items-center w-full mt-5 text-sm dark:text-slate-400'>
-          <span>{product.seller?.address}</span>
+          <span>{product?.seller?.address}</span>
           <span className='hidden sm:block h-[13px] w-[1px] bg-black dark:bg-slate-400'></span>
           <span>{dateConverter(product.createdAt)}</span>
         </div>
