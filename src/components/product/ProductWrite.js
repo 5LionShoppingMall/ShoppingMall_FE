@@ -127,10 +127,10 @@ export default function ProductWrite() {
                 fill
               />
               <button
-                className='absolute top-0 right-0 rounded-full bg-white m-1'
+                className='absolute top-0 right-0 rounded-full bg-white/70 m-1'
                 onClick={(e) => removeImage(e, index)}
               >
-                <CloseIcon />
+                <CloseIcon className='w-3 h-3 text-gray-500' />
               </button>
             </div>
           ))}
@@ -139,7 +139,7 @@ export default function ProductWrite() {
       <div className='w-full h-fit bg-white flex justify-center items-center'>
         <textarea
           name='title'
-          className='w-full resize-none focus:outline-none text-sm p-3 border rounded-md'
+          className='w-full resize-none focus:outline-none p-3 border rounded-md'
           placeholder='상품명'
           rows={1}
           onChange={onChangeHandler}
@@ -148,7 +148,7 @@ export default function ProductWrite() {
       <div className='w-full h-fit bg-white'>
         <input
           name='price'
-          className='w-full text-sm focus:outline-none p-3 border rounded-md'
+          className='w-full focus:outline-none p-3 border rounded-md'
           placeholder='판매가격'
           value={inputPrice}
           onChange={priceChangeHander}
@@ -158,6 +158,9 @@ export default function ProductWrite() {
         <textarea
           name='description'
           className='resize-none w-full h-full p-3 focus:outline-none border rounded-md'
+          placeholder={
+            '- 상품명\n- 구매 시기\n- 사용 기간\n- 하자 여부\n등등 위 항목 외에도 알아야 될 사항들을 적어주세요!'
+          }
           onChange={onChangeHandler}
         ></textarea>
       </div>
