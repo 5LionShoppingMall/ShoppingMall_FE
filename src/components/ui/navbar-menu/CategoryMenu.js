@@ -7,7 +7,7 @@ export default function CategoryMenu({ setIsMenuOpen }) {
       {navDefaultMenus.map((category) => (
         <li
           key={category.id}
-          className='px-2'
+          className='px-1 hover:text-coral-400'
           onClick={() =>
             typeof setIsMenuOpen === 'function' && setIsMenuOpen(false)
           }

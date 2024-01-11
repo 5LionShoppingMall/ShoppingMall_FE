@@ -8,7 +8,7 @@ const dateConverter = (createdAt) => {
   const days = Math.floor(hours / 24);
 
   if (second < 60) {
-    return '방금 전';
+    return `${second}초 전`;
   } else if (minutes < 60) {
     return `${minutes}분 전`;
   } else if (hours < 24) {

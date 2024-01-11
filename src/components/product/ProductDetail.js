@@ -1,120 +1,121 @@
-'use client'
+'use client';
 
-import { useDeleteProduct, useProductDetail } from '@/hooks/useProducts'
-import Carousel from '../ui/Carousel'
-import SwiperCarousel from '../ui/SwiperCarousel'
-import Link from 'next/link'
-import { useState } from 'react'
-import ConfirmAlert from '../ui/modal/ConfirmAlert'
-import LoadingSpinnerCircle from '../ui/icon/LoadingSpinnerCircle'
-import ErrorMessage from '../error/ErrorMessage'
-import { useUser } from '@/hooks/useUser'
-import { over } from 'stompjs'
-import SockJS from 'sockjs-client'
-import ChatWidget from '../chat/ChatWidget'
-import { useRouter } from 'next/navigation'
+import { useDeleteProduct, useProductDetail } from '@/hooks/useProducts';
+import Carousel from '../ui/Carousel';
+import SwiperCarousel from '../ui/SwiperCarousel';
+import Link from 'next/link';
+import { useState } from 'react';
+import ConfirmAlert from '../ui/modal/ConfirmAlert';
+import LoadingSpinnerCircle from '../ui/icon/LoadingSpinnerCircle';
+import ErrorMessage from '../error/ErrorMessage';
+import { useUser } from '@/hooks/useUser';
+import { over } from 'stompjs';
+import SockJS from 'sockjs-client';
+import ChatWidget from '../chat/ChatWidget';
+import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 
-var stompClient = null
+var stompClient = null;
 export default function ProductDetail({ id }) {
   const { product, isLoading, isFetching, isError, error } =
-    useProductDetail(id)
-  const { submitDelete, isPending } = useDeleteProduct(id)
+    useProductDetail(id);
+  const { submitDelete, isPending } = useDeleteProduct(id);
   const {
     user,
     isLoading: isUserLoading,
     isFetching: isUserFetching,
-  } = useUser()
-  const [isConfirmOpen, setIsConfirmOpen] = useState(false)
-  const router = useRouter()
+  } = useUser();
+  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
+  const router = useRouter();
 
   const [userData, setUserData] = useState({
     username: user?.nickname,
     receivername: '',
     connected: false,
     message: '',
-  })
+  });
 
-  const [showChatWidget, setShowChatWidget] = useState(false)
-  const [publicChats, setPublicChats] = useState([])
+  const [showChatWidget, setShowChatWidget] = useState(false);
+  const [publicChats, setPublicChats] = useState([]);
 
   const toggleChatWidget = () => {
-    setShowChatWidget(!showChatWidget)
-  }
+    setShowChatWidget(!showChatWidget);
+  };
 
   const onMessageReceived = (payload) => {
-    var payloadData = JSON.parse(payload.body)
+    var payloadData = JSON.parse(payload.body);
     switch (payloadData.status) {
       case 'MESSAGE':
-        publicChats.push(payloadData)
-        setPublicChats([...publicChats])
-        break
+        publicChats.push(payloadData);
+        setPublicChats([...publicChats]);
+        break;
     }
-  }
+  };
 
   const onError = (err) => {
-    console.log(err)
-  }
+    console.log(err);
+  };
 
   const onConnected = () => {
-    setUserData({ ...userData, connected: true })
-    stompClient.subscribe('/chatroom/public', onMessageReceived)
-    userJoin()
-  }
+    setUserData({ ...userData, connected: true });
+    stompClient.subscribe('/chatroom/public', onMessageReceived);
+    userJoin();
+  };
 
-  console.log(user)
+  console.log(user);
 
   const connect = () => {
-    let Sock = new SockJS('https://api.lionshop.me/wss')
-    stompClient = over(Sock)
-    stompClient.connect({}, onConnected, onError)
-  }
+    let Sock = new SockJS('https://api.lionshop.me/wss');
+    stompClient = over(Sock);
+    stompClient.connect({}, onConnected, onError);
+  };
 
   const userJoin = () => {
     var chatMessage = {
       senderName: user?.nickname,
       status: 'JOIN',
-    }
-    stompClient.send('/app/message', {}, JSON.stringify(chatMessage))
-  }
+    };
+    stompClient.send('/app/message', {}, JSON.stringify(chatMessage));
+  };
 
   const registerUser = () => {
     if (!user) {
-      router.push('/auth/signin')
-      return
+      router.push('/auth/signin');
+      return;
     }
 
     if (!userData.connected) {
-      connect()
+      connect();
     }
     if (!showChatWidget) {
-      toggleChatWidget()
+      toggleChatWidget();
     }
-  }
+  };
 
   const sendValue = (message) => {
-    console.log(message)
+    console.log(message);
     if (stompClient) {
       var chatMessage = {
         senderName: user?.nickname,
         message: message.message,
         status: 'MESSAGE',
-      }
-      console.log(chatMessage)
-      stompClient.send('/app/message', {}, JSON.stringify(chatMessage))
-      setUserData({ ...userData, message: '' })
+      };
+      console.log(chatMessage);
+      stompClient.send('/app/message', {}, JSON.stringify(chatMessage));
+      setUserData({ ...userData, message: '' });
     }
-  }
+  };
 
   if (isLoading || isFetching) {
     return (
       <div className='w-full h-full flex justify-center items-center -mt-[68px]'>
         <LoadingSpinnerCircle color='text-gray-500' />
       </div>
-    )
+    );
   }
 
   if (isError) {
-    return <>{error}</>
+    return <>{error}</>;
   }
 
   if (!product) {
@@ -122,7 +123,7 @@ export default function ProductDetail({ id }) {
       <div className='w-full h-full -mt-[68px]'>
         <ErrorMessage message='데이터를 찾을 수 없어요.. 🥲' />
       </div>
-    )
+    );
   }
 
   return (
@@ -139,8 +140,8 @@ export default function ProductDetail({ id }) {
             </div>
           )}
         </div>
-        <div className='w-full h-full flex flex-col justify-between px-5'>
-          <div className='flex-grow'>
+        <div className='w-full h-full flex flex-col justify-center px-5'>
+          <div className=''>
             {!isUserFetching && user?.email === product.seller.email && (
               <div className='flex justify-end items-center gap-2 h-10 text-sm'>
                 <Link href={`/products/${product.id}/modify`}>
@@ -151,7 +152,6 @@ export default function ProductDetail({ id }) {
                 </button>
               </div>
             )}
-
             <h1 className='flex mb-1 text-lg font-bold align-middle text-heading md:text-2xl hover:text-black'>
               {product.title}
             </h1>
@@ -160,8 +160,21 @@ export default function ProductDetail({ id }) {
               <span className='text-xl'>원</span>
             </div>
           </div>
-
-          <button className='btn mt-auto' onClick={registerUser}>
+          <div className='w-full border-t border-b py-2 flex'>
+            <div className='relative w-28 h-28'>
+              <Image
+                src={product.seller?.profileImageUrl}
+                alt=''
+                fill
+                className='w-full h-full object-cover rounded-full'
+              />
+            </div>
+            <div>
+              <span>{product.seller.nickname}</span>
+            </div>
+          </div>
+          <div className='w-full'></div>
+          <button className='btn' onClick={registerUser}>
             채팅하기
           </button>
 
@@ -179,7 +192,7 @@ export default function ProductDetail({ id }) {
           )}
         </div>
       </div>
-      <div className='px-5 flex flex-col gap-5'>
+      <div className='px-5 flex flex-col gap-5 min-h-[400px]'>
         <h1 className='text-3xl font-bold border-b border-slate-600/40 pb-3'>
           상품정보
         </h1>
@@ -189,10 +202,11 @@ export default function ProductDetail({ id }) {
         <ConfirmAlert
           isOpen={isConfirmOpen}
           onClose={() => setIsConfirmOpen(false)}
-          onSubmit={submitDelete}>
+          onSubmit={submitDelete}
+        >
           삭제시 복구가 불가능합니다. <br /> 정말로 삭제하시겠어요?
         </ConfirmAlert>
       )}
     </div>
-  )
+  );
 }
