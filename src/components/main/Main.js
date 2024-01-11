@@ -27,7 +27,7 @@ export default function Main() {
 
   if (!products || !products?.objData) {
     return (
-      <div className='w-full h-full -mt-[68px]'>
+      <div className='fixed top-0 left-0 w-full h-full flex justify-center items-center -mt-[72px]'>
         <ErrorMessage message='데이터를 찾을 수 없어요.. 🥲' />
       </div>
     );

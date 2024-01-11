@@ -1,8 +1,8 @@
 /** @format */
 
+import Navbar from '@/components/ui/NavBar';
 import '../styles/globals.css';
 import TanstackProvider from '@/context/TanstackProvider';
-import Navbar from '@/components/NavBar';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -17,7 +17,7 @@ export const metadata = {
 export default async function RootLayout({ children }) {
   return (
     <html lang='ko'>
-      <body className='font-suite w-full h-screen overflow-auto flex flex-col justify-between h-full'>
+      <body className='font-suite w-full h-screen overflow-auto flex flex-col justify-between'>
         <ToastContainer
           position='top-center'
           autoClose={2000}

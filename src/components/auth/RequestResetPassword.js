@@ -3,7 +3,7 @@
 import React, { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { AiOutlineMail } from 'react-icons/ai'
-import axios from '../config/axios-config'
+import axios from '../../config/axios-config'
 import { toast, ToastContainer } from 'react-toastify'
 
 export default function RequestResetPasswordPage() {

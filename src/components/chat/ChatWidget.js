@@ -1,7 +1,17 @@
 import React, { useState } from 'react'
 
-const ChatWidget = ({ onSendMessage, privateChats, userData }) => {
+const ChatWidget = ({ onSendMessage, publicChats, userData }) => {
   const [message, setMessage] = useState('')
+
+  console.log(userData)
+
+  const handleKeyDown = (event) => {
+    // 엔터 키가 눌렸고 메시지가 비어있지 않은 경우
+    if (event.key === 'Enter' && message.trim()) {
+      handleSendMessage(event)
+      event.preventDefault() // 엔터 키의 기본 동작을 방지
+    }
+  }
 
   const handleSendMessage = (e) => {
     e.preventDefault()
@@ -17,7 +27,7 @@ const ChatWidget = ({ onSendMessage, privateChats, userData }) => {
     }
   }
 
-  console.log(privateChats)
+  console.log(publicChats)
 
   const handleMessageChange = (event) => {
     event.preventDefault()
@@ -28,7 +38,7 @@ const ChatWidget = ({ onSendMessage, privateChats, userData }) => {
     <div className='chat-widget p-4 bg-white shadow rounded'>
       <div className='chat-history h-64 overflow-auto mb-4'>
         {/* Map 객체를 배열로 변환하고 각 채팅 메시지를 렌더링 */}
-        {Array.from(privateChats.values())
+        {Array.from(publicChats.values())
           .flat()
           .map((chat, index) => (
             <li
@@ -57,6 +67,7 @@ const ChatWidget = ({ onSendMessage, privateChats, userData }) => {
           className='flex-grow p-2 border rounded-l focus:outline-none'
           value={message}
           onChange={handleMessageChange}
+          onKeyDown={handleKeyDown}
           placeholder='메시지를 입력하세요'
         />
         <button

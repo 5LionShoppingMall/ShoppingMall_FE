@@ -8,6 +8,7 @@ const nextConfig = {
       'ypj0qkoe2133.edge.naverncp.com',
       'play-lh.googleusercontent.com',
       'mblogthumb-phinf.pstatic.net',
+      'k.kakaocdn.net',
     ],
   },
 };
