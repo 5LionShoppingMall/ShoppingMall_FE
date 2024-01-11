@@ -63,9 +63,9 @@ export default function Main() {
           ))}
         </Swiper>
       </div>
-      <div className='px-4 h-fit py-16 flex flex-col'>
+      <div className='px-4 h-fit pb-16 pt-24 flex flex-col'>
         <LatestProductsCarousel products={products} />
-        <div className='flex flex-col gap-5 h-full mt-14'>
+        <div className='flex flex-col gap-5 h-full mt-24'>
           <h1 className='text-2xl sm:text-3xl font-bold'># 인기 게시글 ? </h1>
           <div className='bg-base-200 w-full h-[400px]'></div>
         </div>
