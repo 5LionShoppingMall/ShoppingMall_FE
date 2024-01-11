@@ -5,9 +5,9 @@ export default function ProductListItem({ product }) {
   return (
     <li
       key={product.id}
-      className='flex flex-row sm:flex-col bg-base-100 mx-auto border-b border-base-200 sm:border-none rounded-none w-full h-full sm:h-[350px] p-5 sm:p-2'
+      className='flex flex-row sm:flex-col bg-base-100 mx-auto border-b border-base-200 sm:border-none rounded-none w-full h-full min-h-[183px] sm:basis-1/4 sm:h-[430px] p-5 sm:p-2'
     >
-      <figure className='relative w-2/5 sm:w-full h-full sm:h-44'>
+      <figure className='relative w-2/5 sm:w-full h-full sm:h-64'>
         {product.thumbnailImage ? (
           <Image
             src={product.thumbnailImage}
@@ -19,7 +19,7 @@ export default function ProductListItem({ product }) {
           <div className='w-full h-full rounded-md bg-base-200'></div>
         )}
       </figure>
-      <div className='card-body basis-3/5 items-start justify-between text-start gap-0 px-4 py-2 sm:py-4 sm:px-2'>
+      <div className='card-body basis-3/5 sm:h-full items-start justify-between text-start gap-0 px-4 py-2 sm:py-4 sm:px-2'>
         <div>
           <h2 className='card-title text-lg font-medium overflow-ellipsis overflow-hidden line-clamp-2 tracking-wide pb-[2px] w-full'>
             {product.title}
