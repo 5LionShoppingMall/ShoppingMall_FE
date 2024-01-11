@@ -37,7 +37,6 @@ export default function SearchPage({ kw }) {
                 {post.title}
               </Link>
             </h4>
-            <p className='text-center'>글쓴이 : {post?.user?.nickname}</p>
             <p className='text-center'>
               작성일자 : {formatCreatedAt(post.createdAt)}
             </p>
