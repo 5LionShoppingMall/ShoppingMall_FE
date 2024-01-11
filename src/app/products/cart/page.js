@@ -1,7 +1,13 @@
+
+import CartMain from '@/components/product/cart/CartMain';
+
 export const metadata = {
-  title: 'Cart',
+    title: 'Cart',
 };
 
 export default function CartPage() {
-  return <div>장바구니 페이지</div>;
+    console.log("페이지 로드")
+    return <section>
+        <CartMain />
+    </section>;
 }

@@ -205,6 +205,7 @@ export const useProducts = (page, size) => {
   } = useQuery({
     queryKey: ['products', page, size],
     queryFn: () => fetchProducts(page, size),
+    retry: 0,
     placeholderData: keepPreviousData,
   });
 

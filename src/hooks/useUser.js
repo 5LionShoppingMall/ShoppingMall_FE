@@ -5,6 +5,10 @@ import axios from '../config/axios-config';
 
 const fetchUser = async () => {
   const { data } = await axios.get('api/users/info');
+
+  console.log('check')
+  console.log(data)
+
   return data;
 };
 
