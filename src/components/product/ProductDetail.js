@@ -14,6 +14,7 @@ import SockJS from 'sockjs-client';
 import ChatWidget from '../chat/ChatWidget';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
+import { CiImageOff } from 'react-icons/ci';
 
 var stompClient = null;
 export default function ProductDetail({ id }) {
@@ -129,19 +130,20 @@ export default function ProductDetail({ id }) {
   return (
     <div className='flex flex-col'>
       <div className='items-start block grid-cols-2 pt-5 md:grid gap-x-10 xl:gap-x-14 pb-14 lg:py-10 lg:pb-14 2xl:pb-20'>
-        <div className='px-10 md:px-5'>
+        <div className='relative px-10 mb-5 sm:mb-0 md:px-5'>
           {product.images.length > 0 ? (
             <SwiperCarousel images={product.images} />
           ) : (
-            <div className='lg:w-[444px] lg:h-[444px]'>
-              <span className='flex justify-center items-center h-full'>
-                no image
-              </span>
+            <div className='relative pt-[100%]'>
+              <div className='absolute inset-0 w-full h-full bg-base-200 flex flex-col justify-center items-center text-gray-500 rounded-md'>
+                <CiImageOff className='w-10 h-10' />
+                <span>No Image</span>
+              </div>
             </div>
           )}
         </div>
-        <div className='w-full h-full flex flex-col justify-center px-5'>
-          <div className=''>
+        <div className='w-full h-full flex flex-col justify-around px-5 max-h-[444px]'>
+          <div className='flex-grow py-3 border-b-2 border-gray-300'>
             {!isUserFetching && user?.email === product.seller.email && (
               <div className='flex justify-end items-center gap-2 h-10 text-sm'>
                 <Link href={`/products/${product.id}/modify`}>
@@ -155,29 +157,64 @@ export default function ProductDetail({ id }) {
             <h1 className='flex mb-1 text-lg font-bold align-middle text-heading md:text-2xl hover:text-black'>
               {product.title}
             </h1>
-            <div className='text-heading font-bold text-[40px] pe-2 md:pe-0 lg:pe-2 2xl:pe-0 mr-2'>
+            <div className='text-heading font-bold text-2xl sm:text-4xl pe-2 md:pe-0 lg:pe-2 2xl:pe-0 mr-2'>
               {product.price}
               <span className='text-xl'>원</span>
             </div>
           </div>
-          <div className='w-full border-t border-b py-2 flex'>
-            <div className='relative w-28 h-28'>
-              <Image
-                src={product.seller?.profileImageUrl}
-                alt=''
-                fill
-                className='w-full h-full object-cover rounded-full'
-              />
-            </div>
+          <div className='w-full border-b-2 border-gray-300 py-4 flex flex-col gap-2'>
             <div>
-              <span>{product.seller.nickname}</span>
+              <span className='text-md sm:text-lg font-extrabold text-gray-300 tracking-wider'>
+                거래 방법
+              </span>
+            </div>
+            <div className='flex text-xl sm:text-2xl font-bold justify-center mt-2'>
+              <span className='text-coral-500 border-r border-gray-300 w-full text-center'>
+                직거래
+              </span>
+              <span className='text-sage-600/60 w-full text-center'>택배</span>
             </div>
           </div>
-          <div className='w-full'></div>
-          <button className='btn' onClick={registerUser}>
+          <div className='w-full py-4 flex flex-col'>
+            <div className='w-full flex'>
+              <div className='flex-1 w-full pr-2 sm:pr-5'>
+                <span className='text-md sm:text-lg font-extrabold text-gray-300 tracking-wider'>
+                  판매자 정보
+                </span>
+                <div className='flex flex-col w-full'>
+                  <div className='flex justify-between'>
+                    <span className='text-xl sm:text-2xl font-extrabold tracking-wider py-2'>
+                      {product.seller.nickname}
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div className='relative w-16 h-16 sm:w-24 sm:h-24 my-auto'>
+                <Image
+                  src={product.seller?.profileImageUrl}
+                  alt=''
+                  fill
+                  className='w-full h-full object-cover rounded-full'
+                />
+              </div>
+            </div>
+            <div className='w-full flex flex-col'>
+              <span className='text-sm sm:text-md text-sage-700 font-extrabold tracking-wider pb-1 mt-auto text-end w-full'>
+                50
+              </span>
+              <progress
+                className='progress progress-error w-full'
+                value='50'
+                max='100'
+              ></progress>
+            </div>
+          </div>
+          <button
+            className='w-full bg-sage-600/70 py-3 rounded-full text-lg text-baige-300 font-bold tracking-wider hover:bg-coral-500 transition-colors duration-500'
+            onClick={registerUser}
+          >
             채팅하기
           </button>
-
           {showChatWidget && (
             <div className='chat-widget'>
               <ChatWidget
@@ -192,11 +229,14 @@ export default function ProductDetail({ id }) {
           )}
         </div>
       </div>
-      <div className='px-5 flex flex-col gap-5 min-h-[400px]'>
-        <h1 className='text-3xl font-bold border-b border-slate-600/40 pb-3'>
+      <div className='px-5 flex flex-col min-h-[400px]'>
+        <h1 className='text-2xl sm:text-4xl font-bold tracking-wider py-2'>
           상품정보
         </h1>
-        <div className='whitespace-pre-line'>{product.description}</div>
+        <div className='h-[2px] bg-gradient-to-r from-gray-500/40 to-sage-300/20'></div>
+        <div className='whitespace-pre-line py-5 text-base sm:text-lg'>
+          {product.description}
+        </div>
       </div>
       {isConfirmOpen && (
         <ConfirmAlert
