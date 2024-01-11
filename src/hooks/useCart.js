@@ -1,5 +1,4 @@
 import {keepPreviousData, useQuery} from "@tanstack/react-query";
-import instance from "@/config/axios-config";
 import axios from '@/config/axios-config';
 
 

@@ -40,11 +40,13 @@ export default function Comment({
             <p className='font-semibold text-gray-800'>
               Written by : {commentData.author}
             </p>
-            <p className='mt-1 text-gray-700'>{commentData.content}</p>
+            <p className='mt-1 text-gray-700 whitespace-pre-line'>
+              {commentData.content}
+            </p>
             {isEditing && (
               <div className='mt-2'>
                 <textarea
-                  className='w-full h-24 px-3 py-2 text-sm text-gray-700 placeholder-gray-600 border rounded-lg focus:shadow-outline'
+                  className='w-full h-24 px-3 py-2 text-sm bg-transparent dark:text-gray-300 text-gray-700 placeholder-gray-600 border rounded-lg focus:shadow-outline'
                   value={editedContent}
                   onChange={(e) => setEditedContent(e.target.value)}
                 />

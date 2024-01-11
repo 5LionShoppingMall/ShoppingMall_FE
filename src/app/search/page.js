@@ -1,7 +1,9 @@
+import SearchPage from '@/components/ui/SearchPage'
+
 export const metadata = {
   title: 'Search',
-};
+}
 
-export default function SearchPage() {
-  return <div>검색 페이지</div>;
+export default function page({ searchParams }) {
+  return <SearchPage kw={searchParams.kw} />
 }

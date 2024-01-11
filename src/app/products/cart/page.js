@@ -1,4 +1,3 @@
-
 import CartMain from '@/components/product/cart/CartMain';
 
 export const metadata = {
@@ -6,7 +5,6 @@ export const metadata = {
 };
 
 export default function CartPage() {
-    console.log("페이지 로드")
     return <section>
         <CartMain />
     </section>;

@@ -54,7 +54,7 @@ const PostWrite = (postId) => {
             name='title'
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            className='mt-1 px-2 py-3 text-lg w-full border rounded-md shadow-sm mb-3'
+            className='mt-1 px-2 py-3 text-lg w-full border rounded-md shadow-sm mb-3 bg-transparent'
           />
         </div>
 
@@ -70,13 +70,13 @@ const PostWrite = (postId) => {
             value={content}
             onChange={(e) => setContent(e.target.value)}
             rows='4'
-            className='mt-1 p-2 w-full border rounded-md shadow-sm resize-none h-full'
+            className='mt-1 p-2 w-full border rounded-md shadow-sm resize-none h-full bg-transparent'
           />
         </div>
 
         <button
           type='submit'
-          className='btn text-gray-700 px-5 py-2 rounded-full transition-all duration-200 ease-in-out transform hover:scale-105 mt-12'
+          className='btn text-gray-700 dark:text-gray-300 px-5 py-2 rounded-full transition-all duration-200 ease-in-out transform hover:scale-105 mt-12'
           disabled={isPending}>
           {isPending ? '제출 중...' : '제출'}
         </button>

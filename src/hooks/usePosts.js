@@ -76,3 +76,31 @@ export const useWritePost = () => {
 
   return { submitWrite, isPending, isError, error }
 }
+
+// axios ver
+const fetchPostSearch = async (kw, page) => {
+  const { data } = await axios.get(
+    `/api/posts/search?keyword=${kw}&page=${page}`
+  )
+
+  console.log('fetchPostSearch')
+  console.log(data)
+
+  return data
+}
+
+export const usePostSearch = (kw, page) => {
+  const {
+    data: posts,
+    isLoading,
+    isFetching,
+    isError,
+    error,
+    isPlaceholderData,
+  } = useQuery({
+    queryKey: ['products', kw, page],
+    queryFn: () => fetchPostSearch(kw, page),
+  })
+
+  return { posts, isLoading, isFetching, isError, error, isPlaceholderData }
+}
