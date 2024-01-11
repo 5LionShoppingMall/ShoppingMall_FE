@@ -41,7 +41,7 @@ export default function ProductMain() {
 
   return (
     <div className='w-full text-center px-5 py-10 max-[280px]:px-0 max-[280px]:pt-0'>
-      <ul className='grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 px-2 py-4 sm:gap-3 lg:gap-4 lg:px-4 mb-12 w-full'>
+      <ul className='grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 px-2 py-4 sm:gap-3 lg:gap-4 lg:px-4 mb-24 w-full'>
         {content.map((product) => (
           <Link href={`/products/${product.id}`} key={product.id}>
             <ProductListItem product={product} />

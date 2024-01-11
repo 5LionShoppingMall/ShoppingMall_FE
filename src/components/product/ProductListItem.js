@@ -1,5 +1,6 @@
 import dateConverter from '@/util/dateConverter';
 import Image from 'next/image';
+import { CiImageOff } from 'react-icons/ci';
 
 export default function ProductListItem({ product }) {
   return (
@@ -16,7 +17,10 @@ export default function ProductListItem({ product }) {
             fill
           />
         ) : (
-          <div className='w-full h-full rounded-md bg-base-200'></div>
+          <div className='absolute w-full h-full bg-base-200 inset-0 flex flex-col justify-center items-center text-gray-500 rounded-md'>
+            <CiImageOff className='w-10 h-10' />
+            <span>No Image</span>
+          </div>
         )}
       </figure>
       <div className='card-body basis-3/5 sm:h-full items-start justify-between text-start gap-0 px-4 py-2 sm:py-4 sm:px-2'>

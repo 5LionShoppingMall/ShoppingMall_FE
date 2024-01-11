@@ -44,7 +44,7 @@ export default function Main() {
     <section className='flex flex-col'>
       <div className='relative'>
         <Swiper
-          className='h-[400px] lg:rounded-md'
+          className='h-[500px] xl:rounded-md'
           pagination={pagination}
           autoplay={{
             delay: 5000,
