@@ -22,7 +22,7 @@ const ChatRoom = () => {
   }, [userData])
 
   const connect = () => {
-    let Sock = new SockJS('http://localhost:8082/ws')
+    let Sock = new SockJS('https://api.lionshop.me/wss')
     stompClient = over(Sock)
     stompClient.connect({}, onConnected, onError)
   }
@@ -114,6 +114,24 @@ const ChatRoom = () => {
     }
   }
 
+  // 전체 채팅 엔터키
+  const handlePublicKeyDown = (event) => {
+    // 엔터 키가 눌렸고 메시지가 비어있지 않은 경우
+    if (event.key === 'Enter' && userData.message.trim()) {
+      sendValue()
+      event.preventDefault() // 엔터 키의 기본 동작을 방지
+    }
+  }
+
+  // 개인 채팅 엔터키
+  const handlePrivateKeyDown = (event) => {
+    // 엔터 키가 눌렸고 메시지가 비어있지 않은 경우
+    if (event.key === 'Enter' && userData.message.trim()) {
+      sendPrivateValue()
+      event.preventDefault() // 엔터 키의 기본 동작을 방지
+    }
+  }
+
   const handleUsername = (event) => {
     const { value } = event.target
     setUserData({ ...userData, username: value })
@@ -123,14 +141,14 @@ const ChatRoom = () => {
     connect()
   }
   return (
-    <div className='container'>
+    <div className={`container mx-auto ${userData.connected && 'py-20 px-16'}`}>
       {userData.connected ? (
-        <div className='chat-box'>
-          <div className=' bg-gray-100 p-4'>
+        <div className='chat-box justify-around rounded-xl border p-8'>
+          <div className='p-4'>
             <ul>
               <li
                 onClick={() => setTab('CHATROOM')}
-                className={`member cursor-pointer p-2 mb-2 rounded-lg hover:bg-blue-200 ${
+                className={`member cursor-pointer p-2 mb-2 rounded-lg dark:text-gray-600 hover:bg-blue-200 ${
                   tab === 'CHATROOM' ? 'bg-blue-300' : ''
                 }`}>
                 전체 채팅방
@@ -149,10 +167,10 @@ const ChatRoom = () => {
           </div>
           {tab === 'CHATROOM' && (
             <div className='chat-content flex flex-col h-full'>
-              <ul className='chat-messages overflow-auto p-4  flex-grow'>
+              <ul className='chat-messages overflow-auto p-4 flex-grow border dark:border-gray-500 rounded-xl'>
                 {publicChats.map((chat, index) => (
                   <li
-                    className={`message flex items-center gap-2 mb-2 ${
+                    className={`message flex items-center gap-2 mb-2 dark:text-gray-600 ${
                       chat.senderName === userData.username
                         ? 'flex-row-reverse'
                         : ''
@@ -175,14 +193,14 @@ const ChatRoom = () => {
                   </li>
                 ))}
               </ul>
-
-              <div className='p-4 flex'>
+              <div className='pt-5 flex'>
                 <input
                   type='text'
-                  className='input-message flex-grow border border-gray-300 p-3 rounded-l-lg focus:border-blue-500 focus:outline-none'
+                  className='input-message flex-grow border border-gray-300 p-3 rounded-l-lg bg-transparent dark:text-gray-300 dark:bg-white/5 focus:border-blue-500 focus:outline-none'
                   placeholder='메시지를 입력하세요'
                   value={userData.message}
                   onChange={handleMessage}
+                  onKeyDown={handlePublicKeyDown} // 엔터 입력 시 메시지 전송
                 />
                 <button
                   type='button'
@@ -228,6 +246,7 @@ const ChatRoom = () => {
                   placeholder='메시지를 입력하세요'
                   value={userData.message}
                   onChange={handleMessage}
+                  onKeyDown={handlePrivateKeyDown} // 엔터 입력 시 메시지 전송
                 />
                 <button
                   type='button'
@@ -240,21 +259,23 @@ const ChatRoom = () => {
           )}
         </div>
       ) : (
-        <div className='flex items-center justify-center h-screen'>
-          <input
-            id='user-name'
-            className='border border-gray-300 p-3 rounded-lg mb-4 w-1/3 focus:border-blue-500 focus:outline-none'
-            placeholder='닉네임을 입력하세요'
-            name='userName'
-            value={userData.username}
-            onChange={handleUsername}
-          />
-          <button
-            type='button'
-            className='ml-4 mb-3 bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg'
-            onClick={registerUser}>
-            연결하기
-          </button>
+        <div className='flex items-center justify-center h-screen -mt-[69px] w-full'>
+          <div className='h-[50px] w-full text-center'>
+            <input
+              id='user-name'
+              className='border border-gray-300 p-3 rounded-lg mb-4 w-1/3 focus:border-blue-500 focus:outline-none bg-transparent dark:bg-white/5 dark:text-gray-300'
+              placeholder='닉네임을 입력하세요'
+              name='userName'
+              value={userData.username}
+              onChange={handleUsername}
+            />
+            <button
+              type='button'
+              className='ml-4 mb-3 bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg h-full'
+              onClick={registerUser}>
+              연결하기
+            </button>
+          </div>
         </div>
       )}
     </div>

@@ -1,3 +1,5 @@
+/** @format */
+
 import Link from 'next/link'
 import { navAvatarMenus } from '@/constants/navbar'
 import Signout from '@/components/auth/Signout'

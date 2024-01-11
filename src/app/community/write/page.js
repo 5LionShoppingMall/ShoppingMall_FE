@@ -1,9 +1,9 @@
-import PostWrite from '@/components/community/PostWrite';
+import PostWrite from '@/components/community/post/PostWrite'
 
 export default function postWritePage() {
   return (
-    <section className="max-w-screen-lg mx-auto h-full">
+    <section className='max-w-screen-lg mx-auto h-full'>
       <PostWrite />
     </section>
-  );
+  )
 }

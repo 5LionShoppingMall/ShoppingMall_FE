@@ -2,12 +2,12 @@
 
 import React, { useState, useEffect } from 'react'
 import { useUser } from '@/hooks/useUser'
-import ProfilePicture from './ui/auth-area/ProfilePicture'
+import ProfilePicture from '../ui/auth-area/ProfilePicture'
 import validateForm from '@/util/validateForm'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { FiCheck } from 'react-icons/fi'
-import axios from '../config/axios-config'
+import axios from '../../config/axios-config'
 import { uploadImageToCloudinary } from '@/api/auth'
 import { useRouter } from 'next/navigation'
 import { validateField } from '@/util/validateField'
@@ -17,6 +17,8 @@ import { useAddressSearch } from '@/util/useAddressSearch'
 export default function EditProfile() {
   const router = useRouter()
   const { user, isLoading } = useUser()
+
+  console.log(user)
   const [isNicknameUnique, setIsNicknameUnique] = useState(false) // 닉네임 중복 상태
   const [errors, setErrors] = useState({
     password: null,
@@ -28,9 +30,9 @@ export default function EditProfile() {
 
   const [form, setForm] = useState({
     password: '',
-    nickname: user.nickname,
-    phoneNumber: user.phoneNumber,
-    address: user.address,
+    nickname: user?.nickname,
+    phoneNumber: user?.phoneNumber,
+    address: user?.address,
     profilePictureUrl: null,
     profilePictureName: '',
   })

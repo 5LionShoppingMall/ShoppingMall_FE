@@ -148,8 +148,9 @@ export default function AuthForm({ authType }) {
   return (
     <>
       {/* 로그인 실패시 에러 메시지 표시 */}
-      <ToastContainer />
-      <h1 className='font-medium text-2xl mt-3 text-center'>{title}</h1>
+      <h1 className='font-semibold text-3xl mt-3 text-center tracking-widest'>
+        {title}
+      </h1>
       <form className='mt-12' onSubmit={loginHandler}>
         <div className='relative'>
           <AuthInput
@@ -182,7 +183,7 @@ export default function AuthForm({ authType }) {
         }
 
         {authType === 'signin' ? (
-          <div className='flex justify-end mt-2 mb-8 text-sm sm:text-xs text-gray-600'>
+          <div className='flex justify-end mt-2 mb-8 text-sm sm:text-xs text-gray-600 dark:max-sm:text-gray-400 dark:max-sm:hover:text-gray-200'>
             <Link href='/auth/reset-password/request'>
               비밀번호를 잊으셨나요?
             </Link>
