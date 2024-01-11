@@ -157,7 +157,7 @@ export default function ProductWrite() {
       <div className='w-full h-full min-h-[400px]'>
         <textarea
           name='description'
-          className='resize-none w-full h-full text-sm p-3 focus:outline-none border rounded-md'
+          className='resize-none w-full h-full p-3 focus:outline-none border rounded-md'
           onChange={onChangeHandler}
         ></textarea>
       </div>
