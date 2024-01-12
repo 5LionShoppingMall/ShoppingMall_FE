@@ -37,7 +37,7 @@ export default function ProductEdit({ id }) {
       router.replace('/auth/signin');
     }
 
-    if (user.email !== product.seller.email) {
+    if (user.email !== product?.seller.email) {
       toast.error('수정 권한이 없습니다.');
       router.back();
     }
