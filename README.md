@@ -20,7 +20,7 @@
 
 ![오지는 사자 프론트엔드 기술스택](https://github.com/5LionShoppingMall/ShoppingMall_BE/assets/78200199/f6dd486f-a18d-4fda-addc-e7bc7bef3024)
 
-## 3. 프로젝트 구조
+## 3. 프로젝트 구조!
 
 <hr>
 
