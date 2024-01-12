@@ -33,19 +33,17 @@ export default function Main() {
     );
   }
 
-  const pagination = {
-    clickable: true,
-    renderBullet: (index, className) => {
-      return `<span class=${className}></span>`;
-    },
-  };
-
   return (
     <section className='flex flex-col'>
       <div className='relative'>
         <Swiper
           className='h-[500px] xl:rounded-md'
-          pagination={pagination}
+          pagination={{
+            clickable: true,
+            renderBullet: (index, className) => {
+              return `<span class=${className}></span>`;
+            },
+          }}
           autoplay={{
             delay: 5000,
             pauseOnMouseEnter: true,
