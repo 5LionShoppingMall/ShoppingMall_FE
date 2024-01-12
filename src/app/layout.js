@@ -1,10 +1,11 @@
 /** @format */
 
-import Navbar from '@/components/ui/NavBar';
-import '../styles/globals.css';
-import TanstackProvider from '@/context/TanstackProvider';
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import Navbar from '@/components/ui/NavBar'
+import '../styles/globals.css'
+import TanstackProvider from '@/context/TanstackProvider'
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
+import Footer from '@/components/ui/Footer'
 
 export const metadata = {
   title: {
@@ -12,7 +13,7 @@ export const metadata = {
     template: '%s | LION',
   },
   description: 'home',
-};
+}
 
 export default async function RootLayout({ children }) {
   return (
@@ -33,12 +34,10 @@ export default async function RootLayout({ children }) {
           <main className='w-full h-auto order-1 max-w-screen-xl mx-auto mt-[72px]'>
             {children}
           </main>
-          <footer className='hidden sm:block w-full h-auto order-2 bottom-0 mt-24'>
-            <div className='w-full h-[200px] bg-base-200'></div>
-          </footer>
+          <Footer />
           <div id='portal'></div>
         </TanstackProvider>
       </body>
     </html>
-  );
+  )
 }
