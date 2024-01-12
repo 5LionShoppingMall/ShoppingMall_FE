@@ -5,7 +5,7 @@ import CameraIcon from '../ui/icon/CameraIcon';
 import CloseIcon from '../ui/icon/CloseIcon';
 import { useModifyProduct, useProductDetail } from '@/hooks/useProducts';
 import { useEffect, useRef, useState } from 'react';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import { useUser } from '@/hooks/useUser';
 
 export default function ProductEdit({ id }) {
