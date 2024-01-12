@@ -28,7 +28,7 @@ export default function MainPosts() {
   }
 
   return (
-    <div className='w-full flex flex-col sm:flex-row gap-5'>
+    <div className='w-full flex flex-col sm:flex-row gap-3 sm:gap-5'>
       <div className='flex flex-col gap-2 h-full mt-10 sm:mt-24 w-full sm:w-1/2'>
         <h1 className='text-2xl sm:text-3xl font-bold'># 인기 게시글 ✨ </h1>
         <BestPosts bestPosts={best.objData?.content} />

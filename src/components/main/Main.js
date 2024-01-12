@@ -16,7 +16,6 @@ import BestPosts from './BestPosts';
 import MainPosts from './MainPosts';
 
 export default function Main() {
-  const { user, isLoading: isUserLoading } = useUser(); // useUser 훅을 호출하여 user 정보를 가져옵니다.
   const { products, isLoading, isFetching, isError } = useProducts(1, 20);
 
   if (isLoading || isFetching) {
@@ -63,7 +62,7 @@ export default function Main() {
           ))}
         </Swiper>
       </div>
-      <div className='px-4 h-fit pb-16 pt-24 flex flex-col'>
+      <div className='px-4 h-fit pb-16 pt-10 sm:pt-24 flex flex-col'>
         <LatestProductsCarousel products={products} />
         <MainPosts />
       </div>
