@@ -1,6 +1,7 @@
 import dateConverter from '@/util/dateConverter';
 import { AiFillHeart } from 'react-icons/ai';
 import NewBadge from '../ui/NewBadge';
+import Link from 'next/link';
 
 export default function PostsItem({ post }) {
   return (
@@ -17,9 +18,11 @@ export default function PostsItem({ post }) {
         </div>
         <div className='flex h-full items-center'>
           <div className='flex flex-1 items-center h-full'>
-            <span className='min-w-[50px] text-xl font-semibold tracking-wide overflow-ellipsis overflow-hidden line-clamp-2'>
-              {post.title}
-            </span>
+            <Link href={`/community/detail/${post.id}`}>
+              <span className='min-w-[50px] text-xl font-semibold tracking-wide overflow-ellipsis overflow-hidden line-clamp-2'>
+                {post.title}
+              </span>
+            </Link>
             <NewBadge createdAt={post.createdAt} />
           </div>
         </div>
