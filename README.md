@@ -6,13 +6,13 @@
 
 <hr>
 
-* **LION은 중고거래 플랫폼 이다.**
-* **본인의 상품을 원하는 가격에 판매할 수 있다.**
-* **상품을 사고 싶은 소비자의 경우 채팅으로 판매자에게 요청할 수 있다**
-* **상품의 경우 카트(장바구니)에 담을 수 있다.**
-* **다양한 사용자들이 소통할 수 있는 커뮤니티 공간이 있다.**
-* **다양한 사용자들이 실시간으로 소통할 수 있는 그룹채팅 공간이 있다.**
-* **로그인의 경우 회원가입을 통한 로그인과 소셜로그인이 있다.**
+- **LION은 중고거래 플랫폼 이다.**
+- **본인의 상품을 원하는 가격에 판매할 수 있다.**
+- **상품을 사고 싶은 소비자의 경우 채팅으로 판매자에게 요청할 수 있다**
+- **상품의 경우 카트(장바구니)에 담을 수 있다.**
+- **다양한 사용자들이 소통할 수 있는 커뮤니티 공간이 있다.**
+- **다양한 사용자들이 실시간으로 소통할 수 있는 그룹채팅 공간이 있다.**
+- **로그인의 경우 회원가입을 통한 로그인과 소셜로그인이 있다.**
 
 ## 2. 사용한 기술 스택<hr>
 
@@ -20,43 +20,52 @@
 
 ![오지는 사자 프론트엔드 기술스택](https://github.com/5LionShoppingMall/ShoppingMall_BE/assets/78200199/f6dd486f-a18d-4fda-addc-e7bc7bef3024)
 
-
 ## 3. 프로젝트 구조
 
 <hr>
 
 ## ERD
 
-![image](https://github.com/Son-Gyeongi/readmeTest/assets/78200199/8bec32b9-3e72-46a8-9ed3-abf56503ebe7)
-
+![ERD](public/img/LION_ERD.png)
 
 ## 4. 기능
 
-
 <hr>
 
-
 ### ➡️ 구현되어 있는 기능.
+
 #### :heavy_check_mark: 상품 CRUD
+
 #### :heavy_check_mark: 회원가입 및 로그인
+
 #### :heavy_check_mark: 소셜 로그인 (카카오&깃허브&구글)
+
 #### :heavy_check_mark: 게시글 CRUD
+
 #### :heavy_check_mark: 댓글 CRUD
+
 #### :heavy_check_mark: 채팅 기능
+
 #### :heavy_check_mark: 이메일 인증 기능
+
+#### :heavy_check_mark: 회원 찾기 기능
+
 #### :heavy_check_mark: 게시글 및 상품 검색 기능
+
 #### :heavy_check_mark: 게시글 조회수/추천수 기능
 
 ## 5. 배포
+
 <hr>
 
 - **프론트엔드 : Vercel, 백엔드: NCP**</br>
 - [LION 배포 링크](https://www.lionshop.me)
 - **테스트용 아이디** : <br>
- test1 ~ test5 : 유저
- / ex) 아이디 : test1@test.com / 비밀번호 : test1
+  test1 ~ test5 : 유저
+  / ex) 아이디 : test1@test.com / 비밀번호 : test1
 
 ## 6. 팀원 소개
+
 <hr>
 
 <table>
