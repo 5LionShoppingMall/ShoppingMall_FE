@@ -1,13 +1,12 @@
-import dateConverter from '@/util/dateConverter';
-import Image from 'next/image';
-import { CiImageOff } from 'react-icons/ci';
+import dateConverter from '@/util/dateConverter'
+import Image from 'next/image'
+import { CiImageOff } from 'react-icons/ci'
 
 export default function ProductListItem({ product }) {
   return (
     <li
       key={product.id}
-      className='flex flex-row sm:flex-col bg-base-100 mx-auto border-b border-base-200 sm:border-none rounded-none w-full h-full min-h-[183px] sm:basis-1/4 sm:h-[380px] p-5 sm:p-2'
-    >
+      className='flex flex-row sm:flex-col bg-base-100 mx-auto border-b border-base-200 sm:border-none rounded-none w-full h-full min-h-[183px] sm:basis-1/4 sm:h-[380px] p-5 sm:p-2'>
       <figure className='relative w-2/5 sm:w-full h-full sm:h-64'>
         {product.thumbnailImage ? (
           <Image
@@ -33,11 +32,11 @@ export default function ProductListItem({ product }) {
           </div>
         </div>
         <div className='card-actions justify-end items-center w-full mt-5 text-sm dark:text-slate-400'>
-          <span>{product.seller.address}</span>
+          <span>{product?.seller?.address}</span>
           <span className='hidden sm:block h-[13px] w-[1px] bg-black dark:bg-slate-400'></span>
           <span>{dateConverter(product.createdAt)}</span>
         </div>
       </div>
     </li>
-  );
+  )
 }
