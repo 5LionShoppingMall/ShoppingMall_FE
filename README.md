@@ -26,7 +26,7 @@
 
 ## ERD
 
-![ERD](public/img/LION_ERD.png)
+![ERD](public/img/LIONERD.png)
 
 ## 4. 기능
 
