@@ -5,8 +5,6 @@ import CameraIcon from '../ui/icon/CameraIcon';
 import CloseIcon from '../ui/icon/CloseIcon';
 import { useModifyProduct, useProductDetail } from '@/hooks/useProducts';
 import { useEffect, useRef, useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { useUser } from '@/hooks/useUser';
 
 export default function ProductEdit({ id }) {
   const fileInputRef = useRef();
@@ -28,20 +26,6 @@ export default function ProductEdit({ id }) {
   const [selectedImages, setSelectedImages] = useState(product?.images);
   const [deletedImages, setDeletedImages] = useState([]);
   const [inputPrice, setInputPrice] = useState(product?.price);
-  const { user } = useUser();
-  const router = useRouter();
-
-  useEffect(() => {
-    if (!user) {
-      toast.error('로그인이 필요한 서비스입니다.');
-      router.replace('/auth/signin');
-    }
-
-    if (user?.email !== product?.seller.email) {
-      toast.error('수정 권한이 없습니다.');
-      router.back();
-    }
-  }, [user, product.seller.email, router]);
 
   useEffect(() => {
     if (product) {
