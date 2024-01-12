@@ -221,7 +221,7 @@ export default function ProductEdit({ id }) {
         <textarea
           name='title'
           value={productInfo?.title}
-          className='w-full resize-none focus:outline-none text-sm p-3 border rounded-md'
+          className='w-full resize-none focus:outline-none p-3 border rounded-md'
           placeholder='상품명'
           rows={1}
           onChange={onChangeHandler}
@@ -230,7 +230,7 @@ export default function ProductEdit({ id }) {
       <div className='w-full h-fit bg-white'>
         <input
           name='price'
-          className='w-full text-sm focus:outline-none p-3 border rounded-md'
+          className='w-full focus:outline-none p-3 border rounded-md'
           placeholder='판매가격'
           value={inputPrice}
           onChange={priceChangeHander}
@@ -240,7 +240,7 @@ export default function ProductEdit({ id }) {
         <textarea
           name='description'
           value={productInfo?.description}
-          className='resize-none w-full h-full text-sm p-3 focus:outline-none border rounded-md'
+          className='resize-none w-full h-full p-3 focus:outline-none border rounded-md'
           onChange={onChangeHandler}
         ></textarea>
       </div>
