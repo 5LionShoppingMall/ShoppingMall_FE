@@ -22,7 +22,7 @@ export default function DropdownMenu({ menu, setIsMenuOpen, login, setLogin }) {
               <a>My</a>
               <ul className='p-2'>
                 <li onClick={() => setIsMenuOpen(false)}>
-                  <Link href='/cart'>장바구니</Link>
+                  <Link href='/products/cart'>장바구니</Link>
                 </li>
                 <AvatarMenu setIsMenuOpen={setIsMenuOpen} />
               </ul>
