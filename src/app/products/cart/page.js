@@ -1,13 +1,11 @@
-import CartMain from '@/components/cart/CartMain';
+import CartMain from '@/components/product/cart/CartMain';
 
 export const metadata = {
-  title: 'Cart',
+    title: 'Cart',
 };
 
 export default function CartPage() {
-  return (
-    <div>
-      <CartMain />
-    </div>
-  );
+    return <section>
+        <CartMain />
+    </section>;
 }

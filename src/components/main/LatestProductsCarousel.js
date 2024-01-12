@@ -14,6 +14,7 @@ import LeftAngleBracket from '../ui/icon/LeftAngleBracket';
 import RightAngleBracket from '../ui/icon/RightAngleBracket';
 import { CiImageOff } from 'react-icons/ci';
 import dateConverter from '@/util/dateConverter';
+import NewBadge from '../ui/NewBadge';
 
 export default function LatestProductsCarousel({ products }) {
   const { content, totalPages } = products.objData;
@@ -83,10 +84,15 @@ export default function LatestProductsCarousel({ products }) {
                         {product.price} 원
                       </span>
                     </div>
-                    <div className='card-actions justify-end items-center w-full mt-8 text-sm dark:text-slate-400'>
-                      <span>{product.seller.address}</span>
-                      <span className='hidden sm:block h-[13px] w-[1px] bg-black dark:bg-slate-400'></span>
-                      <span>{dateConverter(product.createdAt)}</span>
+                    <div className='card-actions justify-between items-center w-full mt-8 text-sm dark:text-slate-400'>
+                      <div className='flex items-center justify-start w-fit'>
+                        <NewBadge createdAt={product.createdAt} />
+                      </div>
+                      <div className='flex items-center gap-1 justify-end'>
+                        <span>{product.seller.address}</span>
+                        <span className='hidden sm:block h-[13px] w-[1px] bg-gray-400 dark:bg-slate-400'></span>
+                        <span>{dateConverter(product.createdAt)}</span>
+                      </div>
                     </div>
                   </div>
                 </Link>

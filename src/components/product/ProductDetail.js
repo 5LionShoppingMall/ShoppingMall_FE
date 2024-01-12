@@ -198,9 +198,9 @@ export default function ProductDetail({ id }) {
                 />
               </div>
             </div>
-            <div className='w-full flex flex-col'>
-              <span className='text-sm sm:text-md text-sage-700 font-extrabold tracking-wider pb-1 mt-auto text-end w-full'>
-                50
+            <div className='w-full flex flex-col mt-3'>
+              <span className='text-sm sm:text-md text-sage-700 font-extrabold tracking-wider pb-2 mt-auto w-full'>
+                신뢰도 50 / 100
               </span>
               <progress
                 className='progress progress-error w-full'

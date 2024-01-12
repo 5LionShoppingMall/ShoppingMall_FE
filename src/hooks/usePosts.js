@@ -1,4 +1,9 @@
-import { keepPreviousData, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import {
+  keepPreviousData,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from '@tanstack/react-query';
 import axios from '@/config/axios-config';
 import { getPostById } from '@/api/post';
 
@@ -79,7 +84,9 @@ export const useWritePost = () => {
 
 // axios ver
 const fetchPostSearch = async (kw, page) => {
-  const { data } = await axios.get(`/api/posts/search?keyword=${kw}&page=${page}`);
+  const { data } = await axios.get(
+    `/api/posts/search?keyword=${kw}&page=${page}`
+  );
 
   console.log('fetchPostSearch');
   console.log(data);
@@ -105,7 +112,9 @@ export const usePostSearch = (kw, page) => {
 
 // 인기 게시글
 const fetchPopularPosts = async (page, size) => {
-  const { data } = await axios.get(`/api/posts/popularList?page=${page}&size=${size}`);
+  const { data } = await axios.get(
+    `/api/posts/popularList?page=${page}&size=${size}`
+  );
 
   console.log('fetchPopularPosts');
   console.log(data);
@@ -120,19 +129,19 @@ export const usePopularPosts = (page, size) => {
     isFetching,
     isError,
     error,
-    isPlaceholderData,
   } = useQuery({
-    queryKey: ['posts', page, size],
+    queryKey: ['bestPosts', page, size],
     queryFn: () => fetchPopularPosts(page, size),
-    placeholderData: keepPreviousData, // 전에 있던 데이터 기억
   });
 
-  return { posts, isLoading, isFetching, isError, error, isPlaceholderData };
+  return { posts, isLoading, isFetching, isError, error };
 };
 
 // 최신 게시글
 const fetchRecentPosts = async (page, size) => {
-  const { data } = await axios.get(`/api/posts/recentList?page=${page}&size=${size}`);
+  const { data } = await axios.get(
+    `/api/posts/recentList?page=${page}&size=${size}`
+  );
 
   console.log('fetchRecentPosts');
   console.log(data);
@@ -147,12 +156,10 @@ export const useRecentPosts = (page, size) => {
     isFetching,
     isError,
     error,
-    isPlaceholderData,
   } = useQuery({
-    queryKey: ['posts', page, size],
+    queryKey: ['newPosts', page, size],
     queryFn: () => fetchRecentPosts(page, size),
-    placeholderData: keepPreviousData,
   });
 
-  return { posts, isLoading, isFetching, isError, error, isPlaceholderData };
+  return { posts, isLoading, isFetching, isError, error };
 };

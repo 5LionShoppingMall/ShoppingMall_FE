@@ -12,15 +12,16 @@ import LoadingSpinnerCircle from '../ui/icon/LoadingSpinnerCircle';
 import LatestProductsCarousel from './LatestProductsCarousel';
 import ErrorMessage from '../error/ErrorMessage';
 import { useProducts } from '@/hooks/useProducts';
+import BestPosts from './BestPosts';
+import MainPosts from './MainPosts';
 
 export default function Main() {
-  const { user, isLoading: isUserLoading } = useUser(); // useUser 훅을 호출하여 user 정보를 가져옵니다.
   const { products, isLoading, isFetching, isError } = useProducts(1, 20);
 
   if (isLoading || isFetching) {
     return (
-      <div className='w-full h-full flex justify-center items-center -mt-[68px]'>
-        <LoadingSpinnerCircle color='text-gray-500' />
+      <div className='fixed top-0 left-0 w-full h-full flex justify-center items-center -mt-[30px] sm:-mt-[72px]'>
+        <LoadingSpinnerCircle />
       </div>
     );
   }
@@ -33,19 +34,17 @@ export default function Main() {
     );
   }
 
-  const pagination = {
-    clickable: true,
-    renderBullet: (index, className) => {
-      return `<span class=${className}></span>`;
-    },
-  };
-
   return (
     <section className='flex flex-col'>
       <div className='relative'>
         <Swiper
-          className='h-[500px] xl:rounded-md'
-          pagination={pagination}
+          className='h-[200px] sm:h-[500px] xl:rounded-md'
+          pagination={{
+            clickable: true,
+            renderBullet: (index, className) => {
+              return `<span class=${className}></span>`;
+            },
+          }}
           autoplay={{
             delay: 5000,
             pauseOnMouseEnter: true,
@@ -63,12 +62,9 @@ export default function Main() {
           ))}
         </Swiper>
       </div>
-      <div className='px-4 h-fit pb-16 pt-24 flex flex-col'>
+      <div className='px-4 h-fit pb-16 pt-10 sm:pt-24 flex flex-col'>
         <LatestProductsCarousel products={products} />
-        <div className='flex flex-col gap-7 h-full mt-24'>
-          <h1 className='text-2xl sm:text-3xl font-bold'># 인기 게시글 ? </h1>
-          <div className='bg-base-200 w-full h-[400px]'></div>
-        </div>
+        <MainPosts />
       </div>
     </section>
   );
