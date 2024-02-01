@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react'
 import { useUser } from '@/hooks/useUser'
 import ProfilePicture from '../ui/auth-area/ProfilePicture'
 import validateForm from '@/util/validateForm'
-import { ToastContainer, toast } from 'react-toastify'
+import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { FiCheck } from 'react-icons/fi'
 import axios from '../../config/axios-config'
@@ -117,7 +117,6 @@ export default function EditProfile() {
 
   return (
     <div className='border border-gray-600 p-10'>
-      <ToastContainer />
       <h2 className='text-2xl font-bold text-center mb-4'>회원수정</h2>
       <form
         onSubmit={handleSubmit}
